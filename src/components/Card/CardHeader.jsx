@@ -3,13 +3,13 @@ import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from 'react-icons/fa';
 
 const stats = [
   {
-    title: 'Total Case',
+    title: 'Finished',
     value: '123,200',
     icon: <FaWallet className="text-blue-500" />,
     bg: 'bg-blue-100',
   },
   {
-    title: 'Total Pending',
+    title: 'Pending',
     value: '13,461',
     icon: <FaBoxOpen className="text-purple-500" />,
     bg: 'bg-purple-100',

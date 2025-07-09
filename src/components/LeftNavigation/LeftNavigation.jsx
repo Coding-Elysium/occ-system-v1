@@ -21,6 +21,11 @@ const sections = [
     items: [
       { name: 'Civil Case', icon: FaWpforms, path: '/civilCase' },       
       { name: 'Criminal Case', icon: FaLock, path: '/criminalCase' },      
+    ],
+  },
+  {
+    title: 'REPORTS',
+    items: [
       { name: 'Notarial Reports', icon: FaFileInvoice, path: '/notarialReports' }, 
     ],
   },
