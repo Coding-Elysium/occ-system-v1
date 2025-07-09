@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import SearchField from "../../components/Input/SearchField";
 import Button from '../Button/Button';
+import AddCriminalCase from '../Form/AddCriminalCase';
+import IconButton from '../Button/IconButton';
+import { BsFilterLeft } from 'react-icons/bs';
+import { GoDownload } from "react-icons/go";
+import * as XLSX from 'xlsx';
 
 const CriminalCaseTable = () => {
+  const [addCase, setAddCase] = useState(false);
+
   const [cases, setCases] = useState([
     {
       id: '1',
@@ -59,6 +66,61 @@ const CriminalCaseTable = () => {
       judge: 'Hon. Maria Santos',
       nextHearing: '2024-09-10',
     },
+    {
+      id: '5',
+      caseNumber: 'CR-2023-005',
+      defendant: 'Robert White',
+      offense: 'Homicide',
+      status: 'In Progress',
+      dateFiled: '2023-05-01',
+      court: 'Regional Trial Court',
+      judge: 'Hon. Maria Santos',
+      nextHearing: '2024-09-10',
+    },
+    {
+      id: '5',
+      caseNumber: 'CR-2023-005',
+      defendant: 'Robert White',
+      offense: 'Homicide',
+      status: 'In Progress',
+      dateFiled: '2023-05-01',
+      court: 'Regional Trial Court',
+      judge: 'Hon. Maria Santos',
+      nextHearing: '2024-09-10',
+    },
+    {
+      id: '5',
+      caseNumber: 'CR-2023-005',
+      defendant: 'Robert White',
+      offense: 'Homicide',
+      status: 'In Progress',
+      dateFiled: '2023-05-01',
+      court: 'Regional Trial Court',
+      judge: 'Hon. Maria Santos',
+      nextHearing: '2024-09-10',
+    },
+    {
+      id: '5',
+      caseNumber: 'CR-2023-005',
+      defendant: 'Robert White',
+      offense: 'Homicide',
+      status: 'In Progress',
+      dateFiled: '2023-05-01',
+      court: 'Regional Trial Court',
+      judge: 'Hon. Maria Santos',
+      nextHearing: '2024-09-10',
+    },
+    {
+      id: '5',
+      caseNumber: 'CR-2023-005',
+      defendant: 'Robert White',
+      offense: 'Homicide',
+      status: 'In Progress',
+      dateFiled: '2023-05-01',
+      court: 'Regional Trial Court',
+      judge: 'Hon. Maria Santos',
+      nextHearing: '2024-09-10',
+    },
   ]);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,13 +131,77 @@ const CriminalCaseTable = () => {
     )
   );
 
+  const downloadCriminalCase = () => {
+    const sheetData = [
+      [
+        "Case No.",
+        "Defendant",
+        "Offense",
+        "Status",
+        "Date Filed",
+        "Court",
+        "Judge",
+        "Next Hearing"
+      ],
+      ...cases.map(caseItem => [
+        caseItem.caseNumber,
+        caseItem.defendant,
+        caseItem.offense,
+        caseItem.status,
+        caseItem.dateFiled,
+        caseItem.court,
+        caseItem.judge,
+        caseItem.nextHearing
+      ])
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    const maxColWidths = sheetData[0].map((_, colIdx) =>
+      Math.max(...sheetData.map(row => (row[colIdx] ? row[colIdx].toString().length : 10)))
+    );
+
+    worksheet["!cols"] = maxColWidths.map(w => ({ wch: w + 5 }));
+
+    worksheet["!freeze"] = { xSplit: 0, ySplit: 1 };
+
+    Object.keys(worksheet).forEach(cell => {
+      if (!cell.startsWith("!")) {
+        const cellRef = XLSX.utils.decode_cell(cell);
+        if (cellRef.r === 0) {
+          worksheet[cell].s = {
+            font: { bold: true },
+            alignment: { vertical: "center", horizontal: "center" }
+          };
+        } else {
+          worksheet[cell].s = {
+            alignment: { vertical: "center", horizontal: "left" }
+          };
+        }
+      }
+    });
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Criminal Cases");
+
+    XLSX.writeFile(workbook, "criminal_cases.xlsx", {
+      cellStyles: true
+    });
+  };
+
   return (
     <div>
       <div className="mx-auto bg-white rounded-lg p-6 border border-gray-300">
 
         <div className="mb-6 flex items-center justify-between">
-          <SearchField onchange={(e) => setSearchTerm(e.target.value)}/>
-          <Button buttonText='Add Case'/>
+          <section className='flex items-center gap-2 '>
+            <SearchField onchange={(e) => setSearchTerm(e.target.value)}/>
+            <IconButton Icon={BsFilterLeft}/>
+          </section>
+         <section className='flex items-center gap-2'>
+          <Button buttonText='Add Case' onClick={() => setAddCase(true)}/>
+          <IconButton Icon={GoDownload} onClick={downloadCriminalCase}/>
+         </section>
         </div>
 
         <div className="overflow-x-auto rounded-lg border border-gray-300">
@@ -126,9 +252,15 @@ const CriminalCaseTable = () => {
                 </th>
                 <th
                   scope="col"
-                  className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider rounded-tr-lg"
+                  className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider"
                 >
                   Next Hearing
+                </th>
+                <th
+                  scope="col"
+                  className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider  rounded-tr-lg"
+                >
+                  Action
                 </th>
               </tr>
             </thead>
@@ -173,6 +305,20 @@ const CriminalCaseTable = () => {
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-700">
                       {caseItem.nextHearing}
                     </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm flex items-center gap-2">
+                      <button
+                        onClick={() => console.log('Edit', caseItem.id)}
+                        className="text-blue-600 hover:text-blue-800 font-medium text-xs px-2 py-1 rounded transition"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => console.log('Delete', caseItem.id)}
+                        className="text-red-600 hover:text-red-800 font-medium text-xs px-2 py-1 rounded transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -186,6 +332,13 @@ const CriminalCaseTable = () => {
           </table>
         </div>
       </div>
+      {addCase && (
+        <section className='z-1 absolute'>
+          <AddCriminalCase 
+            onClose={() => setAddCase(false)}
+          />
+        </section>
+      )}
     </div>
   );
 };

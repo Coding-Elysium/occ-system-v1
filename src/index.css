@@ -2,6 +2,7 @@
 
 :root {
   --bg-primary: #60a5fa; /* Tailwind's blue-400 */
+  --bg-primary-hover: #3b82f6;
 }
 
 body {
@@ -14,4 +15,8 @@ body {
 
 .bg-primary-color{
     background-color: var(--bg-primary);
+}
+
+.hover\:bg-primary-color-hover:hover {
+  background-color: var(--bg-primary-hover);
 }
