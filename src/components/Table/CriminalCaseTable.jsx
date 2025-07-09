@@ -6,7 +6,7 @@ import AddCriminalCase from '../Form/AddCriminalCase';
 import IconButton from '../Button/IconButton';
 import { BsFilterLeft } from 'react-icons/bs';
 import { GoDownload } from "react-icons/go";
-import useCriminalCaseStore from '../../store/cirminalCaseStore'; // Corrected path based on typical structure
+import useCriminalCaseStore from '../../store/cirminalCaseStore';   
 
 const CriminalCaseTable = () => {
   const [addCase, setAddCase] = React.useState(false);
@@ -25,7 +25,7 @@ const CriminalCaseTable = () => {
     });
 
     useEffect(() => {
-      resetCases(); // Reset state
+      resetCases(); 
       fetchMoreCases();
     }, [resetCases, fetchMoreCases]); 
 
@@ -33,7 +33,7 @@ const CriminalCaseTable = () => {
       if (inView && !loading && hasMore) {
         fetchMoreCases();
       }
-    }, [inView, loading, hasMore, fetchMoreCases]); // Add fetchMoreCases to dependencies
+    }, [inView, loading, hasMore, fetchMoreCases]); 
 
     return (
       <div>
@@ -66,8 +66,8 @@ const CriminalCaseTable = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200 ">
-                {cases.map((caseItem) => (
-                  <tr key={caseItem.id}> 
+                {cases.map((caseItem, index) => (
+                  <tr key={index}> 
                     <td className="px-4 py-4 text-sm">{caseItem.caseNumber}</td>
                     <td className="px-4 py-4 text-sm">{caseItem.defendant}</td>
                     <td className="px-4 py-4 text-sm">{caseItem.offense}</td>

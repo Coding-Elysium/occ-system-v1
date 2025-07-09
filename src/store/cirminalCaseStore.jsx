@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import * as XLSX from 'xlsx';
-// This is static data for demonstration. In a real app, this would come from an API.
 const allStaticCases = [
   { id: '1', caseNumber: 'CR-001', defendant: 'John Doe', offense: 'Theft', status: 'Pending', dateFiled: '2023-01-15', court: 'District Court', judge: 'Judge Smith', nextHearing: '2024-07-20' },
   { id: '2', caseNumber: 'CR-002', defendant: 'Jane Smith', offense: 'Assault', status: 'Closed', dateFiled: '2023-02-01', court: 'Circuit Court', judge: 'Judge Jones', nextHearing: '-' },
@@ -29,16 +28,47 @@ const PAGE_SIZE = 10;
 const useCriminalCaseStore = create((set, get) => ({
   cases: [],
   page: 1,
+  pending: 0, 
+  close: 0,
+  allCases: 0,
+  inProgress: 0,
   hasMore: true,
   loading: false,
   searchTerm: '',
 
+  countPendings: () => {
+    const { cases } = get();
+    const count = cases.filter((item) => item.status === "Pending").length;
+    set({ pending: count });
+    return count;
+  },
+
+   countClose: () => {
+    const { cases } = get();
+    const count = cases.filter((item) => item.status === "Closed").length;
+    set({ close: count });
+    return count;
+  },
+
+  countAllCases: () => {
+    const { cases } = get();
+    const count = cases.length;
+    set({ allCases: count });
+    return count;
+  },
+
+  countInProgress: () => {
+    const { cases } = get();
+    const count = cases.filter((item) => item.status === "In Progress").length;
+    set({ inProgress: count });
+    return count;
+  },
+
   fetchMoreCases: () => {
     const { page, loading, hasMore, searchTerm } = get();
-    if (loading || !hasMore) return; // Prevent fetching if already loading or no more data
+    if (loading || !hasMore) return; 
 
     set({ loading: true });
-    // Simulate network delay
     setTimeout(() => {
       const filtered = allStaticCases.filter((item) =>
         Object.values(item).some((v) =>
@@ -51,33 +81,29 @@ const useCriminalCaseStore = create((set, get) => ({
       const nextSlice = filtered.slice(start, end);
 
       set((state) => ({
-        cases: [...state.cases, ...nextSlice],
+        cases: [...nextSlice],
         page: state.page + 1,
-        hasMore: end < filtered.length, // Check if there are more items to load
+        hasMore: end < filtered.length, 
         loading: false,
       }));
-    }, 500); // Simulate 500ms API call
+    }, 500); 
   },
 
   resetCases: () => {
-    // Resets the state for a fresh load or search
     set({
       cases: [],
       page: 1,
       hasMore: true,
-      loading: false, // Ensure loading is false when reset
+      loading: false,
     });
   },
 
   setSearchTerm: (term) => {
-    // When search term changes, reset state and then the component will trigger fetch
     set({ searchTerm: term, page: 1, cases: [], hasMore: true, loading: false });
   },
 
-  setCases: (newCases) => set({ cases: newCases }), // Unused in this context, but kept
+  setCases: (newCases) => set({ cases: newCases }), 
   downloadCriminalCase: () => {
-    // This function assumes XLSX is globally available or imported.
-    // For a React app, you'd typically import it: import * as XLSX from 'xlsx';
     const cases = get().cases;
     const sheetData = [
       [

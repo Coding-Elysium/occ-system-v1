@@ -1,34 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from 'react-icons/fa';
-
-const stats = [
-  {
-    title: 'Finished',
-    value: '123,200',
-    icon: <FaWallet className="text-blue-500" />,
-    bg: 'bg-blue-100',
-  },
-  {
-    title: 'Pending',
-    value: '13,461',
-    icon: <FaBoxOpen className="text-purple-500" />,
-    bg: 'bg-purple-100',
-  },
-  {
-    title: 'Closed',
-    value: '17,150',
-    icon: <FaTruck className="text-green-500" />,
-    bg: 'bg-green-100',
-  },
-  {
-    title: 'In Progress',
-    value: '3,519',
-    icon: <FaTimesCircle className="text-red-500" />,
-    bg: 'bg-red-100',
-  },
-];
+import useCriminalCaseStore from '../../store/cirminalCaseStore';
 
 const CardHeader = () => {
+  const { pending, countPendings, cases, close, countClose, countAllCases, allCases, countInProgress, inProgress} = useCriminalCaseStore();
+
+  useEffect(() => {
+    countPendings();
+    countClose();
+    countAllCases();
+    countInProgress();
+  }, [cases]);
+
+  const stats = [
+    {
+      title: 'Finished',
+      value: allCases,
+      icon: <FaWallet className="text-blue-500" />,
+      bg: 'bg-blue-100',
+    },
+    {
+      title: 'Pending',
+      value: pending,
+      icon: <FaBoxOpen className="text-purple-500" />,
+      bg: 'bg-purple-100',
+    },
+    {
+      title: 'Closed',
+      value: close,
+      icon: <FaTruck className="text-green-500" />,
+      bg: 'bg-green-100',
+    },
+    {
+      title: 'In Progress',
+      value: inProgress,
+      icon: <FaTimesCircle className="text-red-500" />,
+      bg: 'bg-red-100',
+    },
+  ];
+
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {stats.map((stat, index) => (
