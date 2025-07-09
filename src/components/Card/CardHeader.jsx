@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from 'react-icons/fa';
-import useCriminalCaseStore from '../../store/cirminalCaseStore';
+import React, { useEffect } from "react";
+import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from "react-icons/fa";
+import useCriminalCaseStore from "../../store/cirminalCaseStore";
 
 const CardHeader = () => {
-  const { pending, countPendings, cases, close, countClose, countAllCases, allCases, countInProgress, inProgress} = useCriminalCaseStore();
+  const {
+    pending,
+    countPendings,
+    cases,
+    close,
+    countClose,
+    countAllCases,
+    allCases,
+    countInProgress,
+    inProgress,
+  } = useCriminalCaseStore();
 
   useEffect(() => {
     countPendings();
@@ -14,40 +24,50 @@ const CardHeader = () => {
 
   const stats = [
     {
-      title: 'Finished',
+      title: "Finished",
       value: allCases,
-      icon: <FaWallet className="text-blue-500" />,
-      bg: 'bg-blue-100',
+      icon: <FaWallet className="text-blue-500 text-2xl" />,
+      bg: "bg-blue-100",
     },
     {
-      title: 'Pending',
+      title: "Pending",
       value: pending,
-      icon: <FaBoxOpen className="text-purple-500" />,
-      bg: 'bg-purple-100',
+      icon: <FaBoxOpen className="text-purple-500 text-2xl" />,
+      bg: "bg-purple-100",
     },
     {
-      title: 'Closed',
+      title: "Closed",
       value: close,
-      icon: <FaTruck className="text-green-500" />,
-      bg: 'bg-green-100',
+      icon: <FaTruck className="text-green-500 text-2xl" />,
+      bg: "bg-green-100",
     },
     {
-      title: 'In Progress',
+      title: "In Progress",
       value: inProgress,
-      icon: <FaTimesCircle className="text-red-500" />,
-      bg: 'bg-red-100',
+      icon: <FaTimesCircle className="text-red-500 text-2xl" />,
+      bg: "bg-red-100",
     },
   ];
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <section className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
       {stats.map((stat, index) => (
-        <div key={index} className="bg-white p-6 rounded-tr-sm border border-gray-300">
-          <div className={`w-12 h-12 flex items-center justify-center rounded-full ${stat.bg} mb-4`}>
+        <div
+          key={index}
+          className="flex items-center bg-white p-4 rounded-lg border border-gray-300 gap-4"
+        >
+          <section
+            className={`${stat.bg} flex items-center justify-center rounded-full w-12 h-12 sm:w-14 sm:h-14`}
+          >
             {stat.icon}
-          </div>
-          <h3 className="text-xl font-semibold text-gray-800">{stat.value}</h3>
-          <p className="text-sm text-gray-500">{stat.title}</p>
+          </section>
+
+          <section>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-800">
+              {stat.value}
+            </h3>
+            <p className="text-sm sm:text-base text-gray-500">{stat.title}</p>
+          </section>
         </div>
       ))}
     </section>
