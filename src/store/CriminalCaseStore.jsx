@@ -1,0 +1,80 @@
+import { create } from "zustand";
+
+const tableData = [
+  {
+    caseNumber: "CR-001",
+    originalDocketNumber: "ODN-001",
+    title: "People vs. John Doe",
+    accused: "John Doe",
+    complainant: "Jane Smith",
+    nature: "Theft",
+    dateFiled: "2023-01-15",
+    assignedBranch: "Branch 1",
+    caseStatus: "On Going",
+    decision: "Guilty",
+    dateOfDecision: "2023-12-01",
+    assignedJudge: "Judge Smith",
+    noticeOfAppeal: "Filed",
+    dateForwarded: "2024-01-05",
+    latestStatus: "Awaiting Appeal",
+  },
+  {
+    caseNumber: "CR-001",
+    originalDocketNumber: "ODN-001",
+    title: "People vs. John Doe",
+    accused: "John Doe",
+    complainant: "Jane Smith",
+    nature: "Theft",
+    dateFiled: "2023-01-15",
+    assignedBranch: "Branch 1",
+    caseStatus: "Resolved",
+    decision: "Guilty",
+    dateOfDecision: "2023-12-01",
+    assignedJudge: "Judge Smith",
+    noticeOfAppeal: "Filed",
+    dateForwarded: "2024-01-05",
+    latestStatus: "Awaiting Appeal",
+  },
+  {
+    caseNumber: "CR-001",
+    originalDocketNumber: "ODN-001",
+    title: "People vs. John Doe",
+    accused: "John Doe",
+    complainant: "Jane Smith",
+    nature: "Theft",
+    dateFiled: "2023-01-15",
+    assignedBranch: "Branch 1",
+    caseStatus: "Pending",
+    decision: "Guilty",
+    dateOfDecision: "2023-12-01",
+    assignedJudge: "Judge Smith",
+    noticeOfAppeal: "Filed",
+    dateForwarded: "2024-01-05",
+    latestStatus: "Awaiting Appeal",
+  },
+];
+
+const useCriminalCaseStore = create((set) => ({
+  cases: [],
+
+  initializeCases: () => set(() => ({ cases: tableData })),
+
+  addCase: (newCase) =>
+    set((state) => ({
+      cases: [...state.cases, newCase],
+    })),
+
+  updateCase: (id, updatedFields) =>
+    set((state) => ({
+      cases: state.cases.map((caseItem) =>
+        caseItem.id === id ? { ...caseItem, ...updatedFields } : caseItem
+      ),
+    })),
+
+  removeCase: (id) =>
+    set((state) => ({
+      cases: state.cases.filter((caseItem) => caseItem.id !== id),
+    })),
+}));
+
+export default useCriminalCaseStore;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchField from '../Input/SearchField';
 import Button  from '../Button/Button'; 
 import AddCriminalCase from '../Form/AddCriminalCase';
@@ -7,11 +7,17 @@ import { useMediaQuery } from 'react-responsive';
 import CriminalCaseCardMobile from '../Card/CriminalCaseCardMobile';
 import DeleteModal from '../Modal/DeleteModal';
 import { getStatusStyle } from '../../helper/helper';
+import useCriminalCaseStore from '../../store/CriminalCaseStore';
 
 const TableCriminalCase = () => {
   const [ addCase, setAddCase ] = useState(false);
   const [ deleteModal, setDeleteModal ] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { cases, initializeCases } = useCriminalCaseStore();
+
+  useEffect(() => {
+    initializeCases();
+  }, [])
 
   const tableHeaders = [
     { key: "caseNumber", label: "Case No." },
@@ -51,59 +57,7 @@ const TableCriminalCase = () => {
   //   latestStatus: "Awaiting Appeal",
   // });
 
-  const tableData = [
-    {
-      caseNumber: "CR-001",
-      originalDocketNumber: "ODN-001",
-      title: "People vs. John Doe",
-      accused: "John Doe",
-      complainant: "Jane Smith",
-      nature: "Theft",
-      dateFiled: "2023-01-15",
-      assignedBranch: "Branch 1",
-      caseStatus: "On Going",
-      decision: "Guilty",
-      dateOfDecision: "2023-12-01",
-      assignedJudge: "Judge Smith",
-      noticeOfAppeal: "Filed",
-      dateForwarded: "2024-01-05",
-      latestStatus: "Awaiting Appeal",
-    },
-    {
-      caseNumber: "CR-001",
-      originalDocketNumber: "ODN-001",
-      title: "People vs. John Doe",
-      accused: "John Doe",
-      complainant: "Jane Smith",
-      nature: "Theft",
-      dateFiled: "2023-01-15",
-      assignedBranch: "Branch 1",
-      caseStatus: "Resolved",
-      decision: "Guilty",
-      dateOfDecision: "2023-12-01",
-      assignedJudge: "Judge Smith",
-      noticeOfAppeal: "Filed",
-      dateForwarded: "2024-01-05",
-      latestStatus: "Awaiting Appeal",
-    },
-    {
-      caseNumber: "CR-001",
-      originalDocketNumber: "ODN-001",
-      title: "People vs. John Doe",
-      accused: "John Doe",
-      complainant: "Jane Smith",
-      nature: "Theft",
-      dateFiled: "2023-01-15",
-      assignedBranch: "Branch 1",
-      caseStatus: "Pending",
-      decision: "Guilty",
-      dateOfDecision: "2023-12-01",
-      assignedJudge: "Judge Smith",
-      noticeOfAppeal: "Filed",
-      dateForwarded: "2024-01-05",
-      latestStatus: "Awaiting Appeal",
-    }
-  ]
+  
 
   return (
     <>
@@ -138,7 +92,7 @@ const TableCriminalCase = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 text-sm text-gray-700 h-full">
-                      {tableData.map((row, index) => (
+                      {cases.map((row, index) => (
                         <tr key={index}>
                           <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.caseNumber}</td>
                           <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.originalDocketNumber}</td>
@@ -203,7 +157,7 @@ const TableCriminalCase = () => {
               />
             </div>
 
-            {tableData.map((row, index) => (
+            {cases.map((row, index) => (
               <CriminalCaseCardMobile
                 key={index}
                 data={row}

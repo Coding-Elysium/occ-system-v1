@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="h-screen flex flex-col">
       <Header />
-      <div className="flex flex-1 overflow-hidden mt-20">
+      <div className="flex flex-1 overflow-hidden mt-15">
         {
           isMobile && (
             <main className="flex-1 bg-gray-50 overflow-y-auto p-4 sm:p-6">

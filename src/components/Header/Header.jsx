@@ -16,7 +16,7 @@ const Header = () => {
           >
             <FaBars size={20} />
           </button>
-          <h1 className="text-lg font-semibold">Your App Name</h1>
+          <h1 className="text-lg font-semibold">Office of the Clerk of Court</h1>
         </div>
       </header>
 

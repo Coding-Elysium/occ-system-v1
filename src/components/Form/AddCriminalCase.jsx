@@ -3,8 +3,11 @@ import InputField from "../Input/InputField";
 import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import DropdownField from "../Input/DropdownField";
+import useCriminalCaseStore from "../../store/CriminalCaseStore";
 
 const AddCriminalCase = ({ onAddCase, onClose }) => {
+  const { addCase } = useCriminalCaseStore();
+
   const [formData, setFormData] = useState({
     caseNumber: "",
     originalDocketNumber: "",
@@ -33,15 +36,13 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const newCase = { ...formData, id: Date.now().toString() };
-    // onAddCase(newCase);
+    addCase(formData);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50 font-inter">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
-        {/* Header */}
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
             Add Criminal Case
@@ -68,7 +69,6 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
           </button>
         </div>
 
-        {/* Scrollable Form with Grid Layout */}
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1">
           <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <InputField
