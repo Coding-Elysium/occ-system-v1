@@ -1,13 +1,30 @@
 import React from "react";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
-import CriminalCaseTable from "../components/Table/CriminalCaseTable";
+import TableCriminalCase from "../components/Table/TableCriminalCase";
+import { useMediaQuery } from "react-responsive";
 
 const CriminalCase = () => {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   return (
-    <section className="flex flex-col gap-6">
-      <DashboardHeader />
-      <CriminalCaseTable />
-    </section>
+    <>
+      {
+        !isMobile && (
+          <section className="h-full gap-6 flex flex-col">
+            <DashboardHeader />
+            <TableCriminalCase />
+          </section>
+        )
+      }
+      {
+        isMobile && (
+          <section className="gap-6 flex flex-col">
+            <DashboardHeader />
+            <TableCriminalCase />
+          </section>
+        )
+      }
+    </>
   );
 };
 

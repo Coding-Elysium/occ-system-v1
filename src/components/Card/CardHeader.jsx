@@ -1,49 +1,49 @@
 import React, { useEffect } from "react";
 import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from "react-icons/fa";
-import useCriminalCaseStore from "../../store/cirminalCaseStore";
+// import useCriminalCaseStore from "../../store/cirminalCaseStore";
 
 const CardHeader = () => {
-  const {
-    pending,
-    countPendings,
-    cases,
-    close,
-    countClose,
-    countAllCases,
-    allCases,
-    countInProgress,
-    inProgress,
-  } = useCriminalCaseStore();
+  // const {
+  //   pending,
+  //   countPendings,
+  //   cases,
+  //   close,
+  //   countClose,
+  //   countAllCases,
+  //   allCases,
+  //   countInProgress,
+  //   inProgress,
+  // } = useCriminalCaseStore();
 
-  useEffect(() => {
-    countPendings();
-    countClose();
-    countAllCases();
-    countInProgress();
-  }, [cases]);
+  // useEffect(() => {
+  //   countPendings();
+  //   countClose();
+  //   countAllCases();
+  //   countInProgress();
+  // }, [cases]);
 
   const stats = [
     {
       title: "Finished",
-      value: allCases,
+      value: "100",
       icon: <FaWallet className="text-blue-500 text-2xl" />,
       bg: "bg-blue-100",
     },
     {
       title: "Pending",
-      value: pending,
+      value: "100",
       icon: <FaBoxOpen className="text-purple-500 text-2xl" />,
       bg: "bg-purple-100",
     },
     {
       title: "Closed",
-      value: close,
+      value: "100",
       icon: <FaTruck className="text-green-500 text-2xl" />,
       bg: "bg-green-100",
     },
     {
       title: "In Progress",
-      value: inProgress,
+      value: "100",
       icon: <FaTimesCircle className="text-red-500 text-2xl" />,
       bg: "bg-red-100",
     },
