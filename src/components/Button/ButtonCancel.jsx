@@ -7,7 +7,7 @@ const ButtonCancel = ({
 }) => {
   return (
     <button
-        className='py-2 px-6 border border-gray-300 text-black rounded-md font-semibold cursor-pointer' 
+        className='py-2 px-6 border border-gray-300 text-black rounded-md font-semibold cursor-pointer hover:bg-gray-50' 
         onClick={onClick}
     >{buttonText}</button>
   )

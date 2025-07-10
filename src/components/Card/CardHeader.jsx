@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from "react-icons/fa";
-// import useCriminalCaseStore from "../../store/cirminalCaseStore";
 
 const CardHeader = () => {
   // const {
@@ -15,7 +14,7 @@ const CardHeader = () => {
   //   inProgress,
   // } = useCriminalCaseStore();
 
-  // useEffect(() => {
+  // useEffect(() => {  
   //   countPendings();
   //   countClose();
   //   countAllCases();
@@ -24,7 +23,7 @@ const CardHeader = () => {
 
   const stats = [
     {
-      title: "Finished",
+      title: "Total",
       value: "100",
       icon: <FaWallet className="text-blue-500 text-2xl" />,
       bg: "bg-blue-100",
@@ -36,13 +35,13 @@ const CardHeader = () => {
       bg: "bg-purple-100",
     },
     {
-      title: "Closed",
+      title: "On Going",
       value: "100",
       icon: <FaTruck className="text-green-500 text-2xl" />,
       bg: "bg-green-100",
     },
     {
-      title: "In Progress",
+      title: "Resolved",
       value: "100",
       icon: <FaTimesCircle className="text-red-500 text-2xl" />,
       bg: "bg-red-100",

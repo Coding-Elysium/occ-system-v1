@@ -6,6 +6,11 @@ import {
   FaLock,
   FaCubes,
   FaWpforms,
+  FaBalanceScale,
+  FaGavel,
+  FaScroll,
+  FaRegFileAlt,
+  FaStamp,
 } from 'react-icons/fa';
 
 const sections = [
@@ -13,14 +18,17 @@ const sections = [
     title: 'MENU',
     items: [
       { name: 'Dashboards', icon: FaTachometerAlt, path: '/' },
-      { name: 'Landing Page', icon: FaCubes, path: '/landing' }, 
     ],
   },
   {
     title: 'CASES',
     items: [
-      { name: 'Civil Case', icon: FaWpforms, path: '/civilCase' },       
-      { name: 'Criminal Case', icon: FaLock, path: '/criminalCase' },      
+      { name: 'Civil Cases', icon: FaBalanceScale, path: '/civilCase' },       
+      { name: 'Criminal Cases', icon: FaLock, path: '/criminalCase' },    
+      { name: 'Special Proceeding', icon: FaGavel, path: '/specialProceeding' },       
+      { name: 'LRC', icon: FaScroll, path: '/lrc' },       
+      { name: 'Extrajudicial Settlement', icon: FaRegFileAlt, path: '/extrajudicialSettlement' },       
+      { name: 'Writ of Execution', icon: FaStamp, path: '/writOfExecution' },         
     ],
   },
   {

@@ -1,40 +1,109 @@
 import React, { useState } from 'react';
 import SearchField from '../Input/SearchField';
-import IconButton from "../Button/IconButton";
-import { BsFilterLeft } from 'react-icons/bs';
-import Button  from '../Button/Button'; // You can replace this with your actual Button component
+import Button  from '../Button/Button'; 
 import AddCriminalCase from '../Form/AddCriminalCase';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
 import CriminalCaseCardMobile from '../Card/CriminalCaseCardMobile';
+import DeleteModal from '../Modal/DeleteModal';
+import { getStatusStyle } from '../../helper/helper';
 
 const TableCriminalCase = () => {
   const [ addCase, setAddCase ] = useState(false);
+  const [ deleteModal, setDeleteModal ] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   const tableHeaders = [
     { key: "caseNumber", label: "Case No." },
-    { key: "defendant", label: "Defendant" },
-    { key: "offense", label: "Offense" },
-    { key: "status", label: "Status" },
+    { key: "originalDocketNumber", label: "Docket No." },
+    { key: "title", label: "Title" },
+    { key: "accused", label: "Accused" },
+    { key: "complainant", label: "Complainant" },
+    { key: "nature", label: "Nature" },
     { key: "dateFiled", label: "Date Filed" },
-    { key: "court", label: "Court" },
-    { key: "judge", label: "Judge" },
-    { key: "nextHearing", label: "Next Hearing" },
+    { key: "assignedBranch", label: "Branch" },
+    { key: "caseStatus", label: "Status" },
+    { key: "decision", label: "Decision" },
+    { key: "dateOfDecision", label: "Date of Decision" },
+    { key: "assignedJudge", label: "Judge" },
+    { key: "noticeOfAppeal", label: "Appeal" },
+    { key: "dateForwarded", label: "Forwarded" },
+    { key: "latestStatus", label: "Latest Status" },
     { key: "action", label: "Action" },
   ];
 
-  const tableData = Array(12).fill({
-    caseNumber: "CR-001",
-    defendant: "John Doe",
-    offense: "Theft",
-    status: "Finished",
-    dateFiled: "2023-01-15",
-    court: "District Court",
-    judge: "Judge Smith",
-    nextHearing: "2024-07-20",
-    action: "View",
-  });
+
+  // const tableData = Array(9).fill({
+  //   caseNumber: "CR-001",
+  //   originalDocketNumber: "ODN-001",
+  //   title: "People vs. John Doe",
+  //   accused: "John Doe",
+  //   complainant: "Jane Smith",
+  //   nature: "Theft",
+  //   dateFiled: "2023-01-15",
+  //   assignedBranch: "Branch 1",
+  //   caseStatus: "On Going",
+  //   decision: "Guilty",
+  //   dateOfDecision: "2023-12-01",
+  //   assignedJudge: "Judge Smith",
+  //   noticeOfAppeal: "Filed",
+  //   dateForwarded: "2024-01-05",
+  //   latestStatus: "Awaiting Appeal",
+  // });
+
+  const tableData = [
+    {
+      caseNumber: "CR-001",
+      originalDocketNumber: "ODN-001",
+      title: "People vs. John Doe",
+      accused: "John Doe",
+      complainant: "Jane Smith",
+      nature: "Theft",
+      dateFiled: "2023-01-15",
+      assignedBranch: "Branch 1",
+      caseStatus: "On Going",
+      decision: "Guilty",
+      dateOfDecision: "2023-12-01",
+      assignedJudge: "Judge Smith",
+      noticeOfAppeal: "Filed",
+      dateForwarded: "2024-01-05",
+      latestStatus: "Awaiting Appeal",
+    },
+    {
+      caseNumber: "CR-001",
+      originalDocketNumber: "ODN-001",
+      title: "People vs. John Doe",
+      accused: "John Doe",
+      complainant: "Jane Smith",
+      nature: "Theft",
+      dateFiled: "2023-01-15",
+      assignedBranch: "Branch 1",
+      caseStatus: "Resolved",
+      decision: "Guilty",
+      dateOfDecision: "2023-12-01",
+      assignedJudge: "Judge Smith",
+      noticeOfAppeal: "Filed",
+      dateForwarded: "2024-01-05",
+      latestStatus: "Awaiting Appeal",
+    },
+    {
+      caseNumber: "CR-001",
+      originalDocketNumber: "ODN-001",
+      title: "People vs. John Doe",
+      accused: "John Doe",
+      complainant: "Jane Smith",
+      nature: "Theft",
+      dateFiled: "2023-01-15",
+      assignedBranch: "Branch 1",
+      caseStatus: "Pending",
+      decision: "Guilty",
+      dateOfDecision: "2023-12-01",
+      assignedJudge: "Judge Smith",
+      noticeOfAppeal: "Filed",
+      dateForwarded: "2024-01-05",
+      latestStatus: "Awaiting Appeal",
+    }
+  ]
 
   return (
     <>
@@ -45,16 +114,11 @@ const TableCriminalCase = () => {
               <div className="flex justify-between items-center gap-2 ">
                 <section className='flex gap-2 w-md'>
                   <SearchField />
-                  <IconButton Icon={BsFilterLeft} />
                 </section>
                 <section className='flex gap-2'>
                   <Button 
                     onClick={() => setAddCase(true)}
                     buttonText="Add Case" 
-                  />
-                  <IconButton 
-                    Icon={BsFilterLeft} 
-                    className="border border-gray-300 rounded-md p-2 hover:bg-gray-100"
                   />
                 </section>
               </div>
@@ -76,32 +140,33 @@ const TableCriminalCase = () => {
                     <tbody className="divide-y divide-gray-200 text-sm text-gray-700 h-full">
                       {tableData.map((row, index) => (
                         <tr key={index}>
-                          <td className="px-4 py-3">{row.caseNumber}</td>
-                          <td className="px-4 py-3">{row.defendant}</td>
-                          <td className="px-4 py-3">{row.offense}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span
-                              className={`px-4 py-1 rounded-full text-xs font-medium ${
-                                {
-                                  pending: 'bg-yellow-100 text-yellow-800',
-                                  finished: 'bg-green-100 text-green-800',
-                                  closed: 'bg-red-100 text-red-800',
-                                  'in progress': 'bg-blue-100 text-blue-800',
-                                }[row.status.toLowerCase()] || 'bg-gray-100 text-gray-800'
-                              }`}
-                            >
-                              {row.status}
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.caseNumber}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.originalDocketNumber}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.title}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.accused}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.complainant}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.nature}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.dateFiled}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.assignedBranch}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
+                            <span className={`px-4 font-semibold py-1 rounded ${getStatusStyle(row.caseStatus)}`}>
+                              {row.caseStatus}
                             </span>
                           </td>
-                          <td className="px-4 py-3">{row.dateFiled}</td>
-                          <td className="px-4 py-3">{row.court}</td>
-                          <td className="px-4 py-3">{row.judge}</td>
-                          <td className="px-4 py-3">{row.nextHearing}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.decision}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.dateOfDecision}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.assignedJudge}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.noticeOfAppeal}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.dateForwarded}</td>
+                          <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">{row.latestStatus}</td>
                           <td className="px-4 py-3 flex items-center gap-2">
-                            <button className="text-blue-600 hover:text-blue-800">
+                            <button onClick={() => setDeleteModal(true)} className="text-green-600 hover:text-green-800" title="View">
+                              <FaEye />
+                            </button>
+                            <button className="text-blue-600 hover:text-blue-800" title="Edit">
                               <FaEdit />
                             </button>
-                            <button className="text-red-600 hover:text-red-800">
+                            <button onClick={() => setDeleteModal(true)} className="text-red-600 hover:text-red-800" title="Delete">
                               <FaTrash />
                             </button>
                           </td>
@@ -115,6 +180,11 @@ const TableCriminalCase = () => {
             { 
               addCase && (
                 <AddCriminalCase onClose={() => setAddCase(false)}/>
+              )
+            }
+            {
+              deleteModal && (
+                <DeleteModal onCancel={() => setDeleteModal(false)} onConfirm={() => setDeleteModal(false)}/>
               )
             }
           </div>

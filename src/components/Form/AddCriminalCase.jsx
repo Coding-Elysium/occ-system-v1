@@ -7,13 +7,20 @@ import DropdownField from "../Input/DropdownField";
 const AddCriminalCase = ({ onAddCase, onClose }) => {
   const [formData, setFormData] = useState({
     caseNumber: "",
-    defendant: "",
-    offense: "",
-    status: "Pending",
+    originalDocketNumber: "",
+    title: "",
+    accused: "",
+    complainant: "",
+    nature: "",
     dateFiled: "",
-    court: "",
-    judge: "",
-    nextHearing: "",
+    assignedBranch: "",
+    caseStatus: "",
+    decision: "",
+    dateOfDecision: "",
+    assignedJudge: "",
+    noticeOfAppeal: "",
+    dateForwarded: "",
+    latestStatus: "",
   });
 
   const handleChange = (e) => {
@@ -33,8 +40,8 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50 font-inter">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
-        {/* Header - not scrollable */}
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+        {/* Header */}
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
             Add Criminal Case
@@ -61,9 +68,9 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
           </button>
         </div>
 
-        {/* Scrollable Form */}
-        <div className="overflow-y-auto px-4 sm:px-6 py-4 space-y-4 flex-1">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Scrollable Form with Grid Layout */}
+        <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <InputField
               label="Case Number"
               type="text"
@@ -75,35 +82,48 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
             />
 
             <InputField
-              label="Defendant"
+              label="Original Docket Number"
               type="text"
-              name="defendant"
-              value={formData.defendant}
+              name="originalDocketNumber"
+              value={formData.originalDocketNumber}
               handleChange={handleChange}
-              placeholder="Enter Defendant Name"
-              required
+              placeholder="Enter Docket Number"
             />
 
             <InputField
-              label="Offense"
+              label="Title"
               type="text"
-              name="offense"
-              value={formData.offense}
+              name="title"
+              value={formData.title}
               handleChange={handleChange}
-              placeholder="Enter Offense"
-              required
+              placeholder="Enter Case Title"
             />
 
-            <DropdownField
-              label="Status"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              options={[
-                { value: "Pending", label: "Pending" },
-                { value: "In Progress", label: "In Progress" },
-                { value: "Closed", label: "Closed" },
-              ]}
+            <InputField
+              label="Accused"
+              type="text"
+              name="accused"
+              value={formData.accused}
+              handleChange={handleChange}
+              placeholder="Enter Accused"
+            />
+
+            <InputField
+              label="Complainant"
+              type="text"
+              name="complainant"
+              value={formData.complainant}
+              handleChange={handleChange}
+              placeholder="Enter Complainant"
+            />
+
+            <InputField
+              label="Nature"
+              type="text"
+              name="nature"
+              value={formData.nature}
+              handleChange={handleChange}
+              placeholder="Enter Nature"
             />
 
             <InputField
@@ -112,40 +132,88 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
               name="dateFiled"
               value={formData.dateFiled}
               handleChange={handleChange}
-              required
             />
 
             <InputField
-              label="Court"
+              label="Assigned Branch"
               type="text"
-              name="court"
-              value={formData.court}
+              name="assignedBranch"
+              value={formData.assignedBranch}
               handleChange={handleChange}
-              placeholder="Enter Court"
-              required
+              placeholder="Enter Assigned Branch"
+            />
+
+            <DropdownField
+              label="Case Status"
+              name="caseStatus"
+              value={formData.caseStatus}
+              onChange={handleChange}
+              options={[
+                { value: "Pending", label: "Pending" },
+                { value: "Ongoing", label: "Ongoing" },
+                { value: "Resolved", label: "Resolved" },
+              ]}
             />
 
             <InputField
-              label="Judge"
+              label="Decision"
               type="text"
-              name="judge"
-              value={formData.judge}
+              name="decision"
+              value={formData.decision}
+              handleChange={handleChange}
+              placeholder="Enter Decision"
+            />
+
+            <InputField
+              label="Date of Decision"
+              type="date"
+              name="dateOfDecision"
+              value={formData.dateOfDecision}
+              handleChange={handleChange}
+            />
+
+            <InputField
+              label="Assigned Judge"
+              type="text"
+              name="assignedJudge"
+              value={formData.assignedJudge}
               handleChange={handleChange}
               placeholder="Enter Judge Name"
-              required
             />
 
             <InputField
-              label="Next Hearing Date"
+              label="Notice of Appeal"
+              type="text"
+              name="noticeOfAppeal"
+              value={formData.noticeOfAppeal}
+              handleChange={handleChange}
+              placeholder="Enter Notice of Appeal"
+            />
+
+            <InputField
+              label="Date Forwarded"
               type="date"
-              name="nextHearing"
-              value={formData.nextHearing}
+              name="dateForwarded"
+              value={formData.dateForwarded}
               handleChange={handleChange}
             />
 
-            <div className="pt-2 flex flex-col-reverse sm:flex-row items-stretch sm:items-end justify-end gap-3 sm:gap-4">
-              <ButtonCancel buttonText="Cancel" />
-              <Button buttonText="Add Criminal Case" />
+            <InputField
+              label="Latest Status"
+              type="text"
+              name="latestStatus"
+              value={formData.latestStatus}
+              handleChange={handleChange}
+              placeholder="Enter Latest Status"
+            />
+
+            <div className="sm:col-span-2 pt-4 flex gap-4 justify-end">
+              <section>
+                <ButtonCancel buttonText="Cancel" />
+              </section>
+              <section>
+                <Button buttonText="Add Criminal Case" />
+              </section>
             </div>
           </form>
         </div>
@@ -153,4 +221,5 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
     </div>
   );
 };
+
 export default AddCriminalCase;
