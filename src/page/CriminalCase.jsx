@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
-import TableCriminalCase from "../components/Table/TableCriminalCase";
+import CriminalCaseMain from "../components/MainComponents/CriminalCaseMain";
 import { useMediaQuery } from "react-responsive";
 
 const CriminalCase = () => {
@@ -12,7 +12,7 @@ const CriminalCase = () => {
         !isMobile && (
           <section className="h-full gap-6 flex flex-col">
             <DashboardHeader />
-            <TableCriminalCase />
+            <CriminalCaseMain />
           </section>
         )
       }
@@ -20,7 +20,7 @@ const CriminalCase = () => {
         isMobile && (
           <section className="gap-6 flex flex-col">
             <DashboardHeader />
-            <TableCriminalCase />
+            <CriminalCaseMain />
           </section>
         )
       }

@@ -2,25 +2,6 @@ import React, { useEffect } from "react";
 import { FaWallet, FaBoxOpen, FaTruck, FaTimesCircle } from "react-icons/fa";
 
 const CardHeader = () => {
-  // const {
-  //   pending,
-  //   countPendings,
-  //   cases,
-  //   close,
-  //   countClose,
-  //   countAllCases,
-  //   allCases,
-  //   countInProgress,
-  //   inProgress,
-  // } = useCriminalCaseStore();
-
-  // useEffect(() => {  
-  //   countPendings();
-  //   countClose();
-  //   countAllCases();
-  //   countInProgress();
-  // }, [cases]);
-
   const stats = [
     {
       title: "Total",

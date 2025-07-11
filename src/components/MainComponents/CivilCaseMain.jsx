@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import SearchField from '../Input/SearchField';
 import IconButton from "../Button/IconButton";
-import { BsFilterLeft } from 'react-icons/bs';
 import Button  from '../Button/Button'; // You can replace this with your actual Button component
-import AddCriminalCase from '../Form/AddCriminalCase';
-import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useMediaQuery } from 'react-responsive';
-import CriminalCaseCardMobile from '../Card/CriminalCaseCardMobile';
-import NewFolder from '../Card/NewFolder';
+import CivilCaseContent from '../Content/CivilCaseContent';
 
-const TableNotarialReport = () => {
+const CivilCaseMain = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   return (
     <>
@@ -24,33 +20,16 @@ const TableNotarialReport = () => {
                 <section className='flex gap-2'>
                   <Button 
                     onClick={() => setAddCase(true)}
-                    buttonText="Add New Folder" 
+                    buttonText="Add Civil Case" 
                   />
                 </section>
               </div>
             </section>
             
            <section className="flex-grow overflow-y-auto px-4 mb-4 ">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-h-52">
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                    <NewFolder />
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-h-52">
+                  <CivilCaseContent />
+              </div>
             </section>
           </div>
         )
@@ -74,4 +53,4 @@ const TableNotarialReport = () => {
   );
 };
 
-export default TableNotarialReport;
+export default CivilCaseMain;

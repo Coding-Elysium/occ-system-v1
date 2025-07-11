@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header/Header";
 import { useMediaQuery } from "react-responsive";
+import LeftNavigation from "./components/LeftNavigation/LeftNavigation";
 
 function App() {
   const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -19,7 +20,7 @@ function App() {
         
         {
           !isMobile && (
-            <main className="flex-1 bg-gray-50 p-4 sm:p-6">
+            <main className=" w-full bg-gray-50 p-4 sm:p-6">
               <Outlet />
             </main>
           )

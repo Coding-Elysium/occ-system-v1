@@ -1,9 +1,9 @@
 import React from "react";
 import DashboardHeader from "../components/DashboardHeader/DashboardHeader";
 import { useMediaQuery } from "react-responsive";
-import NotarialReportMain from "../components/MainComponents/NotarialReportMain";
+import CivilCaseMain from "../components/MainComponents/CivilCaseMain";
 
-const NotarialReport = () => {
+const CivilCase = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   return (
@@ -12,7 +12,7 @@ const NotarialReport = () => {
         !isMobile && (
           <section className="h-full gap-6 flex flex-col">
             <DashboardHeader />
-            <NotarialReportMain />
+            <CivilCaseMain />
           </section>
         )
       }
@@ -20,7 +20,7 @@ const NotarialReport = () => {
         isMobile && (
           <section className="gap-6 flex flex-col">
             <DashboardHeader />
-            <NotarialReportMain />
+            <CivilCaseMain />
           </section>
         )
       }
@@ -28,4 +28,4 @@ const NotarialReport = () => {
   );
 };
 
-export default NotarialReport;
+export default CivilCase;

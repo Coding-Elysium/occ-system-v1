@@ -150,7 +150,7 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
               onChange={handleChange}
               options={[
                 { value: "Pending", label: "Pending" },
-                { value: "Ongoing", label: "Ongoing" },
+                { value: "On Going", label: "On Going" },
                 { value: "Resolved", label: "Resolved" },
               ]}
             />

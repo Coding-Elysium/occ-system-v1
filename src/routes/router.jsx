@@ -3,6 +3,7 @@ import App from "../App";
 import Dashboard from "../page/Dashboard";
 import CriminalCase from "../page/CriminalCase";
 import NotarialReport from "../page/NotarialReport";
+import CivilCase from "../page/CivilCase";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +16,8 @@ const router = createBrowserRouter([
           element: <Dashboard/>
         },
         {
-          path: "/landing",
-          element: <div>Sample</div>
+          path: "/civilCase",
+          element: <CivilCase/>
         },
         {
           path: "/criminalCase",
