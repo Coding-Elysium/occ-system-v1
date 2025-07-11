@@ -70,7 +70,10 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
         </div>
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1">
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+          >
             <InputField
               label="Case Number"
               type="text"

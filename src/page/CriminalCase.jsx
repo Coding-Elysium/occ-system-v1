@@ -8,22 +8,18 @@ const CriminalCase = () => {
 
   return (
     <>
-      {
-        !isMobile && (
-          <section className="h-full gap-6 flex flex-col">
-            <DashboardHeader />
-            <CriminalCaseMain />
-          </section>
-        )
-      }
-      {
-        isMobile && (
-          <section className="gap-6 flex flex-col">
-            <DashboardHeader />
-            <CriminalCaseMain />
-          </section>
-        )
-      }
+      {!isMobile && (
+        <section className="h-full gap-6 flex flex-col">
+          <DashboardHeader />
+          <CriminalCaseMain />
+        </section>
+      )}
+      {isMobile && (
+        <section className="gap-6 flex flex-col">
+          <DashboardHeader />
+          <CriminalCaseMain />
+        </section>
+      )}
     </>
   );
 };

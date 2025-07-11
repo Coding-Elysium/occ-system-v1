@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CivilCaseContent = () => {
-  return (
-    <div>CivilCaseContent</div>
-  )
-}
+  return <div>CivilCaseContent</div>;
+};
 
-export default CivilCaseContent
+export default CivilCaseContent;

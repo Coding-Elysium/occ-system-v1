@@ -273,7 +273,7 @@ const tableData = [
     dateForwarded: "2024-01-05",
     latestStatus: "Awaiting Appeal",
   },
-   {
+  {
     caseNumber: "CR-001",
     originalDocketNumber: "ODN-001",
     title: "People vs. John Doe",

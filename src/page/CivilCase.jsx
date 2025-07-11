@@ -8,22 +8,18 @@ const CivilCase = () => {
 
   return (
     <>
-      {
-        !isMobile && (
-          <section className="h-full gap-6 flex flex-col">
-            <DashboardHeader />
-            <CivilCaseMain />
-          </section>
-        )
-      }
-      {
-        isMobile && (
-          <section className="gap-6 flex flex-col">
-            <DashboardHeader />
-            <CivilCaseMain />
-          </section>
-        )
-      }
+      {!isMobile && (
+        <section className="h-full gap-6 flex flex-col">
+          {/* <DashboardHeader /> */}
+          <CivilCaseMain />
+        </section>
+      )}
+      {isMobile && (
+        <section className="gap-6 flex flex-col">
+          <DashboardHeader />
+          <CivilCaseMain />
+        </section>
+      )}
     </>
   );
 };

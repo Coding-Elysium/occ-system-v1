@@ -8,22 +8,18 @@ const NotarialReport = () => {
 
   return (
     <>
-      {
-        !isMobile && (
-          <section className="h-full gap-6 flex flex-col">
-            <DashboardHeader />
-            <NotarialReportMain />
-          </section>
-        )
-      }
-      {
-        isMobile && (
-          <section className="gap-6 flex flex-col">
-            <DashboardHeader />
-            <NotarialReportMain />
-          </section>
-        )
-      }
+      {!isMobile && (
+        <section className="h-full gap-6 flex flex-col">
+          <DashboardHeader />
+          <NotarialReportMain />
+        </section>
+      )}
+      {isMobile && (
+        <section className="gap-6 flex flex-col">
+          <DashboardHeader />
+          <NotarialReportMain />
+        </section>
+      )}
     </>
   );
 };
