@@ -10,7 +10,6 @@ const CivilCase = () => {
     <>
       {!isMobile && (
         <section className="h-full gap-6 flex flex-col">
-          {/* <DashboardHeader /> */}
           <CivilCaseMain />
         </section>
       )}

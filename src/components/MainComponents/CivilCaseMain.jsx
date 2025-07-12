@@ -4,9 +4,12 @@ import IconButton from "../Button/IconButton";
 import Button from "../Button/Button"; // You can replace this with your actual Button component
 import { useMediaQuery } from "react-responsive";
 import CivilCaseContent from "../Content/CivilCaseContent";
+import AddCivilCase from "../Form/AddCivilCase";
 
 const CivilCaseMain = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [addCase, setAddCase] = useState(false);
+
   return (
     <>
       {!isMobile && (
@@ -25,11 +28,20 @@ const CivilCaseMain = () => {
             </div>
           </section>
 
-          <section className="flex-grow overflow-y-auto px-4 mb-4 ">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 max-h-52">
+          <section className="overflow-y-auto overflow-x-auto px-4 mb-4 h-full">
+            <div className="max-h-52">
               <CivilCaseContent />
             </div>
           </section>
+
+          {addCase && (
+            <>
+              <AddCivilCase
+                onClose={() => setAddCase(false)}
+                onAddCase={() => setAddCase(false)}
+              />
+            </>
+          )}
         </div>
       )}
 
@@ -39,10 +51,19 @@ const CivilCaseMain = () => {
             <SearchField />
             <Button
               onClick={() => setAddCase(true)}
-              buttonText="Add New Folder"
+              buttonText="Add Case"
               className="text-sm px-3 py-1"
             />
+            {/* <CivilCaseContent /> */}
           </div>
+          {addCase && (
+            <>
+              <AddCivilCase
+                onClose={() => setAddCase(false)}
+                onAddCase={() => setAddCase(false)}
+              />
+            </>
+          )}
         </section>
       )}
     </>

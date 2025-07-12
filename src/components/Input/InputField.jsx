@@ -7,15 +7,19 @@ const InputField = ({
   handleChange,
   placeholder = "Enter text",
   label = "Input Label",
+  withLabel = true,
 }) => {
   return (
     <div className="w-full">
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-2"
-      >
-        {label}
-      </label>
+      {withLabel && (
+        <label
+          htmlFor={name}
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          {label}
+        </label>
+      )}
+
       <input
         type={type}
         id={name}

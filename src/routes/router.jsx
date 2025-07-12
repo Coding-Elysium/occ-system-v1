@@ -4,35 +4,38 @@ import Dashboard from "../page/Dashboard";
 import CriminalCase from "../page/CriminalCase";
 import NotarialReport from "../page/NotarialReport";
 import CivilCase from "../page/CivilCase";
+import CriminalCaseView from "../page/CriminalCaseView";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
-    children: (
-      [
-        {
-          path: "/",
-          element: <Dashboard/>
-        },
-        {
-          path: "/civilCase",
-          element: <CivilCase/>
-        },
-        {
-          path: "/criminalCase",
-          element: <CriminalCase/>
-        },
-        {
-          path: "/notarialReports",
-          element: <NotarialReport/>
-        },
-        {
-          path: "*",
-          element: <div>Under Construction</div>,
-        },
-      ]
-    )
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+      {
+        path: "/civilCase",
+        element: <CivilCase />,
+      },
+      {
+        path: "/criminalCase",
+        element: <CriminalCase />,
+      },
+      {
+        path: "/civilCase/view",
+        element: <CriminalCaseView />,
+      },
+      {
+        path: "/notarialReports",
+        element: <NotarialReport />,
+      },
+      {
+        path: "*",
+        element: <div>Under Construction</div>,
+      },
+    ],
   },
 ]);
 

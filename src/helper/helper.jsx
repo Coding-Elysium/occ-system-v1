@@ -7,3 +7,5 @@ export const getStatusStyle = (status) => {
 
   return styles[status?.toLowerCase()] || "bg-gray-100 text-gray-800";
 };
+
+export const BASEURL = "http://localhost:3000";
