@@ -4,7 +4,7 @@ import Dashboard from "../page/Dashboard";
 import CriminalCase from "../page/CriminalCase";
 import NotarialReport from "../page/NotarialReport";
 import CivilCase from "../page/CivilCase";
-import CriminalCaseView from "../page/CriminalCaseView";
+import CivilCaseView from "../page/CivilCaseView";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/civilCase",
+        path: "/civilcase",
         element: <CivilCase />,
       },
       {
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
         element: <CriminalCase />,
       },
       {
-        path: "/civilCase/view",
-        element: <CriminalCaseView />,
+        path: "/civilcase/:id",
+        element: <CivilCaseView />,
       },
       {
         path: "/notarialReports",

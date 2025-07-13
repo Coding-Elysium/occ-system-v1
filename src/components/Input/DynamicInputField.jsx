@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "./InputField";
-import Button from "../Button/Button";
 
-const DynamicInputFields = ({ onChange }) => {
-  const [inputs, setInputs] = useState([""]);
+const DynamicInputFields = ({
+  onChange,
+  values = [],
+  buttonText = "Add More",
+  label = "Label",
+  placeholder = "Placeholder",
+}) => {
+  const [inputs, setInputs] = useState(values.length > 0 ? values : [""]);
+
+  useEffect(() => {
+    setInputs(values.length > 0 ? values : [""]);
+  }, [values]);
 
   const handleChange = (index, value) => {
     const updatedInputs = [...inputs];
@@ -26,7 +35,7 @@ const DynamicInputFields = ({ onChange }) => {
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-md">
-      <label className="text-lg font-semibold">Respondents</label>
+      <label className="text-lg font-semibold">{label}</label>
 
       {inputs.map((value, index) => (
         <div key={index} className="flex gap-2 items-center">
@@ -35,7 +44,7 @@ const DynamicInputFields = ({ onChange }) => {
             type="text"
             value={value}
             handleChange={(e) => handleChange(index, e.target.value)}
-            placeholder={`Respondent ${index + 1}`}
+            placeholder={`${placeholder} ${index + 1}`}
           />
           {inputs.length > 1 && (
             <button
@@ -54,7 +63,7 @@ const DynamicInputFields = ({ onChange }) => {
         onClick={handleAdd}
         className="px-4 py-2 bg-primary-color text-white rounded hover:bg-blue-700"
       >
-        + Add Respondent
+        {buttonText}
       </button>
     </div>
   );

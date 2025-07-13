@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaFileInvoice,
@@ -11,34 +11,39 @@ import {
   FaScroll,
   FaRegFileAlt,
   FaStamp,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const sections = [
   {
-    title: 'MENU',
+    title: "MENU",
+    items: [{ name: "Dashboards", icon: FaTachometerAlt, path: "/" }],
+  },
+  {
+    title: "CASES",
     items: [
-      { name: 'Dashboards', icon: FaTachometerAlt, path: '/' },
+      { name: "Civil Cases", icon: FaBalanceScale, path: "/civilcase" },
+      { name: "Criminal Cases", icon: FaLock, path: "/criminalCase" },
+      { name: "Special Proceeding", icon: FaGavel, path: "/specialProceeding" },
+      { name: "LRC", icon: FaScroll, path: "/lrc" },
+      {
+        name: "Extrajudicial Settlement",
+        icon: FaRegFileAlt,
+        path: "/extrajudicialSettlement",
+      },
+      { name: "Writ of Execution", icon: FaStamp, path: "/writOfExecution" },
     ],
   },
   {
-    title: 'CASES',
+    title: "REPORTS",
     items: [
-      { name: 'Civil Cases', icon: FaBalanceScale, path: '/civilCase' },       
-      { name: 'Criminal Cases', icon: FaLock, path: '/criminalCase' },    
-      { name: 'Special Proceeding', icon: FaGavel, path: '/specialProceeding' },       
-      { name: 'LRC', icon: FaScroll, path: '/lrc' },       
-      { name: 'Extrajudicial Settlement', icon: FaRegFileAlt, path: '/extrajudicialSettlement' },       
-      { name: 'Writ of Execution', icon: FaStamp, path: '/writOfExecution' },         
-    ],
-  },
-  {
-    title: 'REPORTS',
-    items: [
-      { name: 'Notarial Reports', icon: FaFileInvoice, path: '/notarialReports' }, 
+      {
+        name: "Notarial Reports",
+        icon: FaFileInvoice,
+        path: "/notarialReports",
+      },
     ],
   },
 ];
-
 
 const LeftNavigation = () => {
   const location = useLocation();
@@ -60,8 +65,8 @@ const LeftNavigation = () => {
                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition 
                       ${
                         isActive
-                          ? 'bg-blue-100 text-blue-600'
-                          : 'text-gray-600 hover:bg-gray-100'
+                          ? "bg-blue-100 text-blue-600"
+                          : "text-gray-600 hover:bg-gray-100"
                       }`}
                   >
                     <item.icon className="w-4 h-4" />

@@ -2,38 +2,38 @@ import React from "react";
 
 const CivilCaseProfile = () => {
   return (
-    <section className="w-[400px] h-[500px] mx-auto border border-gray-300 rounded-md p-6 bg-white shadow-md overflow-y-auto">
-      <h2 className="text-2xl font-bold border-gray-300 mb-4 border-b pb-2">
-        Civil Case Profile
-      </h2>
+    <main className="flex flex-col gap-4">
+      <section className=" bg-white border border-gray-300 rounded-md overflow-hidden">
+        <div className="relative bg-gradient-to-r from-blue-500 to-indigo-400 h-32"></div>
 
-      <div className="flex flex-col gap-4">
-        <div>
-          <p className="text-gray-600 font-semibold">Book Number:</p>
-          <p className="text-gray-900">NV-001</p>
+        <div className="py-6 text-center sm:px-6">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
+            Theft
+          </h2>
+          <p className="text-sm sm:text-base text-gray-500">Nature</p>
         </div>
-
-        <div>
-          <p className="text-gray-600 font-semibold">Petitioner:</p>
-          <p className="text-gray-900">Petition</p>
+      </section>
+      <section className="grid-cols-1 md:grid-cols-4 grid gap-4">
+        <div className="border border-gray-300 rounded-lg px-6 py-4 bg-white">
+          <p className="text-2xl font-semibold text-gray-900">BN-001</p>
+          <p className="text-sm text-gray-500">Book Number</p>
         </div>
-
-        <div>
-          <p className="text-gray-600 font-semibold">Respondents:</p>
-          <ul className="list-disc list-inside ml-4 text-gray-900">
-            <li>John Carlo Abanes</li>
-            {/* {data.respondents.map((name, index) => (
-              <li key={index}>{name}</li>
-            ))} */}
-          </ul>
+        <div className="border border-gray-300 rounded-lg px-6 py-4 bg-white">
+          <p className="text-2xl font-semibold text-gray-900">1</p>
+          <p className="text-sm text-gray-500">Docket Number</p>
         </div>
-
-        <div>
-          <p className="text-gray-600 font-semibold">Nature:</p>
-          <p className="text-gray-900">Nature</p>
+        <div className="border border-gray-300 rounded-lg px-6 py-4 bg-white">
+          <p className="text-2xl font-semibold text-gray-900">
+            John Carlo Abanes
+          </p>
+          <p className="text-sm text-gray-500">Petition</p>
         </div>
-      </div>
-    </section>
+        <div className="border border-gray-300 rounded-lg px-6 py-4 bg-white">
+          <p className="text-2xl font-semibold text-gray-900">1</p>
+          <p className="text-sm text-gray-500">Number of Respondents</p>
+        </div>
+      </section>
+    </main>
   );
 };
 

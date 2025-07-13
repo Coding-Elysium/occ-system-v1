@@ -2,19 +2,24 @@ import React, { useState } from "react";
 import InputField from "../Input/InputField";
 import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
-import DropdownField from "../Input/DropdownField";
-import useCriminalCaseStore from "../../store/CriminalCaseStore";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 import DynamicInputFields from "../Input/DynamicInputField";
 
-const AddCivilCase = ({ onAddCase, onClose }) => {
-  const { addCases } = useCivilCaseStore();
+const AddCivilCase = ({
+  onClose,
+  cases,
+  selectedCase,
+  title = "Add Civil Case",
+  btnTextRight = "Add Case",
+}) => {
+  const { addCases, updateCases } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    bookNumber: "",
-    petitioner: "",
-    respondents: [],
-    nature: "",
+    bookNumber: selectedCase?.bookNumber || "",
+    petitioner: selectedCase?.petitioner || [],
+    respondents: selectedCase?.respondents || [],
+    nature: selectedCase?.nature || "",
+    status: selectedCase?.status || "-----",
   });
 
   const handleChange = (e) => {
@@ -27,8 +32,11 @@ const AddCivilCase = ({ onAddCase, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submit", formData);
-    await addCases(formData);
+    if (selectedCase) {
+      await updateCases(selectedCase._id, formData);
+    } else {
+      await addCases(formData);
+    }
     onClose();
   };
 
@@ -37,7 +45,7 @@ const AddCivilCase = ({ onAddCase, onClose }) => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            Add Criminal Case
+            {title}
           </h2>
           <button
             onClick={onClose}
@@ -72,21 +80,25 @@ const AddCivilCase = ({ onAddCase, onClose }) => {
               placeholder="Enter Case Number"
               required
             />
-            <InputField
-              label="Petitioner"
-              type="text"
-              name="petitioner"
-              value={formData.petitioner}
-              handleChange={handleChange}
-              placeholder="Enter Docket Number"
-            />
 
             <DynamicInputFields
+              placeholder="Add Petitioner"
+              label="Petitioner"
+              buttonText="Add More Petitioner"
+              values={formData.petitioner}
+              onChange={(values) =>
+                setFormData((prev) => ({ ...prev, petitioner: values }))
+              }
+            />
+            <DynamicInputFields
+              placeholder="Add Respondents"
+              label="Respondents"
+              buttonText="Add More Respondents"
+              values={formData.respondents}
               onChange={(values) =>
                 setFormData((prev) => ({ ...prev, respondents: values }))
               }
             />
-
             <InputField
               label="Nature"
               type="text"
@@ -95,13 +107,12 @@ const AddCivilCase = ({ onAddCase, onClose }) => {
               handleChange={handleChange}
               placeholder="Enter Case Title"
             />
-
             <div className="sm:col-span-2 pt-4 flex gap-4 justify-end">
               <section>
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText="Add Case" />
+                <Button buttonText={btnTextRight} />
               </section>
             </div>
           </form>
