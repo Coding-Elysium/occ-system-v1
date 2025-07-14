@@ -4,6 +4,7 @@ import { BASEURL } from "../helper/helper";
 
 const useCivilCaseStore = create((set) => ({
   cases: [],
+  firstLevelDetails: [],
   caseDetails: null,
   loading: false,
   fetchCases: async () => {
@@ -27,6 +28,17 @@ const useCivilCaseStore = create((set) => ({
       set({ error: error.message, loading: false });
     }
   },
+
+  fetchFirstLevel: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`${BASEURL}/civilcase/read/decision/firstlevel/${id}`);
+      set({ firstLevelDetails: response.data, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
 
   addCases: async (data) => {
     try {
