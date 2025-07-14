@@ -5,13 +5,20 @@ import { FaBook, FaFileAlt, FaUserTie, FaUsers } from "react-icons/fa";
 
 const CivilCaseView = () => {
   const { id } = useParams();
-  const { caseDetails, fetchCasesById, fetchFirstLevel, firstLevelDetails } = useCivilCaseStore();
-
+  const {
+    caseDetails,
+    fetchCasesById,
+    fetchFirstLevel,
+    firstLevelDetails,
+    fetchSecondLevel,
+    secondLevelDetails,
+  } = useCivilCaseStore();
 
   useEffect(() => {
     if (id) {
       fetchCasesById(id);
       fetchFirstLevel(id);
+      fetchSecondLevel(id);
     }
   }, [id]);
 
@@ -25,8 +32,7 @@ const CivilCaseView = () => {
 
   firstLevelDetails.map((item) => {
     console.log(`itemsss: ${item.remarks}`);
-  })
-
+  });
 
   return (
     <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
@@ -74,18 +80,29 @@ const CivilCaseView = () => {
         </section>
       </main>
       <section>
-          <h1>Decisions</h1>
-          {
-            firstLevelDetails.map((item) => {
-              return (
-                <>
-                  <p>{item.remarks}</p>
-                  <p>{item.decision}</p>
-                  <p>{item.date}</p>
-                </>
-              )
-            })
-          }
+        <h1>First Level Decision</h1>
+        {firstLevelDetails.map((item) => {
+          return (
+            <>
+              <p>{item.remarks}</p>
+              <p>{item.decision}</p>
+              <p>{item.date}</p>
+            </>
+          );
+        })}
+      </section>
+
+      <section>
+        <h1>Second Level Decision</h1>
+        {secondLevelDetails.map((item, key) => {
+          return (
+            <>
+              <p>{item.decision}</p>
+              <p>{item.judgement}</p>
+              <p>{item.finality}</p>
+            </>
+          );
+        })}
       </section>
     </section>
   );

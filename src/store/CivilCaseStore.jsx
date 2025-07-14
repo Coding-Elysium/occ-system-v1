@@ -5,6 +5,7 @@ import { BASEURL } from "../helper/helper";
 const useCivilCaseStore = create((set) => ({
   cases: [],
   firstLevelDetails: [],
+  secondLevelDetails: [],
   caseDetails: null,
   loading: false,
   fetchCases: async () => {
@@ -32,13 +33,26 @@ const useCivilCaseStore = create((set) => ({
   fetchFirstLevel: async (id) => {
     set({ loading: true });
     try {
-      const response = await axios.get(`${BASEURL}/civilcase/read/decision/firstlevel/${id}`);
+      const response = await axios.get(
+        `${BASEURL}/civilcase/read/decision/firstlevel/${id}`
+      );
       set({ firstLevelDetails: response.data, loading: false });
     } catch (error) {
       set({ error: error.message, loading: false });
     }
   },
 
+  fetchSecondLevel: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(
+        `${BASEURL}/civilcase/read/decision/secondLevel/${id}`
+      );
+      set({ secondLevelDetails: response.data, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
 
   addCases: async (data) => {
     try {
@@ -95,7 +109,7 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
-  deleteCase: async ( id ) => {
+  deleteCase: async (id) => {
     try {
       if (!id) {
         return { success: false, message: "Invalid case ID" };
@@ -110,7 +124,7 @@ const useCivilCaseStore = create((set) => ({
     } catch (error) {
       return { success: false, message: "Failed to delete case." };
     }
-  }
+  },
 }));
 
 export default useCivilCaseStore;
