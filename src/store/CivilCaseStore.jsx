@@ -82,6 +82,23 @@ const useCivilCaseStore = create((set) => ({
       throw error;
     }
   },
+
+  deleteCase: async ( id ) => {
+    try {
+      if (!id) {
+        return { success: false, message: "Invalid case ID" };
+      }
+
+      const response = await axios.delete(`${BASEURL}/civilcase/delete/${id}`);
+
+      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
+      set({ cases: refreshed.data });
+
+      return response.data;
+    } catch (error) {
+      return { success: false, message: "Failed to delete case." };
+    }
+  }
 }));
 
 export default useCivilCaseStore;

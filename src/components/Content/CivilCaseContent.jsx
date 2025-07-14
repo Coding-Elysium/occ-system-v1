@@ -2,10 +2,15 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import AddCivilCase from "../Form/AddCivilCase";
 import { Link } from "react-router-dom";
+import DeleteModal from "../Modal/DeleteModal";
+import useCivilCaseStore from "../../store/CivilCaseStore";
 
 const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [selectedCase, setSelectedCase] = useState(null);
+
+  const { deleteCase } = useCivilCaseStore();
 
   const tableHeaders = [
     { key: "bookNumber", label: "Book Number" },
@@ -14,6 +19,7 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
     { key: "petitioner", label: "Petitioner" },
     { key: "respondents", label: "Respondents" },
     { key: "nature", label: "Nature" },
+    { key: "branch", label: "Branch" },
     { key: "action", label: "Action" },
   ];
 
@@ -32,6 +38,14 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
+
+  const handleDeleteData = async () => {
+    if (selectedCase?._id) {
+      await deleteCase(selectedCase._id);
+      setSelectedCase(null); 
+    }
+  };
+
 
   return (
     <>
@@ -88,6 +102,9 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
               <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
                 {civilCase.nature}
               </td>
+              <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
+                39
+              </td>
               <td className="px-4 py-3 flex items-center gap-2">
                 <Link to={`/civilcase/${civilCase._id}`}>
                   <button
@@ -111,7 +128,10 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
                 </button>
 
                 <button
-                  onClick={() => console.log("Delete case", civilCase._id)}
+                  onClick={() => {
+                    setSelectedCase(civilCase);
+                    setDeleteModal(true);
+                  }}
                   className="text-red-600 hover:text-red-800"
                   title="Delete"
                 >
@@ -132,6 +152,18 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
           selectedCase={selectedCase}
           btnTextRight="Save Civil Case"
           title="Edit Civil Case"
+        />
+      )}
+      {deleteModal && (
+        <DeleteModal
+          onConfirm={() => {
+            handleDeleteData();
+            setDeleteModal(false);
+          }}
+          onCancel={() => {
+            setDeleteModal(false);
+            setSelectedCase(null);
+          }}
         />
       )}
     </>

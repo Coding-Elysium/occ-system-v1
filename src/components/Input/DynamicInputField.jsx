@@ -34,8 +34,12 @@ const DynamicInputFields = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-md">
-      <label className="text-lg font-semibold">{label}</label>
+    <div className="flex flex-col gap-2 w-full max-w-md">
+      <p
+        className="block text-sm font-medium text-gray-700"
+      >
+        {label}
+      </p>
 
       {inputs.map((value, index) => (
         <div key={index} className="flex gap-2 items-center">

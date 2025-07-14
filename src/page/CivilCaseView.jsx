@@ -30,13 +30,11 @@ const CivilCaseView = () => {
       </div>
 
       <main className="flex flex-col gap-6">
-        {/* Header with banner */}
         <section className="relative bg-gradient-to-r from-blue-600 to-indigo-500 rounded-lg shadow-lg text-white p-6">
           <h1 className="text-3xl font-bold">{caseDetails?.nature || "N/A"}</h1>
           <p className="text-sm mt-1 opacity-90">Nature of the Case</p>
         </section>
 
-        {/* Case Info Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <CaseInfoCard
             icon={<FaBook className="text-blue-500" />}
@@ -73,7 +71,7 @@ const CivilCaseView = () => {
 };
 
 const CaseInfoCard = ({ icon, label, value }) => (
-  <div className="bg-white rounded-lg shadow-md px-6 py-5 flex flex-col items-start gap-2">
+  <div className="bg-white rounded-md border border-gray-300 px-6 py-5 flex flex-col items-start gap-2">
     <div className="flex items-center gap-2 text-gray-800 text-xl font-semibold">
       {icon}
       <span>{value || "N/A"}</span>

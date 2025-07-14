@@ -107,6 +107,15 @@ const AddCivilCase = ({
               handleChange={handleChange}
               placeholder="Enter Case Title"
             />
+
+            <InputField
+              label="Branch"
+              type="text"
+              name="branch"
+              handleChange={handleChange}
+              placeholder="Enter Branch"
+            />
+            
             <div className="sm:col-span-2 pt-4 flex gap-4 justify-end">
               <section>
                 <ButtonCancel buttonText="Cancel" />
