@@ -103,7 +103,7 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
                 {civilCase.nature}
               </td>
               <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
-                39
+                {civilCase.branch}
               </td>
               <td className="px-4 py-3 flex items-center gap-2">
                 <Link to={`/civilcase/${civilCase._id}`}>

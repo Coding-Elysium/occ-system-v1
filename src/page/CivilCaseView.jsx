@@ -12,6 +12,10 @@ const CivilCaseView = () => {
     firstLevelDetails,
     fetchSecondLevel,
     secondLevelDetails,
+    fetchCourtAppeals,
+    courtAppealsDetails,
+    fetchSupremeCourt,
+    supremeCourtDetails,
   } = useCivilCaseStore();
 
   useEffect(() => {
@@ -19,6 +23,8 @@ const CivilCaseView = () => {
       fetchCasesById(id);
       fetchFirstLevel(id);
       fetchSecondLevel(id);
+      fetchCourtAppeals(id);
+      fetchSupremeCourt(id);
     }
   }, [id]);
 
@@ -79,31 +85,102 @@ const CivilCaseView = () => {
           />
         </section>
       </main>
-      <section>
-        <h1>First Level Decision</h1>
-        {firstLevelDetails.map((item) => {
-          return (
-            <>
-              <p>{item.remarks}</p>
-              <p>{item.decision}</p>
-              <p>{item.date}</p>
-            </>
-          );
-        })}
-      </section>
 
-      <section>
-        <h1>Second Level Decision</h1>
-        {secondLevelDetails.map((item, key) => {
-          return (
-            <>
-              <p>{item.decision}</p>
-              <p>{item.judgement}</p>
-              <p>{item.finality}</p>
-            </>
-          );
-        })}
-      </section>
+      <div className="flex flex-col gap-10">
+  {/* First Level Decision Table */}
+  <section>
+    <h1 className="text-xl font-semibold mb-4">First Level Decision</h1>
+    <table className="min-w-full border border-gray-300">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="border px-4 py-2 text-left">Remarks</th>
+          <th className="border px-4 py-2 text-left">Decision</th>
+          <th className="border px-4 py-2 text-left">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {firstLevelDetails.map((item, key) => (
+          <tr key={key} className="hover:bg-gray-50">
+            <td className="border px-4 py-2">{item.remarks}</td>
+            <td className="border px-4 py-2">{item.decision}</td>
+            <td className="border px-4 py-2">{item.date}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  {/* Second Level Decision Table */}
+  <section>
+    <h1 className="text-xl font-semibold mb-4">Second Level Decision</h1>
+    <table className="min-w-full border border-gray-300">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="border px-4 py-2 text-left">Decision</th>
+          <th className="border px-4 py-2 text-left">Judgement</th>
+          <th className="border px-4 py-2 text-left">Finality</th>
+        </tr>
+      </thead>
+      <tbody>
+        {secondLevelDetails.map((item, key) => (
+          <tr key={key} className="hover:bg-gray-50">
+            <td className="border px-4 py-2">{item.decision}</td>
+            <td className="border px-4 py-2">{item.judgement}</td>
+            <td className="border px-4 py-2">{item.finality}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  {/* Court of Appeals Table */}
+  <section>
+    <h1 className="text-xl font-semibold mb-4">Court of Appeals</h1>
+    <table className="min-w-full border border-gray-300">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="border px-4 py-2 text-left">Date of Appeal One</th>
+          <th className="border px-4 py-2 text-left">Decision</th>
+          <th className="border px-4 py-2 text-left">Resolution</th>
+          <th className="border px-4 py-2 text-left">Finality</th>
+          <th className="border px-4 py-2 text-left">Date of Appeal Two</th>
+        </tr>
+      </thead>
+      <tbody>
+        {courtAppealsDetails.map((item, key) => (
+          <tr key={key} className="hover:bg-gray-50">
+            <td className="border px-4 py-2">{item.dateOfAppealOne}</td>
+            <td className="border px-4 py-2">{item.decision}</td>
+            <td className="border px-4 py-2">{item.resolution}</td>
+            <td className="border px-4 py-2">{item.finality}</td>
+            <td className="border px-4 py-2">{item.dateOfAppealTwo}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  {/* Supreme Court Table */}
+  <section>
+    <h1 className="text-xl font-semibold mb-4">Supreme Court</h1>
+    <table className="min-w-full border border-gray-300">
+      <thead className="bg-gray-100">
+        <tr>
+          <th className="border px-4 py-2 text-left">Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        {supremeCourtDetails.map((item, key) => (
+          <tr key={key} className="hover:bg-gray-50">
+            <td className="border px-4 py-2">{item.decision}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+      
     </section>
   );
 };

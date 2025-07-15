@@ -19,6 +19,7 @@ const AddCivilCase = ({
     petitioner: selectedCase?.petitioner || [],
     respondents: selectedCase?.respondents || [],
     nature: selectedCase?.nature || "",
+    branch: selectedCase?.branch || "",
     status: selectedCase?.status || "-----",
   });
 
@@ -112,6 +113,7 @@ const AddCivilCase = ({
               label="Branch"
               type="text"
               name="branch"
+              value={formData.branch}
               handleChange={handleChange}
               placeholder="Enter Branch"
             />

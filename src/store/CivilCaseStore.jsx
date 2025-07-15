@@ -6,6 +6,8 @@ const useCivilCaseStore = create((set) => ({
   cases: [],
   firstLevelDetails: [],
   secondLevelDetails: [],
+  courtAppealsDetails: [],
+  supremeCourtDetails: [],
   caseDetails: null,
   loading: false,
   fetchCases: async () => {
@@ -49,6 +51,30 @@ const useCivilCaseStore = create((set) => ({
         `${BASEURL}/civilcase/read/decision/secondLevel/${id}`
       );
       set({ secondLevelDetails: response.data, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  fetchCourtAppeals: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(
+        `${BASEURL}/civilcase/read/decision/courtappeals/${id}`
+      );
+      set({ courtAppealsDetails: response.data, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  fetchSupremeCourt: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(
+        `${BASEURL}/civilcase/read/decision/supremecourt/${id}`
+      );
+      set({ supremeCourtDetails: response.data, loading: false });
     } catch (error) {
       set({ error: error.message, loading: false });
     }
