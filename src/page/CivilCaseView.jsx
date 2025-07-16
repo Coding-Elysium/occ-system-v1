@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useCivilCaseStore from "../store/CivilCaseStore";
-import { FaBook, FaEdit, FaEye, FaFileAlt, FaTrash, FaUserTie, FaUsers } from "react-icons/fa";
-import Button from "../components/Button/Button";
-import DecisionCard from "../components/Card/DecisionCard";
+import {
+  FaBook,
+  FaEdit,
+  FaEye,
+  FaFileAlt,
+  FaTrash,
+  FaUserTie,
+  FaUsers,
+} from "react-icons/fa";
 import FirstLevelForm from "../components/Form/FirstLevelForm";
 import SecondLevelForm from "../components/Form/SecondLevelForm";
 import CourtAppealForm from "../components/Form/CourtAppealForm";
+import AddCard from "../components/Card/AddCard";
+import DataCard from "../components/Card/DataCard";
+import Button from "../components/Button/Button";
+import Modal from "../components/Modal/Modal";
+import DeleteModal from "../components/Modal/DeleteModal";
 
 const CivilCaseView = () => {
   const [formFirstLevel, setFormFirstLevel] = useState(false);
   const [secondLevelForm, setSecondLevelForm] = useState(false);
   const [courtAppealForm, setCourtAppealForm] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [selectedCardFirstLevel, setSelectedCardFirstLevel] = useState(null);
+  const [selectedCardSecondLevel, setSelectedCardSecondLevel] = useState(null);
+  const [deleteModal, setDeletemodal] = useState(false);
 
   const { id } = useParams();
   const {
@@ -40,7 +55,15 @@ const CivilCaseView = () => {
     return () => {
       clearCaseData();
     };
-  }, [id, fetchCasesById, fetchFirstLevel, fetchSecondLevel, fetchCourtAppeals, fetchSupremeCourt, clearCaseData]);
+  }, [
+    id,
+    fetchCasesById,
+    fetchFirstLevel,
+    fetchSecondLevel,
+    fetchCourtAppeals,
+    fetchSupremeCourt,
+    clearCaseData,
+  ]);
 
   if (!caseDetails) {
     return (
@@ -49,6 +72,18 @@ const CivilCaseView = () => {
       </div>
     );
   }
+
+  const handleCardClickFirstLevel = (item) => {
+    setSelectedCardFirstLevel(item);
+  };
+
+  const handleCardClickSecondLevel = (item) => {
+    setSelectedCardSecondLevel(item);
+  };
+
+  const closeModal = () => {
+    setSelectedCardFirstLevel(null);
+  };
 
   return (
     <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
@@ -65,7 +100,11 @@ const CivilCaseView = () => {
             stroke="currentColor"
             strokeWidth="2"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back to Civil Cases
         </Link>
@@ -109,44 +148,96 @@ const CivilCaseView = () => {
         </section>
 
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <DecisionCard
-            title="First Level Decision"
-            titleNew="Add New"
-            clickNew={() => setFormFirstLevel(true)}
-            data={firstLevelDetails}
-            mapper={(item) => ({
-              title: item.decision,
-              subtitle: item.remarks,
-              date: item.date,
-              icon: "F",
-            })}
-            onEdit={(item) => console.log("Edit", item)}
-            onDelete={(item) => console.log("Delete", item)}
-            onClickCard={(item) => console.log("Clicked", item)}
-          />
+          <div>
+            <AddCard
+              title="Add First Level"
+              onclick={() => {
+                setFormFirstLevel(true);
+              }}
+            />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-6">
+              {firstLevelDetails.map((item) => (
+                <DataCard
+                  title={item.decision}
+                  subtitle={item.remarks}
+                  date={item.date}
+                  onEdit={() => {
+                    setEditData(item);
+                    setFormFirstLevel(true);
+                  }}
+                  onDelete={() => setDeletemodal(true)}
+                  onClickView={() => handleCardClickFirstLevel(item)}
+                />
+              ))}
 
-          <DecisionCard
-            title="Second Level Decision"
-            titleNew="Add New"
-            clickNew={() => setSecondLevelForm(true)}
-            data={secondLevelDetails}
-            mapper={(item) => ({
-              title: item.decision,
-              subtitle: item.finality,
-              date: item.judgement,
-              icon: "S",
-            })}
-            onEdit={(item) => console.log("Edit", item)}
-            onDelete={(item) => console.log("Delete", item)}
-            onClickCard={(item) => console.log("Clicked", item)}
-          />
+              {selectedCardFirstLevel && (
+                <Modal onClose={closeModal}>
+                  <h2 className="text-xl font-bold">
+                    {selectedCardFirstLevel.decision}
+                  </h2>
+                  <p className="mt-2">{selectedCardFirstLevel.remarks}</p>
+                  <p className="text-sm text-gray-500">
+                    {selectedCardFirstLevel.date}
+                  </p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </Modal>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <AddCard
+              title="Add Second Level"
+              onclick={() => {
+                setSecondLevelForm(true);
+              }}
+            />
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-6">
+              {secondLevelDetails.map((item) => (
+                <DataCard
+                  title={item.decision}
+                  subtitle={item.judgemet}
+                  date={item.finality}
+                  onEdit={() => console.log("Edit clicked")}
+                  onDelete={() => console.log("Delete clicked")}
+                  onClickView={() => handleCardClickSecondLevel(item)}
+                />
+              ))}
+
+              {selectedCardSecondLevel && (
+                <Modal onClose={closeModal}>
+                  <h2 className="text-xl font-bold">
+                    {selectedCardFirstLevel.decision}
+                  </h2>
+                  <p className="mt-2">{selectedCardFirstLevel.judgemet}</p>
+                  <p className="text-sm text-gray-500">
+                    {selectedCardFirstLevel.finality}
+                  </p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </Modal>
+              )}
+            </div>
+          </div>
         </section>
 
         <section className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">Decision Court of Appeal</h1>
             <section>
-              <Button buttonText="Add First Level Decision" onClick={() => setCourtAppealForm(true)}/>
+              <Button
+                buttonText="Add First Level Decision"
+                onClick={() => {}}
+              />
             </section>
           </div>
           <div className="rounded-md overflow-hidden">
@@ -160,52 +251,44 @@ const CivilCaseView = () => {
                   <th className="px-4 py-2 text-left">Date of Appeal</th>
                 </tr>
               </thead>
-              {
-                courtAppealsDetails.map((item) => (
-                  <tbody className="overflow-y-scroll">
-                    <tr className="border-b border-gray-200">
-                      <td className="px-4 py-1">{item.dateOfAppealOne}</td>
-                      <td className="px-4 py-1">{item.decision}</td>
-                      <td className="px-4 py-1">{item.resolution}</td>
-                      <td className="px-4 py-1">{item.finality}</td>
-                      <td className="px-4 py-1">{item.dateOfAppealTwo}</td>
-                    </tr>
-                  </tbody>
-                ))
-              }
+              {courtAppealsDetails.map((item) => (
+                <tbody className="overflow-y-scroll">
+                  <tr className="border-b border-gray-200">
+                    <td className="px-4 py-1">{item.dateOfAppealOne}</td>
+                    <td className="px-4 py-1">{item.decision}</td>
+                    <td className="px-4 py-1">{item.resolution}</td>
+                    <td className="px-4 py-1">{item.finality}</td>
+                    <td className="px-4 py-1">{item.dateOfAppealTwo}</td>
+                  </tr>
+                </tbody>
+              ))}
             </table>
           </div>
         </section>
-
       </main>
 
-      {
-        formFirstLevel && (
-          <FirstLevelForm 
-            onClose={() => setFormFirstLevel(false)}
-            id={id}
-          />
-        )
-      }  
+      {deleteModal && (
+        <DeleteModal
+          onConfirm={() => setDeletemodal(false)}
+          onCancel={() => setDeletemodal(false)}
+        />
+      )}
 
-      {
-        secondLevelForm && (
-          <SecondLevelForm 
-            onClose={() => setSecondLevelForm(false)}
-            id={id}
-          />
-        )
-      }  
+      {formFirstLevel && (
+        <FirstLevelForm
+          data={editData}
+          onClose={() => setFormFirstLevel(false)}
+          id={id}
+        />
+      )}
 
-      {
-        courtAppealForm && (
-          <CourtAppealForm 
-            onClose={() => setCourtAppealForm(false)}
-            id={id}
-          />
-        )
-      }
+      {secondLevelForm && (
+        <SecondLevelForm onClose={() => setSecondLevelForm(false)} id={id} />
+      )}
 
+      {courtAppealForm && (
+        <CourtAppealForm onClose={() => setCourtAppealForm(false)} id={id} />
+      )}
     </section>
   );
 };

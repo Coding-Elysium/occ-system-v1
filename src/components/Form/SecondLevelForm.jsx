@@ -4,20 +4,14 @@ import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
-const SecondLevelForm = ({
-  onClose,
-  selectedCase,
-  title = "Add First Level",
-  btnTextRight = "Add First Level Decision",
-  id,
-}) => {
-  const { addSecondLevel, updateCases } = useCivilCaseStore();
+const SecondLevelForm = ({ data, id, onClose }) => {
+  const { addSecondLevel } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    decision: selectedCase?.decision || "",
-    case_id: id,
-    judgement: selectedCase?.judgement || "",
-    finality: selectedCase?.finality || "",
+    decision: data?.decision || "",
+    case_id: id || "",
+    judgement: data?.judgement || "",
+    finality: data?.finality || "",
   });
 
   const handleChange = (e) => {
@@ -30,11 +24,10 @@ const SecondLevelForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedCase) {
-      await updateCases(selectedCase._id, formData);
-    } else {
-      await addSecondLevel(formData);
-    }
+    // if (selectedCase) {
+    // await updateCases(selectedCase._id, formData);
+    // } else {
+    await addSecondLevel(formData);
     onClose();
   };
 
@@ -43,7 +36,7 @@ const SecondLevelForm = ({
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            {title}
+            Add Second Level Decision
           </h2>
           <button
             onClick={onClose}
@@ -78,7 +71,7 @@ const SecondLevelForm = ({
               placeholder="Enter Decision"
               required
             />
-            
+
             <InputField
               label="Judgement"
               type="date"
@@ -104,7 +97,7 @@ const SecondLevelForm = ({
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText={btnTextRight} />
+                <Button buttonText="Add" />
               </section>
             </div>
           </form>

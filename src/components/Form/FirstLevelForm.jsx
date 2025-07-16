@@ -3,22 +3,15 @@ import InputField from "../Input/InputField";
 import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
-import DynamicInputFields from "../Input/DynamicInputField";
 
-const FirstLevelForm = ({
-  onClose,
-  selectedCase,
-  title = "Add First Level",
-  btnTextRight = "Add First Level Decision",
-  id,
-}) => {
-  const { addFirstLevel, updateCases } = useCivilCaseStore();
+const FirstLevelForm = ({ data, id, onClose }) => {
+  const { addFirstLevel } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    remarks: selectedCase?.remarks || "",
-    decision: selectedCase?.decision || "",
-    case_id: id,
-    date: selectedCase?.date || "",
+    decision: data?.decision || "",
+    remarks: data?.decision || "",
+    case_id: id || "",
+    date: data?.decision || "",
   });
 
   const handleChange = (e) => {
@@ -31,11 +24,10 @@ const FirstLevelForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedCase) {
-      await updateCases(selectedCase._id, formData);
-    } else {
-      await addFirstLevel(formData);
-    }
+    // if (selectedCase) {
+    // await updateCases(selectedCase._id, formData);
+    // } else {
+    await addFirstLevel(formData);
     onClose();
   };
 
@@ -44,7 +36,7 @@ const FirstLevelForm = ({
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            {title}
+            Add First Level Decision
           </h2>
           <button
             onClick={onClose}
@@ -89,7 +81,7 @@ const FirstLevelForm = ({
               placeholder="Enter Decision"
               required
             />
-            
+
             <InputField
               label="Date"
               type="date"
@@ -105,7 +97,7 @@ const FirstLevelForm = ({
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText={btnTextRight} />
+                <Button buttonText="Add" />
               </section>
             </div>
           </form>
