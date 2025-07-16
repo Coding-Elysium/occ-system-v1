@@ -1,10 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useCivilCaseStore from "../store/CivilCaseStore";
 import { FaBook, FaEdit, FaEye, FaFileAlt, FaTrash, FaUserTie, FaUsers } from "react-icons/fa";
 import Button from "../components/Button/Button";
+import DecisionCard from "../components/Card/DecisionCard";
+import FirstLevelForm from "../components/Form/FirstLevelForm";
+import SecondLevelForm from "../components/Form/SecondLevelForm";
+import CourtAppealForm from "../components/Form/CourtAppealForm";
 
 const CivilCaseView = () => {
+  const [formFirstLevel, setFormFirstLevel] = useState(false);
+  const [secondLevelForm, setSecondLevelForm] = useState(false);
+  const [courtAppealForm, setCourtAppealForm] = useState(false);
+
   const { id } = useParams();
   const {
     caseDetails,
@@ -42,15 +50,24 @@ const CivilCaseView = () => {
     );
   }
 
-  firstLevelDetails.map((item) => {
-    console.log(`itemsss: ${item.remarks}`);
-  });
-
   return (
     <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
       <div className="mb-4">
-        <Link to="/civilcase" className="text-blue-600 text-sm hover:underline">
-          ← Back to Civil Cases
+        <Link
+          to="/civilcase"
+          className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline hover:text-blue-800 transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Civil Cases
         </Link>
       </div>
 
@@ -91,220 +108,104 @@ const CivilCaseView = () => {
           />
         </section>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <section className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-semibold">First Level Decision</h1>
-              <section>
-                <Button buttonText="Add First Level Decision"/>
-              </section>
-            </div>
-            <div className="rounded-md overflow-hidden">
-              <table class="min-w-full table-auto">
-                <thead class="bg-primary-color text-white">
-                  <tr>
-                    <th className="px-4 py-2 text-left">Remarks</th>
-                    <th className="px-4 py-2 text-left">Decision</th>
-                    <th className="px-4 py-2 text-left">Date</th>
-                    <th className="w-10"></th>
-                  </tr>
-                </thead>
-                <tbody className="overflow-y-scroll">
-                  <tr className="border-b border-gray-200">
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-3 flex items-center gap-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <DecisionCard
+            title="First Level Decision"
+            titleNew="Add New"
+            clickNew={() => setFormFirstLevel(true)}
+            data={firstLevelDetails}
+            mapper={(item) => ({
+              title: item.decision,
+              subtitle: item.remarks,
+              date: item.date,
+              icon: "F",
+            })}
+            onEdit={(item) => console.log("Edit", item)}
+            onDelete={(item) => console.log("Delete", item)}
+            onClickCard={(item) => console.log("Clicked", item)}
+          />
 
-                  <tr className="border-b border-gray-200">
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-3 flex items-center gap-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-3 flex items-center gap-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-3 flex items-center gap-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-1">sadasdsd</td>
-                    <td className="px-4 py-3 flex items-center gap-2">
-                      <button
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Edit"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-          
-        </div>
+          <DecisionCard
+            title="Second Level Decision"
+            titleNew="Add New"
+            clickNew={() => setSecondLevelForm(true)}
+            data={secondLevelDetails}
+            mapper={(item) => ({
+              title: item.decision,
+              subtitle: item.finality,
+              date: item.judgement,
+              icon: "S",
+            })}
+            onEdit={(item) => console.log("Edit", item)}
+            onDelete={(item) => console.log("Delete", item)}
+            onClickCard={(item) => console.log("Clicked", item)}
+          />
+        </section>
+
+        <section className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-semibold">Decision Court of Appeal</h1>
+            <section>
+              <Button buttonText="Add First Level Decision" onClick={() => setCourtAppealForm(true)}/>
+            </section>
+          </div>
+          <div className="rounded-md overflow-hidden">
+            <table class="min-w-full table-auto">
+              <thead class="bg-primary-color text-white">
+                <tr>
+                  <th className="px-4 py-2 text-left">Date of Appeal</th>
+                  <th className="px-4 py-2 text-left">Decision</th>
+                  <th className="px-4 py-2 text-left">Resolution</th>
+                  <th className="px-4 py-2 text-left">Finality</th>
+                  <th className="px-4 py-2 text-left">Date of Appeal</th>
+                </tr>
+              </thead>
+              {
+                courtAppealsDetails.map((item) => (
+                  <tbody className="overflow-y-scroll">
+                    <tr className="border-b border-gray-200">
+                      <td className="px-4 py-1">{item.dateOfAppealOne}</td>
+                      <td className="px-4 py-1">{item.decision}</td>
+                      <td className="px-4 py-1">{item.resolution}</td>
+                      <td className="px-4 py-1">{item.finality}</td>
+                      <td className="px-4 py-1">{item.dateOfAppealTwo}</td>
+                    </tr>
+                  </tbody>
+                ))
+              }
+            </table>
+          </div>
+        </section>
+
       </main>
 
-      <div className="flex flex-col gap-10">
-        {/* First Level Decision Table */}
-        {/* <section>
-          <h1 className="text-xl font-semibold mb-4">First Level Decision</h1>
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2 text-left">Remarks</th>
-                <th className="border px-4 py-2 text-left">Decision</th>
-                <th className="border px-4 py-2 text-left">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>sadasdsd</td>
-                <td>sadasdsd</td>
-                <td>sadasdsd</td>
-              </tr>
-            </tbody>
-          </table>
-        </section> */}
+      {
+        formFirstLevel && (
+          <FirstLevelForm 
+            onClose={() => setFormFirstLevel(false)}
+            id={id}
+          />
+        )
+      }  
 
-        {/* Second Level Decision Table */}
-        {/* <section>
-          <h1 className="text-xl font-semibold mb-4">Second Level Decision</h1>
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2 text-left">Decision</th>
-                <th className="border px-4 py-2 text-left">Judgement</th>
-                <th className="border px-4 py-2 text-left">Finality</th>
-              </tr>
-            </thead>
-            <tbody>
-              {secondLevelDetails.map((item, key) => (
-                <tr key={key} className="hover:bg-gray-50">
-                  <td className="border px-4 py-2">{item.decision}</td>
-                  <td className="border px-4 py-2">{item.judgement}</td>
-                  <td className="border px-4 py-2">{item.finality}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section> */}
+      {
+        secondLevelForm && (
+          <SecondLevelForm 
+            onClose={() => setSecondLevelForm(false)}
+            id={id}
+          />
+        )
+      }  
 
-        {/* Court of Appeals Table */}
-        {/* <section>
-          <h1 className="text-xl font-semibold mb-4">Court of Appeals</h1>
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2 text-left">Date of Appeal One</th>
-                <th className="border px-4 py-2 text-left">Decision</th>
-                <th className="border px-4 py-2 text-left">Resolution</th>
-                <th className="border px-4 py-2 text-left">Finality</th>
-                <th className="border px-4 py-2 text-left">Date of Appeal Two</th>
-              </tr>
-            </thead>
-            <tbody>
-              {courtAppealsDetails.map((item, key) => (
-                <tr key={key} className="hover:bg-gray-50">
-                  <td className="border px-4 py-2">asdadasdsds</td>
-                  <td className="border px-4 py-2">{item.decision}</td>
-                  <td className="border px-4 py-2">{item.resolution}</td>
-                  <td className="border px-4 py-2">{item.finality}</td>
-                  <td className="border px-4 py-2">{item.dateOfAppealTwo}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section> */}
+      {
+        courtAppealForm && (
+          <CourtAppealForm 
+            onClose={() => setCourtAppealForm(false)}
+            id={id}
+          />
+        )
+      }
 
-        {/* Supreme Court Table */}
-        {/* <section>
-          <h1 className="text-xl font-semibold mb-4">Supreme Court</h1>
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-4 py-2 text-left">Decision</th>
-              </tr>
-            </thead>
-            <tbody>
-              {supremeCourtDetails.map((item, key) => (
-                <tr key={key} className="hover:bg-gray-50">
-                  <td className="border px-4 py-2">{item.decision}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section> */}
-      </div>      
     </section>
   );
 };

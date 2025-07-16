@@ -101,6 +101,45 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
+  addFirstLevel: async (data) => {
+    try {
+      const response = await axios.post(`${BASEURL}/civilcase/add/decision/firstlevel`, data);
+      console.log("Case added successfully:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Failed to add case:",
+        error.response?.data || error.message
+      );
+    }
+  },
+
+  addSecondLevel: async (data) => {
+    try {
+      const response = await axios.post(`${BASEURL}/civilcase/add/decision/secondlevel`, data);
+      console.log("Case added successfully:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Failed to add case:",
+        error.response?.data || error.message
+      );
+    }
+  },
+
+  addCourtOfAppeal: async(data) => {
+     try {
+      const response = await axios.post(`${BASEURL}/civilcase/add/decision/courtappeals`, data);
+      console.log("Case added successfully:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Failed to add case:",
+        error.response?.data || error.message
+      );
+    }
+  },
+
   updateCases: async (updatedCase, data) => {
     try {
       const response = await axios.put(
@@ -137,6 +176,27 @@ const useCivilCaseStore = create((set) => ({
     } catch (error) {
       console.error(
         "Failed to update status:",
+        error.response?.data || error.message
+      );
+      throw error;
+    }
+  },
+
+   updateFirstLevel: async (updatedCase, data) => {
+    try {
+      const response = await axios.put(
+        `${BASEURL}/civilcase/update/${updatedCase}`,
+        data
+      );
+      console.log("Case updated successfully:", response.data);
+
+      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
+      set({ cases: refreshed.data });
+
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Failed to update case:",
         error.response?.data || error.message
       );
       throw error;
