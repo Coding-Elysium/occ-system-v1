@@ -16,6 +16,7 @@ const CivilCaseView = () => {
     courtAppealsDetails,
     fetchSupremeCourt,
     supremeCourtDetails,
+    clearCaseData,
   } = useCivilCaseStore();
 
   useEffect(() => {
@@ -26,7 +27,11 @@ const CivilCaseView = () => {
       fetchCourtAppeals(id);
       fetchSupremeCourt(id);
     }
-  }, [id]);
+
+    return () => {
+      clearCaseData();
+    };
+  }, [id, fetchCasesById, fetchFirstLevel, fetchSecondLevel, fetchCourtAppeals, fetchSupremeCourt, clearCaseData]);
 
   if (!caseDetails) {
     return (

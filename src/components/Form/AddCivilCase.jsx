@@ -16,6 +16,7 @@ const AddCivilCase = ({
 
   const [formData, setFormData] = useState({
     bookNumber: selectedCase?.bookNumber || "",
+    docketNumber: selectedCase?.docketNumber || "",
     petitioner: selectedCase?.petitioner || [],
     respondents: selectedCase?.respondents || [],
     nature: selectedCase?.nature || "",
@@ -79,6 +80,16 @@ const AddCivilCase = ({
               value={formData.bookNumber}
               handleChange={handleChange}
               placeholder="Enter Case Number"
+              required
+            />
+
+            <InputField
+              label="Docket Number"
+              type="text"
+              name="docketNumber"
+              value={formData.docketNumber}
+              handleChange={handleChange}
+              placeholder="Enter Docket Number"
               required
             />
 

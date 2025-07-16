@@ -80,6 +80,14 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
+  clearCaseData: () => set({
+    caseDetails: null,
+    firstLevelDetails: [],
+    secondLevelDetails: [],
+    courtAppealsDetails: [],
+    supremeCourtDetails: [],
+  }),
+
   addCases: async (data) => {
     try {
       const response = await axios.post(`${BASEURL}/civilcase/add`, data);
