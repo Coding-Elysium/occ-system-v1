@@ -5,20 +5,20 @@ import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 import DynamicInputFields from "../Input/DynamicInputField";
 
-const CourtAppealForm = ({
-  id,
-  data,
-  onClose,
-}) => {
-  const { add, updateCases } = useCivilCaseStore();
+const CourtAppealForm = ({ id, data, onClose }) => {
+  const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    dateOfAppealOne: data?.dateOfAppealOne || "",
+    dateOfAppealOne: data?.dateOfAppealOne
+      ? data.dateOfAppealOne.split("T")[0]
+      : "",
     decision: data?.decision || "",
-    resolution: data?.resolution || "",
+    resolution: data?.resolution ? data.resolution.split("T")[0] : "",
     finality: data?.finality || "",
-    dateOfAppealTwo: data?.dateOfAppealTwo || "",
-    case_id: id
+    dateOfAppealTwo: data?.dateOfAppealTwo
+      ? data.dateOfAppealTwo.split("T")[0]
+      : "",
+    case_id: id,
   });
 
   const handleChange = (e) => {
@@ -31,15 +31,24 @@ const CourtAppealForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (selectedCase) {
-      // await updateFirstLevel(selectedCase._id, formData);
-    // } else {
-    await add({
-      data: formData, 
-      endPoint: "/civilcase/add/decision/courtappeals"
-    });
-    // }
-    onClose();
+
+    try {
+      if (data?._id) {
+        await updateDecision({
+          path: "decision/courtappeals",
+          updatedCase: data._id,
+          data: formData,
+        });
+      } else {
+        await add({
+          data: formData,
+          endPoint: "/civilcase/add/decision/courtappeals",
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
   };
 
   return (
@@ -73,7 +82,6 @@ const CourtAppealForm = ({
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
             <InputField
               label="Date of Appeal"
               type="date"
@@ -129,7 +137,7 @@ const CourtAppealForm = ({
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText="Add" />
+                <Button buttonText={data ? "Update" : "Add"} />
               </section>
             </div>
           </form>

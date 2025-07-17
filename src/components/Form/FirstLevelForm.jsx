@@ -5,13 +5,13 @@ import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
 const FirstLevelForm = ({ data, id, onClose }) => {
-  const { add } = useCivilCaseStore();
+  const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
-    remarks: data?.decision || "",
+    remarks: data?.remarks || "",
     case_id: id || "",
-    date: data?.decision || "",
+    date: data?.date ? data.date.split("T")[0] : "",
   });
 
   const handleChange = (e) => {
@@ -24,14 +24,24 @@ const FirstLevelForm = ({ data, id, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (selectedCase) {
-    // await updateCases(selectedCase._id, formData);
-    // } else {
-    await add({
-      data: formData, 
-      endPoint: "/civilcase/add/decision/firstlevel"
-    });
-    onClose();
+
+    try {
+      if (data?._id) {
+        await updateDecision({
+          path: "decision/firstlevel",
+          updatedCase: data._id,
+          data: formData,
+        });
+      } else {
+        await add({
+          data: formData,
+          endPoint: "/civilcase/add/decision/firstlevel",
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
   };
 
   return (
@@ -66,22 +76,22 @@ const FirstLevelForm = ({ data, id, onClose }) => {
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <InputField
-              label="Remarks"
-              type="text"
-              name="remarks"
-              value={formData.remarks}
-              handleChange={handleChange}
-              placeholder="Enter Remarks"
-              required
-            />
-
-            <InputField
               label="Enter Decision"
               type="text"
               name="decision"
               value={formData.decision}
               handleChange={handleChange}
               placeholder="Enter Decision"
+              required
+            />
+
+            <InputField
+              label="Remarks"
+              type="text"
+              name="remarks"
+              value={formData.remarks}
+              handleChange={handleChange}
+              placeholder="Enter Remarks"
               required
             />
 
@@ -100,7 +110,7 @@ const FirstLevelForm = ({ data, id, onClose }) => {
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText="Add" />
+                <Button buttonText={data ? "Update" : "Add"} />
               </section>
             </div>
           </form>

@@ -5,12 +5,12 @@ import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
 const SecondLevelForm = ({ data, id, onClose }) => {
-  const { add } = useCivilCaseStore();
+  const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
     case_id: id || "",
-    judgement: data?.judgement || "",
+    judgement: data?.judgement ? data.judgement.split("T")[0] : "",
     finality: data?.finality || "",
   });
 
@@ -24,14 +24,24 @@ const SecondLevelForm = ({ data, id, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (selectedCase) {
-    // await updateCases(selectedCase._id, formData);
-    // } else {
-    await add({
-      data: formData, 
-      endPoint: "/civilcase/add/decision/secondlevel"
-    });
-    onClose();
+
+    try {
+      if (data?._id) {
+        await updateDecision({
+          path: "decision/secondlevel",
+          updatedCase: data._id,
+          data: formData,
+        });
+      } else {
+        await add({
+          data: formData,
+          endPoint: "/civilcase/add/decision/secondlevel",
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
   };
 
   return (
@@ -100,7 +110,7 @@ const SecondLevelForm = ({ data, id, onClose }) => {
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText="Add" />
+                <Button buttonText={data ? "Update" : "Add"} />
               </section>
             </div>
           </form>

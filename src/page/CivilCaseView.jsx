@@ -33,9 +33,14 @@ const CivilCaseView = () => {
   const [deleteSecondLevelModal, setDeleteSecondLevelModal] = useState(false);
   const [deleteCourtAppealModal, setDeleteCourtAppealModal] = useState(false);
   const [deleteSupremeCourtModal, setdeleteSupremeCourtModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('appeal');
+  const [activeTab, setActiveTab] = useState("appeal");
 
-  const { deleteFirstLevel, deleteSecondLevel, deleteSupremeCourt, deleteCourtAppeal } = useCivilCaseStore();
+  const {
+    deleteDecision,
+    deleteSecondLevel,
+    deleteSupremeCourt,
+    deleteCourtAppeal,
+  } = useCivilCaseStore();
 
   const { id } = useParams();
   const {
@@ -93,8 +98,6 @@ const CivilCaseView = () => {
   const closeModal = () => {
     setSelectedCardFirstLevel(null);
   };
-
-  
 
   return (
     <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
@@ -250,218 +253,287 @@ const CivilCaseView = () => {
           </div>
         </section>
 
-       <section>
-        <div className="flex gap-4 mb-4">
-          <button
-            className={`px-4 py-2 rounded-md ${activeTab === 'appeal' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-            onClick={() => setActiveTab('appeal')}
-          >
-            Court of Appeal
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md ${activeTab === 'supreme' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
-            onClick={() => setActiveTab('supreme')}
-          >
-            Supreme Court
-          </button>
-        </div>
+        <section>
+          <div className="flex gap-4 mb-4">
+            <button
+              className={`px-4 py-2 rounded-md ${
+                activeTab === "appeal"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+              onClick={() => setActiveTab("appeal")}
+            >
+              Court of Appeal
+            </button>
+            <button
+              className={`px-4 py-2 rounded-md ${
+                activeTab === "supreme"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+              onClick={() => setActiveTab("supreme")}
+            >
+              Supreme Court
+            </button>
+          </div>
 
-        <div>
-          {activeTab === 'appeal' && (
-            <section className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="text-xl font-semibold">Decision Court of Appeal</h1>
-                <section>
-                  <Button buttonText="Add" onClick={() => setCourtAppealForm(true)}/>
-                </section>
-              </div>
-              {/* Your Court of Appeal Table Here */}
-              <div className="rounded-md border border-gray-300 overflow-hidden">
+          <div>
+            {activeTab === "appeal" && (
+              <section className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-xl font-semibold">
+                    Decision Court of Appeal
+                  </h1>
+                  <section>
+                    <Button
+                      buttonText="Add"
+                      onClick={() => setCourtAppealForm(true)}
+                    />
+                  </section>
+                </div>
+                {/* Your Court of Appeal Table Here */}
+                <div className="rounded-md border border-gray-300 overflow-hidden">
                   <div className="max-h-64 overflow-y-auto">
-                      <table className="min-w-full table-auto">
-                          <thead className="bg-primary-color text-white">
-                              <tr>
-                                  <th className="px-4 py-2 text-left">Date of Appeal 1</th>
-                                  <th className="px-4 py-2 text-left">Decision</th>
-                                  <th className="px-4 py-2 text-left">Resolution</th>
-                                  <th className="px-4 py-2 text-left">Finality</th>
-                                  <th className="px-4 py-2 text-left">Date of Appeal 2</th>
-                                  <th className="px-4 py-2 text-left">Action</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                            {courtAppealsDetails.map((item, index) => (
-                                <tr key={index} className="border-b border-gray-200">
-                                  <td className="px-4 py-2">{item.dateOfAppealOne}</td>
-                                  <td className="px-4 py-2">{item.decision}</td>
-                                  <td className="px-4 py-2">{item.resolution}</td>
-                                  <td className="px-4 py-2">{item.finality}</td>
-                                  <td className="px-4 py-2">{item.dateOfAppealTwo}</td>
-                                  <td className="px-4 py-3 flex items-center gap-2">
-                                      <button
-                                        onClick={() => {}}
-                                        className="text-green-600 hover:text-green-800"
-                                        title="View"
-                                      >
-                                        <FaEye />
-                                      </button>
-                    
-                                    <button
-                                      onClick={() => {}}
-                                      className="text-blue-600 hover:text-blue-800"
-                                      title="Edit"
-                                    >
-                                      <FaEdit />
-                                    </button>
-                    
-                                    <button
-                                      onClick={() => {
-                                        setDeleteData(item);
-                                        setDeleteCourtAppealModal(true)
-                                      }}
-                                      className="text-red-600 hover:text-red-800"
-                                      title="Delete"
-                                    >
-                                      <FaTrash />
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-            </section>
-          )}
+                    <table className="min-w-full table-auto">
+                      <thead className="bg-primary-color text-white">
+                        <tr>
+                          <th className="px-4 py-2 text-left">
+                            Date of Appeal 1
+                          </th>
+                          <th className="px-4 py-2 text-left">Decision</th>
+                          <th className="px-4 py-2 text-left">Resolution</th>
+                          <th className="px-4 py-2 text-left">Finality</th>
+                          <th className="px-4 py-2 text-left">
+                            Date of Appeal 2
+                          </th>
+                          <th className="px-4 py-2 text-left">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {courtAppealsDetails.map((item, index) => (
+                          <tr key={index} className="border-b border-gray-200">
+                            <td className="px-4 py-2">
+                              {item.dateOfAppealOne}
+                            </td>
+                            <td className="px-4 py-2">{item.decision}</td>
+                            <td className="px-4 py-2">{item.resolution}</td>
+                            <td className="px-4 py-2">{item.finality}</td>
+                            <td className="px-4 py-2">
+                              {item.dateOfAppealTwo}
+                            </td>
+                            <td className="px-4 py-3 flex items-center gap-2">
+                              <button
+                                onClick={() => {}}
+                                className="text-green-600 hover:text-green-800"
+                                title="View"
+                              >
+                                <FaEye />
+                              </button>
 
-          {activeTab === 'supreme' && (
-            <section className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h1 className="text-xl font-semibold">Supreme Court</h1>
-                <section>
-                  <Button buttonText="Add" onClick={() => setSupremeCourtForm(true)}/>
-                </section>
-              </div>
-              {/* Your Supreme Court Table Here */}
-              <div className="rounded-md border border-gray-300 overflow-hidden">
+                              <button
+                                onClick={() => {
+                                  setEditData(item);
+                                  setCourtAppealForm(true);
+                                }}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Edit"
+                              >
+                                <FaEdit />
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setDeleteData(item);
+                                  setDeleteCourtAppealModal(true);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                                title="Delete"
+                              >
+                                <FaTrash />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {activeTab === "supreme" && (
+              <section className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-xl font-semibold">Supreme Court</h1>
+                  <section>
+                    <Button
+                      buttonText="Add"
+                      onClick={() => setSupremeCourtForm(true)}
+                    />
+                  </section>
+                </div>
+                {/* Your Supreme Court Table Here */}
+                <div className="rounded-md border border-gray-300 overflow-hidden">
                   <div className="max-h-64 overflow-y-auto">
-                      <table className="min-w-full table-auto">
-                          <thead className="bg-primary-color text-white">
-                              <tr>
-                                  <th className="px-4 py-2 text-left">Decision</th>
-                                  <th className="px-4 py-2 text-left">Resolution</th>
-                                  <th className="px-4 py-2 text-left">Action</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              {supremeCourtDetails.map((item, index) => (
-                                <tr key={index} className="border-b border-gray-200">
-                                  <td className="px-4 py-2">{item.decision}</td>
-                                  <td className="px-4 py-2">{item.resolution}</td>
-                                  <td className="px-4 py-3 flex items-center gap-2">
-                                      <button
-                                        onClick={() => {}}
-                                        className="text-green-600 hover:text-green-800"
-                                        title="View"
-                                      >
-                                        <FaEye />
-                                      </button>
-                    
-                                    <button
-                                      onClick={() => {}}
-                                      className="text-blue-600 hover:text-blue-800"
-                                      title="Edit"
-                                    >
-                                      <FaEdit />
-                                    </button>
-                    
-                                    <button
-                                      onClick={() => 
-                                        {
-                                          setdeleteSupremeCourtModal(true)
-                                          setDeleteData(item);
-                                        }}
-                                      className="text-red-600 hover:text-red-800"
-                                      title="Delete"
-                                    >
-                                      <FaTrash />
-                                    </button>
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                      </table>
+                    <table className="min-w-full table-auto">
+                      <thead className="bg-primary-color text-white">
+                        <tr>
+                          <th className="px-4 py-2 text-left">Decision</th>
+                          <th className="px-4 py-2 text-left">Resolution</th>
+                          <th className="px-4 py-2 text-left">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {supremeCourtDetails.map((item, index) => (
+                          <tr key={index} className="border-b border-gray-200">
+                            <td className="px-4 py-2">{item.decision}</td>
+                            <td className="px-4 py-2">{item.resolution}</td>
+                            <td className="px-4 py-3 flex items-center gap-2">
+                              <button
+                                onClick={() => {}}
+                                className="text-green-600 hover:text-green-800"
+                                title="View"
+                              >
+                                <FaEye />
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setEditData(item);
+                                  setSupremeCourtForm(true);
+                                }}
+                                className="text-blue-600 hover:text-blue-800"
+                                title="Edit"
+                              >
+                                <FaEdit />
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setdeleteSupremeCourtModal(true);
+                                  setDeleteData(item);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                                title="Delete"
+                              >
+                                <FaTrash />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-              </div>
-            </section>
-          )}
-        </div>
-      </section>
-    </main>
+                </div>
+              </section>
+            )}
+          </div>
+        </section>
+      </main>
 
-    {deleteFirstLevelModal && (
-      <DeleteModal
-        onConfirm={() => {
-          deleteFirstLevel(deleteData._id);
-          setDeleteFirstLevelModal(false);
-        }}
-        onCancel={() => setDeleteFirstLevelModal(false)}
-      />
-    )}
+      {deleteFirstLevelModal && (
+        <DeleteModal
+          onConfirm={() => {
+            deleteDecision({
+              level: "firstlevel",
+              id: deleteData._id,
+              refetchUrl: "civilcase/read/decision/firstlevel",
+              caseId: deleteData.case_id,
+              updatedkey: "firstLevelDetails",
+            });
+            setDeleteFirstLevelModal(false);
+          }}
+          onCancel={() => setDeleteFirstLevelModal(false)}
+        />
+      )}
 
-    {deleteSecondLevelModal && (
-      <DeleteModal
-        onConfirm={() => {
-          deleteSecondLevel(deleteData._id);
-          setDeleteSecondLevelModal(false);
-        }}
-        onCancel={() => setDeleteSecondLevelModal(false)}
-      />
-    )}
+      {deleteSecondLevelModal && (
+        <DeleteModal
+          onConfirm={() => {
+            deleteDecision({
+              level: "secondlevel",
+              id: deleteData._id,
+              refetchUrl: "civilcase/read/decision/secondlevel",
+              caseId: deleteData.case_id,
+              updatedkey: "secondLevelDetails",
+            });
+            setDeleteSecondLevelModal(false);
+          }}
+          onCancel={() => setDeleteSecondLevelModal(false)}
+        />
+      )}
 
-    {deleteCourtAppealModal && (
-      <DeleteModal
-        onConfirm={() => {
-          deleteCourtAppeal(deleteData._id);
-          setDeleteCourtAppealModal(false);
-        }}
-        onCancel={() => setDeleteCourtAppealModal(false)}
-      />
-    )}
+      {deleteCourtAppealModal && (
+        <DeleteModal
+          onConfirm={() => {
+            deleteDecision({
+              level: "courtappeals",
+              id: deleteData._id,
+              refetchUrl: "civilcase/read/decision/courtappeals",
+              caseId: deleteData.case_id,
+              updatedkey: "courtAppealsDetails",
+            });
+            setDeleteCourtAppealModal(false);
+          }}
+          onCancel={() => setDeleteCourtAppealModal(false)}
+        />
+      )}
 
-    {deleteSupremeCourtModal && (
-      <DeleteModal
-        onConfirm={() => {
-          deleteSupremeCourt(deleteData._id);
-          setdeleteSupremeCourtModal(false);
-        }}
-        onCancel={() => setdeleteSupremeCourtModal(false)}
-      />
-    )}
+      {deleteSupremeCourtModal && (
+        <DeleteModal
+          onConfirm={() => {
+            deleteDecision({
+              level: "supremecourt",
+              id: deleteData._id,
+              refetchUrl: "civilcase/read/decision/supremecourt",
+              caseId: deleteData.case_id,
+              updatedkey: "supremeCourtDetails",
+            });
+            setdeleteSupremeCourtModal(false);
+          }}
+          onCancel={() => setdeleteSupremeCourtModal(false)}
+        />
+      )}
 
-    {formFirstLevel && (
-      <FirstLevelForm
-        data={editData}
-        onClose={() => setFormFirstLevel(false)}
-        id={id}
-      />
-    )}
+      {formFirstLevel && (
+        <FirstLevelForm
+          data={editData}
+          onClose={() => {
+            setFormFirstLevel(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-    {secondLevelForm && (
-      <SecondLevelForm 
-        data={editData}
-        onClose={() => setSecondLevelForm(false)} 
-        id={id} 
-      />
-    )}
+      {secondLevelForm && (
+        <SecondLevelForm
+          data={editData}
+          onClose={() => {
+            setSecondLevelForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-    {courtAppealForm && (
-      <CourtAppealForm onClose={() => setCourtAppealForm(false)} id={id} />
-    )}
+      {courtAppealForm && (
+        <CourtAppealForm
+          data={editData}
+          onClose={() => {
+            setCourtAppealForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-    {supremeCourtForm && (
-      <SupremeCourtForm onClose={() => setSupremeCourtForm(false)} id={id} />
-    )}
+      {supremeCourtForm && (
+        <SupremeCourtForm
+          data={editData}
+          onClose={() => {
+            setSupremeCourtForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
     </section>
   );
 };

@@ -42,10 +42,9 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
   const handleDeleteData = async () => {
     if (selectedCase?._id) {
       await deleteCase(selectedCase._id);
-      setSelectedCase(null); 
+      setSelectedCase(null);
     }
   };
-
 
   return (
     <>

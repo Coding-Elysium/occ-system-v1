@@ -10,7 +10,7 @@ const useCivilCaseStore = create((set) => ({
   supremeCourtDetails: [],
   caseDetails: null,
   loading: false,
-  
+
   fetchCases: async () => {
     set({ loading: true });
     try {
@@ -81,18 +81,16 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
-  clearCaseData: () => set({
-    caseDetails: null,
-    firstLevelDetails: [],
-    secondLevelDetails: [],
-    courtAppealsDetails: [],
-    supremeCourtDetails: [],
-  }),
+  clearCaseData: () =>
+    set({
+      caseDetails: null,
+      firstLevelDetails: [],
+      secondLevelDetails: [],
+      courtAppealsDetails: [],
+      supremeCourtDetails: [],
+    }),
 
-  add: async ({
-    data,
-    endPoint = "/endpoint",
-  }) => {
+  add: async ({ data, endPoint = "/endpoint" }) => {
     try {
       const response = await axios.post(`${BASEURL}${endPoint}`, data);
       console.log("Case added successfully:", response.data);
@@ -147,10 +145,10 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
-   updateFirstLevel: async (updatedCase, data) => {
+  updateDecision: async ({ path, updatedCase, data }) => {
     try {
       const response = await axios.put(
-        `${BASEURL}/civilcase/update/${updatedCase}`,
+        `${BASEURL}/civilcase/update/${path}/${updatedCase}`,
         data
       );
       console.log("Case updated successfully:", response.data);
@@ -165,6 +163,32 @@ const useCivilCaseStore = create((set) => ({
         error.response?.data || error.message
       );
       throw error;
+    }
+  },
+
+  deleteDecision: async ({
+    level,
+    id,
+    caseId,
+    refetchUrl,
+    updateKey = "cases",
+  }) => {
+    try {
+      if (!id) {
+        return { success: false, message: "Invalid case ID" };
+      }
+
+      const response = await axios.delete(
+        `${BASEURL}/civilcase/delete/decision/${level}/${id}`
+      );
+
+      const refreshed = await axios.get(`${BASEURL}/${refetchUrl}/${caseId}`);
+      set({ [updateKey]: refreshed.data });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting decision:", error);
+      return { success: false, message: "Something went wrong" };
     }
   },
 
@@ -184,74 +208,6 @@ const useCivilCaseStore = create((set) => ({
       return { success: false, message: "Failed to delete case." };
     }
   },
-
-  deleteFirstLevel: async(id) => {
-    try {
-      if (!id) {
-        return { success: false, message: "Invalid case ID" };
-      }
-
-      const response = await axios.delete(`${BASEURL}/civilcase/delete/decision/firstlevel/${id}`);
-
-      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
-      set({ cases: refreshed.data });
-
-      return response.data;
-    } catch (error) {
-      
-    }
-  },
-
-  deleteSecondLevel: async(id) => {
-    try {
-      if (!id) {
-        return { success: false, message: "Invalid case ID" };
-      }
-
-      const response = await axios.delete(`${BASEURL}/civilcase/delete/decision/secondLevel/${id}`);
-
-      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
-      set({ cases: refreshed.data });
-
-      return response.data;
-    } catch (error) {
-      
-    }
-  },
-
-  deleteCourtAppeal: async(id) => {
-    try {
-      if (!id) {
-        return { success: false, message: "Invalid case ID" };
-      }
-
-      const response = await axios.delete(`${BASEURL}/civilcase/delete/decision/courtappeals/${id}`);
-
-      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
-      set({ cases: refreshed.data });
-
-      return response.data;
-    } catch (error) {
-      
-    }
-  },
-
-  deleteSupremeCourt: async(id) => {
-    try {
-      if (!id) {
-        return { success: false, message: "Invalid case ID" };
-      }
-
-      const response = await axios.delete(`${BASEURL}/civilcase/delete/decision/supremecourt/${id}`);
-
-      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
-      set({ cases: refreshed.data });
-
-      return response.data;
-    } catch (error) {
-      
-    }
-  }
 }));
 
 export default useCivilCaseStore;

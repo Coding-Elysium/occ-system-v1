@@ -4,17 +4,13 @@ import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
-const SupremeCourtForm = ({
-  id,
-  data,
-  onClose,
-}) => {
-  const { add, updateCases } = useCivilCaseStore();
+const SupremeCourtForm = ({ id, data, onClose }) => {
+  const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
     case_id: id,
-    resolution: data?.resolution || "",
+    resolution: data?.resolution ? data.resolution.split("T")[0] : "",
   });
 
   const handleChange = (e) => {
@@ -27,15 +23,24 @@ const SupremeCourtForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (selectedCase) {
-      // await updateFirstLevel(selectedCase._id, formData);
-    // } else {
-    await add({
-      data: formData, 
-      endPoint: "/civilcase/add/decision/supremecourt"
-    });
-    // }
-    onClose();
+
+    try {
+      if (data?._id) {
+        await updateDecision({
+          path: "decision/supremecourt",
+          updatedCase: data._id,
+          data: formData,
+        });
+      } else {
+        await add({
+          data: formData,
+          endPoint: "/civilcase/add/decision/supremecourt",
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to submit form:", error);
+    }
   };
 
   return (
@@ -69,7 +74,6 @@ const SupremeCourtForm = ({
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
             <InputField
               label="Enter Decision"
               type="text"
