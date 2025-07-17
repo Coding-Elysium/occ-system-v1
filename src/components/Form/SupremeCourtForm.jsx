@@ -4,14 +4,17 @@ import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
-const FirstLevelForm = ({ data, id, onClose }) => {
-  const { add } = useCivilCaseStore();
+const SupremeCourtForm = ({
+  id,
+  data,
+  onClose,
+}) => {
+  const { add, updateCases } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
-    remarks: data?.decision || "",
-    case_id: id || "",
-    date: data?.decision || "",
+    case_id: id,
+    resolution: data?.resolution || "",
   });
 
   const handleChange = (e) => {
@@ -25,12 +28,13 @@ const FirstLevelForm = ({ data, id, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if (selectedCase) {
-    // await updateCases(selectedCase._id, formData);
+      // await updateFirstLevel(selectedCase._id, formData);
     // } else {
     await add({
       data: formData, 
-      endPoint: "/civilcase/add/decision/firstlevel"
+      endPoint: "/civilcase/add/decision/supremecourt"
     });
+    // }
     onClose();
   };
 
@@ -39,10 +43,10 @@ const FirstLevelForm = ({ data, id, onClose }) => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            Add First Level Decision
+            Decision Court of Appeal
           </h2>
           <button
-            onClick={onClose}
+            onClick={() => {}}
             className="text-gray-500 hover:text-red-500 transition cursor-pointer"
             aria-label="Close"
           >
@@ -65,15 +69,6 @@ const FirstLevelForm = ({ data, id, onClose }) => {
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <InputField
-              label="Remarks"
-              type="text"
-              name="remarks"
-              value={formData.remarks}
-              handleChange={handleChange}
-              placeholder="Enter Remarks"
-              required
-            />
 
             <InputField
               label="Enter Decision"
@@ -86,12 +81,12 @@ const FirstLevelForm = ({ data, id, onClose }) => {
             />
 
             <InputField
-              label="Date"
+              label="Resolution"
               type="date"
-              name="date"
-              value={formData.date}
+              name="resolution"
+              value={formData.resolution}
               handleChange={handleChange}
-              placeholder="Enter Date"
+              placeholder="Enter Resolution"
               required
             />
 
@@ -110,4 +105,4 @@ const FirstLevelForm = ({ data, id, onClose }) => {
   );
 };
 
-export default FirstLevelForm;
+export default SupremeCourtForm;

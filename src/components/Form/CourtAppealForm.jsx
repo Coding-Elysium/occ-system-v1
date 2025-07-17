@@ -6,20 +6,18 @@ import useCivilCaseStore from "../../store/CivilCaseStore";
 import DynamicInputFields from "../Input/DynamicInputField";
 
 const CourtAppealForm = ({
-  onClose,
-  selectedCase,
-  title = "Add First Level",
-  btnTextRight = "Add First Level Decision",
   id,
+  data,
+  onClose,
 }) => {
-  const { addCourtOfAppeal, updateCases } = useCivilCaseStore();
+  const { add, updateCases } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    dateOfAppealOne: selectedCase?.dateOfAppealOne || "",
-    decision: selectedCase?.decision || "",
-    resolution: selectedCase?.resolution || "",
-    finality: selectedCase?.finality || "",
-    dateOfAppealTwo: selectedCase?.dateOfAppealTwo || "",
+    dateOfAppealOne: data?.dateOfAppealOne || "",
+    decision: data?.decision || "",
+    resolution: data?.resolution || "",
+    finality: data?.finality || "",
+    dateOfAppealTwo: data?.dateOfAppealTwo || "",
     case_id: id
   });
 
@@ -33,11 +31,14 @@ const CourtAppealForm = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedCase) {
-      await updateFirstLevel(selectedCase._id, formData);
-    } else {
-      await addCourtOfAppeal(formData);
-    }
+    // if (selectedCase) {
+      // await updateFirstLevel(selectedCase._id, formData);
+    // } else {
+    await add({
+      data: formData, 
+      endPoint: "/civilcase/add/decision/courtappeals"
+    });
+    // }
     onClose();
   };
 
@@ -46,10 +47,10 @@ const CourtAppealForm = ({
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            {title}
+            Decision Court of Appeal
           </h2>
           <button
-            onClick={onClose}
+            onClick={() => {}}
             className="text-gray-500 hover:text-red-500 transition cursor-pointer"
             aria-label="Close"
           >
@@ -128,7 +129,7 @@ const CourtAppealForm = ({
                 <ButtonCancel buttonText="Cancel" />
               </section>
               <section>
-                <Button buttonText={btnTextRight} />
+                <Button buttonText="Add" />
               </section>
             </div>
           </form>

@@ -12,7 +12,7 @@ const AddCivilCase = ({
   title = "Add Civil Case",
   btnTextRight = "Add Case",
 }) => {
-  const { addCases, updateCases } = useCivilCaseStore();
+  const { add, updateCases } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     bookNumber: selectedCase?.bookNumber || "",
@@ -37,7 +37,10 @@ const AddCivilCase = ({
     if (selectedCase) {
       await updateCases(selectedCase._id, formData);
     } else {
-      await addCases(formData);
+      await add({
+        data: formData, 
+        endPoint: "/civilcase/add"
+      });
     }
     onClose();
   };

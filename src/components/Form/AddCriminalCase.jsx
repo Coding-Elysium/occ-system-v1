@@ -6,7 +6,7 @@ import DropdownField from "../Input/DropdownField";
 import useCriminalCaseStore from "../../store/CriminalCaseStore";
 
 const AddCriminalCase = ({ onAddCase, onClose }) => {
-  const { addCase } = useCriminalCaseStore();
+  const { add } = useCriminalCaseStore();
 
   const [formData, setFormData] = useState({
     caseNumber: "",
@@ -34,9 +34,16 @@ const AddCriminalCase = ({ onAddCase, onClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addCase(formData);
+    // if (selectedCase) {
+    //   await updateCases(selectedCase._id, formData);
+    // } else {
+      // await add({
+      //   data: formData, 
+      //   endPoint: "/civilcase/add/decision/criminalcase"
+      // });
+    // }
     onClose();
   };
 

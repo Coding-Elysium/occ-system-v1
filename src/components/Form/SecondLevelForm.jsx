@@ -5,7 +5,7 @@ import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 
 const SecondLevelForm = ({ data, id, onClose }) => {
-  const { addSecondLevel } = useCivilCaseStore();
+  const { add } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
@@ -27,7 +27,10 @@ const SecondLevelForm = ({ data, id, onClose }) => {
     // if (selectedCase) {
     // await updateCases(selectedCase._id, formData);
     // } else {
-    await addSecondLevel(formData);
+    await add({
+      data: formData, 
+      endPoint: "/civilcase/add/decision/secondlevel"
+    });
     onClose();
   };
 
