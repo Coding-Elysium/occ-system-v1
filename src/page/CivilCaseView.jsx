@@ -19,6 +19,7 @@ import Button from "../components/Button/Button";
 import Modal from "../components/Modal/Modal";
 import DeleteModal from "../components/Modal/DeleteModal";
 import SupremeCourtForm from "../components/Form/SupremeCourtForm";
+import { formatDate } from "../helper/helper";
 
 const CivilCaseView = () => {
   const [formFirstLevel, setFormFirstLevel] = useState(false);
@@ -97,6 +98,7 @@ const CivilCaseView = () => {
 
   const closeModal = () => {
     setSelectedCardFirstLevel(null);
+    setSelectedCardSecondLevel(null);
   };
 
   return (
@@ -174,7 +176,7 @@ const CivilCaseView = () => {
                 <DataCard
                   title={item.decision}
                   subtitle={item.remarks}
-                  date={item.date}
+                  date={formatDate(item.date)}
                   onEdit={() => {
                     setEditData(item);
                     setFormFirstLevel(true);
@@ -218,8 +220,8 @@ const CivilCaseView = () => {
               {secondLevelDetails.map((item) => (
                 <DataCard
                   title={item.decision}
-                  subtitle={item.judgemet}
-                  date={item.finality}
+                  subtitle={item.finality}
+                  date={formatDate(item.judgement)}
                   onEdit={() => {
                     setEditData(item);
                     setSecondLevelForm(true);
@@ -235,11 +237,11 @@ const CivilCaseView = () => {
               {selectedCardSecondLevel && (
                 <Modal onClose={closeModal}>
                   <h2 className="text-xl font-bold">
-                    {selectedCardFirstLevel.decision}
+                    {selectedCardSecondLevel?.decision}
                   </h2>
-                  <p className="mt-2">{selectedCardFirstLevel.judgemet}</p>
+                  <p className="mt-2">{selectedCardSecondLevel?.finality}</p>
                   <p className="text-sm text-gray-500">
-                    {selectedCardFirstLevel.finality}
+                    {formatDate(selectedCardSecondLevel?.judgement)}
                   </p>
                   <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
@@ -313,23 +315,15 @@ const CivilCaseView = () => {
                         {courtAppealsDetails.map((item, index) => (
                           <tr key={index} className="border-b border-gray-200">
                             <td className="px-4 py-2">
-                              {item.dateOfAppealOne}
+                              {formatDate(item.dateOfAppealOne)}
                             </td>
                             <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">{item.resolution}</td>
+                            <td className="px-4 py-2">{formatDate(item.resolution)}</td>
                             <td className="px-4 py-2">{item.finality}</td>
                             <td className="px-4 py-2">
-                              {item.dateOfAppealTwo}
+                              {formatDate(item.dateOfAppealTwo)}
                             </td>
                             <td className="px-4 py-3 flex items-center gap-2">
-                              <button
-                                onClick={() => {}}
-                                className="text-green-600 hover:text-green-800"
-                                title="View"
-                              >
-                                <FaEye />
-                              </button>
-
                               <button
                                 onClick={() => {
                                   setEditData(item);
@@ -387,16 +381,8 @@ const CivilCaseView = () => {
                         {supremeCourtDetails.map((item, index) => (
                           <tr key={index} className="border-b border-gray-200">
                             <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">{item.resolution}</td>
+                            <td className="px-4 py-2">{formatDate(item.resolution)}</td>
                             <td className="px-4 py-3 flex items-center gap-2">
-                              <button
-                                onClick={() => {}}
-                                className="text-green-600 hover:text-green-800"
-                                title="View"
-                              >
-                                <FaEye />
-                              </button>
-
                               <button
                                 onClick={() => {
                                   setEditData(item);

@@ -9,3 +9,15 @@ export const getStatusStyle = (status) => {
 };
 
 export const BASEURL = "http://localhost:3000";
+
+
+export const formatDate = (inputDate) => {
+  const parsedDate = new Date(inputDate);
+  if (isNaN(parsedDate)) return "Invalid Date";
+
+  return parsedDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  });
+};

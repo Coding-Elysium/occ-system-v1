@@ -51,7 +51,7 @@ const SupremeCourtForm = ({ id, data, onClose }) => {
             Decision Court of Appeal
           </h2>
           <button
-            onClick={() => {}}
+            onClick={() => {onClose()}}
             className="text-gray-500 hover:text-red-500 transition cursor-pointer"
             aria-label="Close"
           >

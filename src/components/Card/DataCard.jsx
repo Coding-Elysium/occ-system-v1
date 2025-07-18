@@ -1,10 +1,11 @@
 import React from "react";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import { formatDate } from "../../helper/helper";
 
 const DataCard = ({
   title = "Title",
   subtitle = "subtitle",
-  date = "January 07, 1999",
+  date,
   onEdit,
   onDelete,
   onClickView,
