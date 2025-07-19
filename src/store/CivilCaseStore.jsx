@@ -90,10 +90,19 @@ const useCivilCaseStore = create((set) => ({
       supremeCourtDetails: [],
     }),
 
-  add: async ({ data, endPoint = "/endpoint" }) => {
+  add: async ({
+    data,
+    endPoint = "/endpoint",
+    getEndPoint = "/getEndPoint",
+    updateKey = "cases",
+  }) => {
     try {
       const response = await axios.post(`${BASEURL}${endPoint}`, data);
       console.log("Case added successfully:", response.data);
+
+      const refreshed = await axios.get(`${BASEURL}/civilcase${getEndPoint}`);
+      set({ [updateKey]: refreshed.data });
+
       return response.data;
     } catch (error) {
       console.error(
@@ -145,7 +154,13 @@ const useCivilCaseStore = create((set) => ({
     }
   },
 
-  updateDecision: async ({ path, updatedCase, data }) => {
+  updateDecision: async ({
+    path,
+    updatedCase,
+    data,
+    getEndPoint,
+    updateKey,
+  }) => {
     try {
       const response = await axios.put(
         `${BASEURL}/civilcase/update/${path}/${updatedCase}`,
@@ -153,8 +168,8 @@ const useCivilCaseStore = create((set) => ({
       );
       console.log("Case updated successfully:", response.data);
 
-      const refreshed = await axios.get(`${BASEURL}/civilcase/read`);
-      set({ cases: refreshed.data });
+      const refreshed = await axios.get(`${BASEURL}/civilcase${getEndPoint}`);
+      set({ [updateKey]: refreshed.data });
 
       return response.data;
     } catch (error) {

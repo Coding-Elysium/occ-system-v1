@@ -132,16 +132,11 @@ const CivilCaseView = () => {
           <p className="text-sm mt-1 opacity-90">Nature of the Case</p>
         </section>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <CaseInfoCard
             icon={<FaBook className="text-blue-500" />}
             label="Book Number"
-            value={caseDetails?.bookNumber}
-          />
-          <CaseInfoCard
-            icon={<FaFileAlt className="text-green-500" />}
-            label="Docket Number"
-            value={caseDetails?.docketNumber}
+            value={caseDetails?.docketNumber || "N/A"}
           />
           <CaseInfoCard
             icon={<FaUserTie className="text-purple-500" />}
@@ -161,10 +156,32 @@ const CivilCaseView = () => {
                 : "N/A"
             }
           />
+          <CaseInfoCard
+            icon={<FaFileAlt className="text-green-500" />}
+            label="Status"
+            value={caseDetails?.status || "N/A"}
+          />
+          <CaseInfoCard
+            icon={<FaFileAlt className="text-green-500" />}
+            label="Branch"
+            value={caseDetails?.branch || "N/A"}
+          />
         </section>
+
+        {/* Description placed below in full width */}
+        {caseDetails?.description && (
+          <section>
+            <CaseInfoCard
+              icon={<FaFileAlt className="text-green-500" />}
+              label="Description"
+              value={caseDetails.description}
+            />
+          </section>
+        )}
 
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
+            <h1>First Level Decision</h1>
             <AddCard
               title="Add First Level"
               onclick={() => {
@@ -174,8 +191,9 @@ const CivilCaseView = () => {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-6">
               {firstLevelDetails.map((item) => (
                 <DataCard
-                  title={item.decision}
+                  title={item.courtOfOrigin}
                   subtitle={item.remarks}
+                  decision={item.decision}
                   date={formatDate(item.date)}
                   onEdit={() => {
                     setEditData(item);
@@ -192,11 +210,14 @@ const CivilCaseView = () => {
               {selectedCardFirstLevel && (
                 <Modal onClose={closeModal}>
                   <h2 className="text-xl font-bold">
-                    {selectedCardFirstLevel.decision}
+                    {selectedCardFirstLevel.courtOfOrigin || "N/A"}
                   </h2>
                   <p className="mt-2">{selectedCardFirstLevel.remarks}</p>
                   <p className="text-sm text-gray-500">
-                    {selectedCardFirstLevel.date}
+                    {selectedCardFirstLevel.decision}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(selectedCardFirstLevel.date)}
                   </p>
                   <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
@@ -210,6 +231,7 @@ const CivilCaseView = () => {
           </div>
 
           <div>
+            <h1>Second Level Decision</h1>
             <AddCard
               title="Add Second Level"
               onclick={() => {
@@ -299,14 +321,14 @@ const CivilCaseView = () => {
                     <table className="min-w-full table-auto">
                       <thead className="bg-primary-color text-white">
                         <tr>
+                          <th className="px-4 py-2 text-left">Division</th>
                           <th className="px-4 py-2 text-left">
-                            Date of Appeal 1
+                            Date of Appeal
                           </th>
                           <th className="px-4 py-2 text-left">Decision</th>
-                          <th className="px-4 py-2 text-left">Resolution</th>
                           <th className="px-4 py-2 text-left">Finality</th>
                           <th className="px-4 py-2 text-left">
-                            Date of Appeal 2
+                            Date of Finality
                           </th>
                           <th className="px-4 py-2 text-left">Action</th>
                         </tr>
@@ -314,14 +336,14 @@ const CivilCaseView = () => {
                       <tbody>
                         {courtAppealsDetails.map((item, index) => (
                           <tr key={index} className="border-b border-gray-200">
+                            <td className="px-4 py-2">{item.division}</td>
                             <td className="px-4 py-2">
-                              {formatDate(item.dateOfAppealOne)}
+                              {formatDate(item.dateOfAppeal)}
                             </td>
                             <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">{formatDate(item.resolution)}</td>
                             <td className="px-4 py-2">{item.finality}</td>
                             <td className="px-4 py-2">
-                              {formatDate(item.dateOfAppealTwo)}
+                              {formatDate(item.dateOfFinality)}
                             </td>
                             <td className="px-4 py-3 flex items-center gap-2">
                               <button
@@ -366,7 +388,6 @@ const CivilCaseView = () => {
                     />
                   </section>
                 </div>
-                {/* Your Supreme Court Table Here */}
                 <div className="rounded-md border border-gray-300 overflow-hidden">
                   <div className="max-h-64 overflow-y-auto">
                     <table className="min-w-full table-auto">
@@ -381,7 +402,9 @@ const CivilCaseView = () => {
                         {supremeCourtDetails.map((item, index) => (
                           <tr key={index} className="border-b border-gray-200">
                             <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">{formatDate(item.resolution)}</td>
+                            <td className="px-4 py-2">
+                              {formatDate(item.resolution)}
+                            </td>
                             <td className="px-4 py-3 flex items-center gap-2">
                               <button
                                 onClick={() => {
@@ -425,7 +448,7 @@ const CivilCaseView = () => {
               id: deleteData._id,
               refetchUrl: "civilcase/read/decision/firstlevel",
               caseId: deleteData.case_id,
-              updatedkey: "firstLevelDetails",
+              updateKey: "firstLevelDetails",
             });
             setDeleteFirstLevelModal(false);
           }}
@@ -441,7 +464,7 @@ const CivilCaseView = () => {
               id: deleteData._id,
               refetchUrl: "civilcase/read/decision/secondlevel",
               caseId: deleteData.case_id,
-              updatedkey: "secondLevelDetails",
+              updateKey: "secondLevelDetails",
             });
             setDeleteSecondLevelModal(false);
           }}
@@ -457,7 +480,7 @@ const CivilCaseView = () => {
               id: deleteData._id,
               refetchUrl: "civilcase/read/decision/courtappeals",
               caseId: deleteData.case_id,
-              updatedkey: "courtAppealsDetails",
+              updateKey: "courtAppealsDetails",
             });
             setDeleteCourtAppealModal(false);
           }}
@@ -473,7 +496,7 @@ const CivilCaseView = () => {
               id: deleteData._id,
               refetchUrl: "civilcase/read/decision/supremecourt",
               caseId: deleteData.case_id,
-              updatedkey: "supremeCourtDetails",
+              updateKey: "supremeCourtDetails",
             });
             setdeleteSupremeCourtModal(false);
           }}

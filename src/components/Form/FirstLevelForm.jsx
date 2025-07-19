@@ -8,10 +8,11 @@ const FirstLevelForm = ({ data, id, onClose }) => {
   const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    decision: data?.decision || "",
+    courtOfOrigin: data?.courtOfOrigin || "",
     remarks: data?.remarks || "",
-    case_id: id || "",
+    decision: data?.decision || "",
     date: data?.date ? data.date.split("T")[0] : "",
+    case_id: id || "",
   });
 
   const handleChange = (e) => {
@@ -31,11 +32,15 @@ const FirstLevelForm = ({ data, id, onClose }) => {
           path: "decision/firstlevel",
           updatedCase: data._id,
           data: formData,
+          getEndPoint: `/read/decision/firstlevel/${id}`,
+          updateKey: "firstLevelDetails",
         });
       } else {
         await add({
           data: formData,
           endPoint: "/civilcase/add/decision/firstlevel",
+          getEndPoint: `/read/decision/firstlevel/${id}`,
+          updateKey: "firstLevelDetails",
         });
       }
       onClose();
@@ -76,12 +81,12 @@ const FirstLevelForm = ({ data, id, onClose }) => {
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <InputField
-              label="Enter Decision"
+              label="Enter Court of Origin"
               type="text"
-              name="decision"
-              value={formData.decision}
+              name="courtOfOrigin"
+              value={formData.courtOfOrigin}
               handleChange={handleChange}
-              placeholder="Enter Decision"
+              placeholder="Enter Court of Origin"
               required
             />
 
@@ -93,6 +98,17 @@ const FirstLevelForm = ({ data, id, onClose }) => {
               handleChange={handleChange}
               placeholder="Enter Remarks"
               required
+            />
+
+            <InputField
+              label="Decision"
+              type="text"
+              name="decision"
+              value={formData.decision}
+              handleChange={handleChange}
+              placeholder="Enter Decision"
+              required
+              isTextArea
             />
 
             <InputField

@@ -13,13 +13,13 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
   const { deleteCase } = useCivilCaseStore();
 
   const tableHeaders = [
-    { key: "bookNumber", label: "Book Number" },
     { key: "docketNumber", label: "Docket Number" },
-    { key: "status", label: "Status" },
     { key: "petitioner", label: "Petitioner" },
     { key: "respondents", label: "Respondents" },
     { key: "nature", label: "Nature" },
+    { key: "description", label: "Description" },
     { key: "branch", label: "Branch" },
+    { key: "status", label: "Status" },
     { key: "action", label: "Action" },
   ];
 
@@ -84,13 +84,7 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
                 />
               </td>
               <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
-                {civilCase.bookNumber}
-              </td>
-              <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
                 {civilCase.docketNumber}
-              </td>
-              <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
-                {civilCase.status}
               </td>
               <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
                 {civilCase.petitioner.join(", ")}
@@ -102,7 +96,13 @@ const CivilCaseContent = ({ cases, selectedCases, setSelectedCases }) => {
                 {civilCase.nature}
               </td>
               <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
+                {civilCase.description}
+              </td>
+              <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
                 {civilCase.branch}
+              </td>
+              <td className="px-4 py-3 truncate overflow-hidden whitespace-nowrap max-w-[150px]">
+                {civilCase.status}
               </td>
               <td className="px-4 py-3 flex items-center gap-2">
                 <Link to={`/civilcase/${civilCase._id}`}>

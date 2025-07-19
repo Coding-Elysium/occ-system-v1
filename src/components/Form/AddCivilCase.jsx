@@ -15,11 +15,11 @@ const AddCivilCase = ({
   const { add, updateCases } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    bookNumber: selectedCase?.bookNumber || "",
     docketNumber: selectedCase?.docketNumber || "",
     petitioner: selectedCase?.petitioner || [],
     respondents: selectedCase?.respondents || [],
     nature: selectedCase?.nature || "",
+    description: selectedCase?.description || "",
     branch: selectedCase?.branch || "",
     status: selectedCase?.status || "-----",
   });
@@ -38,8 +38,10 @@ const AddCivilCase = ({
       await updateCases(selectedCase._id, formData);
     } else {
       await add({
-        data: formData, 
-        endPoint: "/civilcase/add"
+        data: formData,
+        endPoint: "/civilcase/add",
+        getEndPoint: "/read",
+        updateKey: "cases",
       });
     }
     onClose();
@@ -47,7 +49,7 @@ const AddCivilCase = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50 font-inter">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[500px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
             {title}
@@ -77,16 +79,6 @@ const AddCivilCase = ({
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <InputField
-              label="Book Number"
-              type="text"
-              name="bookNumber"
-              value={formData.bookNumber}
-              handleChange={handleChange}
-              placeholder="Enter Case Number"
-              required
-            />
-
-            <InputField
               label="Docket Number"
               type="text"
               name="docketNumber"
@@ -105,6 +97,7 @@ const AddCivilCase = ({
                 setFormData((prev) => ({ ...prev, petitioner: values }))
               }
             />
+
             <DynamicInputFields
               placeholder="Add Respondents"
               label="Respondents"
@@ -124,6 +117,16 @@ const AddCivilCase = ({
             />
 
             <InputField
+              label="Description"
+              type="text"
+              name="description"
+              value={formData.description}
+              handleChange={handleChange}
+              placeholder="Enter Description"
+              isTextArea
+            />
+
+            <InputField
               label="Branch"
               type="text"
               name="branch"
@@ -131,7 +134,7 @@ const AddCivilCase = ({
               handleChange={handleChange}
               placeholder="Enter Branch"
             />
-            
+
             <div className="sm:col-span-2 pt-4 flex gap-4 justify-end">
               <section>
                 <ButtonCancel buttonText="Cancel" />

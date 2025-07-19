@@ -40,7 +40,8 @@ const CivilCaseMain = () => {
       item.docketNumber?.toString().includes(searchQuery) ||
       petitionerMatch ||
       respondentsMatch ||
-      item.nature?.toLowerCase().includes(searchQuery)
+      item.nature?.toLowerCase().includes(searchQuery) ||
+      item.status?.toLowerCase().includes(searchQuery)
     );
   });
 

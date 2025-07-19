@@ -9,14 +9,12 @@ const CourtAppealForm = ({ id, data, onClose }) => {
   const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    dateOfAppealOne: data?.dateOfAppealOne
-      ? data.dateOfAppealOne.split("T")[0]
-      : "",
+    division: data?.division || "",
+    dateOfAppeal: data?.dateOfAppeal ? data.dateOfAppeal.split("T")[0] : "",
     decision: data?.decision || "",
-    resolution: data?.resolution ? data.resolution.split("T")[0] : "",
     finality: data?.finality || "",
-    dateOfAppealTwo: data?.dateOfAppealTwo
-      ? data.dateOfAppealTwo.split("T")[0]
+    dateOfFinality: data?.dateOfFinality
+      ? data.dateOfFinality.split("T")[0]
       : "",
     case_id: id,
   });
@@ -38,11 +36,15 @@ const CourtAppealForm = ({ id, data, onClose }) => {
           path: "decision/courtappeals",
           updatedCase: data._id,
           data: formData,
+          getEndPoint: `/read/decision/courtappeals/${id}`,
+          updateKey: "courtAppealsDetails",
         });
       } else {
         await add({
           data: formData,
           endPoint: "/civilcase/add/decision/courtappeals",
+          getEndPoint: `/read/decision/courtappeals/${id}`,
+          updateKey: "courtAppealsDetails",
         });
       }
       onClose();
@@ -59,7 +61,9 @@ const CourtAppealForm = ({ id, data, onClose }) => {
             Decision Court of Appeal
           </h2>
           <button
-            onClick={() => {onClose()}}
+            onClick={() => {
+              onClose();
+            }}
             className="text-gray-500 hover:text-red-500 transition cursor-pointer"
             aria-label="Close"
           >
@@ -83,33 +87,34 @@ const CourtAppealForm = ({ id, data, onClose }) => {
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <InputField
+              label="Select Division"
+              type="text"
+              name="division"
+              value={formData.division}
+              handleChange={handleChange}
+              placeholder="Enter division"
+              required
+            />
+
+            <InputField
               label="Date of Appeal"
               type="date"
-              name="dateOfAppealOne"
-              value={formData.dateOfAppealOne}
+              name="dateOfAppeal"
+              value={formData.dateOfAppeal}
               handleChange={handleChange}
               placeholder="Enter Date of Appeal"
               required
             />
 
             <InputField
-              label="Enter Decision"
-              type="text"
+              label="Decision"
+              type="date"
               name="decision"
               value={formData.decision}
               handleChange={handleChange}
               placeholder="Enter Decision"
               required
-            />
-
-            <InputField
-              label="Resolution"
-              type="date"
-              name="resolution"
-              value={formData.resolution}
-              handleChange={handleChange}
-              placeholder="Enter Resolution"
-              required
+              isTextArea
             />
 
             <InputField
@@ -123,10 +128,10 @@ const CourtAppealForm = ({ id, data, onClose }) => {
             />
 
             <InputField
-              label="Date of Appeal"
+              label="Date of Finality"
               type="date"
-              name="dateOfAppealTwo"
-              value={formData.dateOfAppealTwo}
+              name="dateOfFinality"
+              value={formData.dateOfFinality}
               handleChange={handleChange}
               placeholder="Enter Date of Appeal"
               required

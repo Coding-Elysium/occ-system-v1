@@ -9,9 +9,15 @@ const SecondLevelForm = ({ data, id, onClose }) => {
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
-    case_id: id || "",
-    judgement: data?.judgement ? data.judgement.split("T")[0] : "",
+    judgement: data?.judgement || "",
+    dateOfJudgement: data?.dateOfJudgement
+      ? data.dateOfJudgement.split("T")[0]
+      : "",
     finality: data?.finality || "",
+    dateOfFinality: data?.dateOfFinality
+      ? data.dateOfFinality.split("T")[0]
+      : "",
+    case_id: id || "",
   });
 
   const handleChange = (e) => {
@@ -31,11 +37,15 @@ const SecondLevelForm = ({ data, id, onClose }) => {
           path: "decision/secondlevel",
           updatedCase: data._id,
           data: formData,
+          getEndPoint: `/read/decision/secondlevel/${id}`,
+          updateKey: "secondLevelDetails",
         });
       } else {
         await add({
           data: formData,
           endPoint: "/civilcase/add/decision/secondlevel",
+          getEndPoint: `/read/decision/secondlevel/${id}`,
+          updateKey: "secondLevelDetails",
         });
       }
       onClose();
@@ -84,14 +94,23 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               placeholder="Enter Decision"
               required
             />
-
             <InputField
               label="Judgement"
-              type="date"
+              type="text"
               name="judgement"
               value={formData.judgement}
               handleChange={handleChange}
               placeholder="Enter Judgement"
+              required
+            />
+
+            <InputField
+              label="Date of Judgement"
+              type="date"
+              name="dateOfJudgement"
+              value={formData.dateOfJudgement}
+              handleChange={handleChange}
+              placeholder="Enter Date of Judgement"
               required
             />
 
@@ -102,6 +121,16 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               value={formData.finality}
               handleChange={handleChange}
               placeholder="Enter Finality"
+              required
+            />
+
+            <InputField
+              label="Date of Finality"
+              type="date"
+              name="dateOfFinality"
+              value={formData.dateOfFinality}
+              handleChange={handleChange}
+              placeholder="Enter Date of Finality"
               required
             />
 
