@@ -10,13 +10,36 @@ body {
 }
 
 * {
-  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
 }
 
-.bg-primary-color{
-    background-color: var(--bg-primary);
+.bg-primary-color {
+  background-color: var(--bg-primary);
 }
 
 .hover\:bg-primary-color-hover:hover {
   background-color: var(--bg-primary-hover);
+}
+
+/* Scrollbar container */
+::-webkit-scrollbar {
+  width: 8px; /* Width of vertical scrollbar */
+  height: 8px; /* Height of horizontal scrollbar */
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Thumb (scroll bar itself) */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Hover effect on scrollbar */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

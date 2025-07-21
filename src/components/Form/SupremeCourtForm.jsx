@@ -9,8 +9,8 @@ const SupremeCourtForm = ({ id, data, onClose }) => {
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
+    date: data?.date ? data.date.split("T")[0] : "",
     case_id: id,
-    resolution: data?.resolution ? data.resolution.split("T")[0] : "",
   });
 
   const handleChange = (e) => {
@@ -30,11 +30,15 @@ const SupremeCourtForm = ({ id, data, onClose }) => {
           path: "decision/supremecourt",
           updatedCase: data._id,
           data: formData,
+          getEndPoint: `/read/decision/supremecourt/${id}`,
+          updateKey: "supremeCourtDetails",
         });
       } else {
         await add({
           data: formData,
           endPoint: "/civilcase/add/decision/supremecourt",
+          getEndPoint: `/read/decision/supremecourt/${id}`,
+          updateKey: "supremeCourtDetails",
         });
       }
       onClose();
@@ -51,7 +55,9 @@ const SupremeCourtForm = ({ id, data, onClose }) => {
             Decision Court of Appeal
           </h2>
           <button
-            onClick={() => {onClose()}}
+            onClick={() => {
+              onClose();
+            }}
             className="text-gray-500 hover:text-red-500 transition cursor-pointer"
             aria-label="Close"
           >
@@ -85,12 +91,12 @@ const SupremeCourtForm = ({ id, data, onClose }) => {
             />
 
             <InputField
-              label="Resolution"
+              label="Date of Decision"
               type="date"
-              name="resolution"
-              value={formData.resolution}
+              name="date"
+              value={formData.date}
               handleChange={handleChange}
-              placeholder="Enter Resolution"
+              placeholder="Enter Date"
               required
             />
 

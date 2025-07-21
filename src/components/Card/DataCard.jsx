@@ -10,6 +10,8 @@ const DataCard = ({
   onEdit,
   onDelete,
   onClickView,
+  borderColor = "border-gray-300",
+  bgColor = "bg-white",
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -25,7 +27,9 @@ const DataCard = ({
   }, []);
 
   return (
-    <div className="relative flex flex-col gap-2 border border-gray-300 rounded-sm p-4 bg-white transition duration-200">
+    <div
+      className={`relative flex flex-col gap-2 rounded-sm p-4 transition duration-200 border ${borderColor} ${bgColor}`}
+    >
       <div className="absolute top-2 right-2" ref={menuRef}>
         <button
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -35,7 +39,7 @@ const DataCard = ({
         </button>
 
         {menuOpen && (
-          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 ">
+          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10">
             <button
               onClick={() => {
                 onClickView();

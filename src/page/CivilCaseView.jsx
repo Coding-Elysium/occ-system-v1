@@ -181,7 +181,7 @@ const CivilCaseView = () => {
 
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <h1>First Level Decision</h1>
+            <h1 className="font-semibold mb-2">First Level Decision</h1>
             <AddCard
               title="Add First Level"
               onclick={() => {
@@ -195,6 +195,7 @@ const CivilCaseView = () => {
                   subtitle={item.remarks}
                   decision={item.decision}
                   date={formatDate(item.date)}
+                  borderColor="border-red-400"
                   onEdit={() => {
                     setEditData(item);
                     setFormFirstLevel(true);
@@ -231,7 +232,7 @@ const CivilCaseView = () => {
           </div>
 
           <div>
-            <h1>Second Level Decision</h1>
+            <h1 className="font-semibold mb-2">Second Level Decision</h1>
             <AddCard
               title="Add Second Level"
               onclick={() => {
@@ -242,8 +243,10 @@ const CivilCaseView = () => {
               {secondLevelDetails.map((item) => (
                 <DataCard
                   title={item.decision}
-                  subtitle={item.finality}
-                  date={formatDate(item.judgement)}
+                  subtitle={item.judgement}
+                  decision={item.finality}
+                  date={formatDate(item.dateOfJudgement)}
+                  borderColor="border-blue-400"
                   onEdit={() => {
                     setEditData(item);
                     setSecondLevelForm(true);
@@ -257,20 +260,70 @@ const CivilCaseView = () => {
               ))}
 
               {selectedCardSecondLevel && (
-                <Modal onClose={closeModal}>
-                  <h2 className="text-xl font-bold">
-                    {selectedCardSecondLevel?.decision}
-                  </h2>
-                  <p className="mt-2">{selectedCardSecondLevel?.finality}</p>
-                  <p className="text-sm text-gray-500">
-                    {formatDate(selectedCardSecondLevel?.judgement)}
-                  </p>
-                  <button
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                    onClick={closeModal}
-                  >
-                    Close
-                  </button>
+                <Modal
+                  onClose={closeModal}
+                  size="md"
+                  header="Second Level Decision"
+                >
+                  <div className="space-y-4">
+                    {/* Decision */}
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">
+                        {selectedCardSecondLevel?.decision ||
+                          "No decision available"}
+                      </h2>
+                    </div>
+
+                    {/* Judgement */}
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-600">
+                        Judgement
+                      </h3>
+                      <p className="text-gray-700">
+                        {selectedCardSecondLevel?.judgement}
+                      </p>
+                    </div>
+
+                    {/* Date of Judgement */}
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-600">
+                        Date of Judgement
+                      </h3>
+                      <p className="text-gray-500">
+                        {formatDate(selectedCardSecondLevel?.dateOfJudgement)}
+                      </p>
+                    </div>
+
+                    {/* Finality */}
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-600">
+                        Finality
+                      </h3>
+                      <p className="text-gray-700">
+                        {selectedCardSecondLevel?.finality}
+                      </p>
+                    </div>
+
+                    {/* Date of Finality */}
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-600">
+                        Date of Finality
+                      </h3>
+                      <p className="text-gray-500">
+                        {formatDate(selectedCardSecondLevel?.dateOfFinality)}
+                      </p>
+                    </div>
+
+                    {/* Close Button */}
+                    <div className="pt-4 flex justify-end">
+                      <button
+                        onClick={closeModal}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
                 </Modal>
               )}
             </div>
@@ -403,7 +456,7 @@ const CivilCaseView = () => {
                           <tr key={index} className="border-b border-gray-200">
                             <td className="px-4 py-2">{item.decision}</td>
                             <td className="px-4 py-2">
-                              {formatDate(item.resolution)}
+                              {formatDate(item.date)}
                             </td>
                             <td className="px-4 py-3 flex items-center gap-2">
                               <button
