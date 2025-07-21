@@ -77,10 +77,11 @@ const SetStatus = ({ onClose, selectedIds }) => {
               onChange={handleChange}
               options={[
                 { value: "", label: "--- Select Status ---" },
-                { value: "withdrawn", label: "Withdrawn" },
-                { value: "dismissed", label: "Dismissed" },
-                { value: "archived", label: "Archived" },
-                { value: "appealed case", label: "Appealed Case" },
+                { value: "Withdrawn", label: "Withdrawn" },
+                { value: "Dismissed", label: "Dismissed" },
+                { value: "Archived", label: "Archived" },
+                { value: "Appealed Case", label: "Appealed Case" },
+                { value: "Remanded to the Court of Origin", label: "Remanded to the Court of Origin" },
               ]}
             />
             <div className="sm:col-span-2 pt-4 flex gap-4 justify-end">

@@ -9,9 +9,8 @@ const SecondLevelForm = ({ data, id, onClose }) => {
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
-    judgement: data?.judgement || "",
-    dateOfJudgement: data?.dateOfJudgement
-      ? data.dateOfJudgement.split("T")[0]
+    dateOfDecision: data?.dateOfDecision
+      ? data.dateOfDecision.split("T")[0]
       : "",
     finality: data?.finality || "",
     dateOfFinality: data?.dateOfFinality
@@ -94,23 +93,14 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               placeholder="Enter Decision"
               required
             />
-            <InputField
-              label="Judgement"
-              type="text"
-              name="judgement"
-              value={formData.judgement}
-              handleChange={handleChange}
-              placeholder="Enter Judgement"
-              required
-            />
 
             <InputField
-              label="Date of Judgement"
+              label="Date of Decision"
               type="date"
-              name="dateOfJudgement"
-              value={formData.dateOfJudgement}
+              name="dateOfDecision"
+              value={formData.dateOfDecision}
               handleChange={handleChange}
-              placeholder="Enter Date of Judgement"
+              placeholder="Enter Date of Decision"
               required
             />
 

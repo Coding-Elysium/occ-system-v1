@@ -4,6 +4,7 @@ import Button from "../Button/Button";
 import ButtonCancel from "../Button/ButtonCancel";
 import useCivilCaseStore from "../../store/CivilCaseStore";
 import DynamicInputFields from "../Input/DynamicInputField";
+import DropdownField from "../Input/DropdownField";
 
 const CourtAppealForm = ({ id, data, onClose }) => {
   const { add, updateDecision } = useCivilCaseStore();
@@ -58,7 +59,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            Decision Court of Appeal
+            Decision Court of Appeals
           </h2>
           <button
             onClick={() => {
@@ -86,15 +87,36 @@ const CourtAppealForm = ({ id, data, onClose }) => {
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <InputField
+            
+            <DropdownField
               label="Select Division"
-              type="text"
-              name="division"
+              name="status"
               value={formData.division}
-              handleChange={handleChange}
-              placeholder="Enter division"
-              required
+              onChange={handleChange}
+              options={[
+                { value: "", label: "--- Select Division ---" },
+                { value: "First Level", label: "First Level" },
+                { value: "Second Level", label: "Second Level" },
+                { value: "Third Level", label: "Third Level" },
+                { value: "Fourth Level", label: "Fourth Level" },
+                { value: "Fifth Level", label: "Fifth Level" },
+                { value: "Sixth Level", label: "Sixth Level" },
+                { value: "Seventh Level", label: "Seventh Level" },
+                { value: "Eighth Level", label: "Eighth Level" },
+                { value: "Ninth Level", label: "Ninth Level" },
+                { value: "Tenth Level", label: "Tenth Level" },
+                { value: "Eleventh Level", label: "Eleventh Level" },
+                { value: "Twelfth Level", label: "Twelfth Level" },
+                { value: "Thirteenth Level", label: "Thirteenth Level" },
+                { value: "Fourteenth Level", label: "Fourteenth Level" },
+                { value: "Fifteenth Level", label: "Fifteenth Level" },
+                { value: "Sixteenth Level", label: "Sixteenth Level" },
+                { value: "Seventeenth Level", label: "Seventeenth Level" },
+                { value: "Eighteenth Level", label: "Eighteenth Level" },
+                { value: "Nineteenth Level", label: "Nineteenth Level" },
+              ]}
             />
+
 
             <InputField
               label="Date of Appeal"
@@ -107,7 +129,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
             />
 
             <InputField
-              label="Decision"
+              label="Decision / Resolution"
               type="date"
               name="decision"
               value={formData.decision}
@@ -118,7 +140,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
             />
 
             <InputField
-              label="Enter Finality"
+              label="Finality"
               type="text"
               name="finality"
               value={formData.finality}

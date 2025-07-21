@@ -9,16 +9,28 @@ const Header = () => {
     <>
       <header className="bg-white border-b border-gray-200 shadow-sm fixed top-0 left-0 right-0 z-50">
         <div className="px-6 py-4 flex items-center justify-between">
-          <button
-            onClick={() => setOpenNav(true)}
-            className="text-gray-700 hover:text-black focus:outline-none"
-            title="Open Navigation"
-          >
-            <FaBars size={20} />
-          </button>
-          <h1 className="text-lg font-semibold">
-            Office of the Clerk of Court
-          </h1>
+          <section>
+             <button
+                onClick={() => setOpenNav(true)}
+                className="text-gray-700 hover:text-black focus:outline-none"
+                title="Open Navigation"
+              >
+                <FaBars size={20} />
+              </button>
+          </section>
+          <section className="flex gap-4 items-center">
+            <div className="flex flex-col items-end">
+              <h1 className="text-lg font-semibold">
+                Regional Trial Court
+              </h1>
+              <h1 className="text-lg font-semibold">
+                Office of the Clerk of Court
+              </h1>
+            </div>
+            <div>
+              <img src="" alt="logo" />
+            </div>  
+          </section>
         </div>
       </header>
 

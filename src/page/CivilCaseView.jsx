@@ -243,9 +243,9 @@ const CivilCaseView = () => {
               {secondLevelDetails.map((item) => (
                 <DataCard
                   title={item.decision}
-                  subtitle={item.judgement}
+                  subtitle={formatDate(item.dateOfDecision)}
                   decision={item.finality}
-                  date={formatDate(item.dateOfJudgement)}
+                  date={formatDate(item.dateOfFinality)}
                   borderColor="border-blue-400"
                   onEdit={() => {
                     setEditData(item);
@@ -268,33 +268,24 @@ const CivilCaseView = () => {
                   <div className="space-y-4">
                     {/* Decision */}
                     <div>
-                      <h2 className="text-xl font-bold text-gray-800">
-                        {selectedCardSecondLevel?.decision ||
-                          "No decision available"}
-                      </h2>
-                    </div>
-
-                    {/* Judgement */}
-                    <div>
                       <h3 className="text-sm font-semibold text-gray-600">
-                        Judgement
+                        Decision
                       </h3>
                       <p className="text-gray-700">
-                        {selectedCardSecondLevel?.judgement}
+                        {selectedCardSecondLevel?.decision}
                       </p>
                     </div>
 
                     {/* Date of Judgement */}
                     <div>
                       <h3 className="text-sm font-semibold text-gray-600">
-                        Date of Judgement
+                        Date of Decision
                       </h3>
                       <p className="text-gray-500">
-                        {formatDate(selectedCardSecondLevel?.dateOfJudgement)}
+                        {formatDate(selectedCardSecondLevel?.dateOfDecision)}
                       </p>
                     </div>
-
-                    {/* Finality */}
+                    {/* Judgement */}
                     <div>
                       <h3 className="text-sm font-semibold text-gray-600">
                         Finality
@@ -304,7 +295,7 @@ const CivilCaseView = () => {
                       </p>
                     </div>
 
-                    {/* Date of Finality */}
+                    {/* Date of Judgement */}
                     <div>
                       <h3 className="text-sm font-semibold text-gray-600">
                         Date of Finality
@@ -340,7 +331,7 @@ const CivilCaseView = () => {
               }`}
               onClick={() => setActiveTab("appeal")}
             >
-              Court of Appeal
+              Court of Appeals
             </button>
             <button
               className={`px-4 py-2 rounded-md ${
@@ -359,7 +350,7 @@ const CivilCaseView = () => {
               <section className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <h1 className="text-xl font-semibold">
-                    Decision Court of Appeal
+                    Decision Court of Appeals
                   </h1>
                   <section>
                     <Button
@@ -446,8 +437,8 @@ const CivilCaseView = () => {
                     <table className="min-w-full table-auto">
                       <thead className="bg-primary-color text-white">
                         <tr>
-                          <th className="px-4 py-2 text-left">Decision</th>
-                          <th className="px-4 py-2 text-left">Resolution</th>
+                          <th className="px-4 py-2 text-left">Decision / Resolution / Promulgation</th>
+                          <th className="px-4 py-2 text-left">Date</th>
                           <th className="px-4 py-2 text-left">Action</th>
                         </tr>
                       </thead>
