@@ -9,12 +9,8 @@ const SecondLevelForm = ({ data, id, onClose }) => {
 
   const [formData, setFormData] = useState({
     decision: data?.decision || "",
-    dateOfDecision: data?.dateOfDecision
-      ? data.dateOfDecision.split("T")[0]
-      : "",
-    finality: data?.finality || "",
-    dateOfFinality: data?.dateOfFinality
-      ? data.dateOfFinality.split("T")[0]
+    date: data?.date
+      ? data.date.split("T")[0]
       : "",
     case_id: id || "",
   });
@@ -30,18 +26,23 @@ const SecondLevelForm = ({ data, id, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const payload = {
+      ...formData,
+      date: formData.date || "N/A",
+    };
+
     try {
       if (data?._id) {
         await updateDecision({
           path: "decision/secondlevel",
           updatedCase: data._id,
-          data: formData,
+          data: payload,
           getEndPoint: `/read/decision/secondlevel/${id}`,
           updateKey: "secondLevelDetails",
         });
       } else {
         await add({
-          data: formData,
+          data: payload,
           endPoint: "/civilcase/add/decision/secondlevel",
           getEndPoint: `/read/decision/secondlevel/${id}`,
           updateKey: "secondLevelDetails",
@@ -52,6 +53,7 @@ const SecondLevelForm = ({ data, id, onClose }) => {
       console.error("Failed to submit form:", error);
     }
   };
+
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50 font-inter">
@@ -85,7 +87,7 @@ const SecondLevelForm = ({ data, id, onClose }) => {
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <InputField
-              label="Decision"
+              label="Decision / Judgement / Order"
               type="text"
               name="decision"
               value={formData.decision}
@@ -94,7 +96,7 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               required
             />
 
-            <InputField
+            {/* <InputField
               label="Date of Decision"
               type="date"
               name="dateOfDecision"
@@ -102,9 +104,9 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               handleChange={handleChange}
               placeholder="Enter Date of Decision"
               required
-            />
+            /> */}
 
-            <InputField
+            {/* <InputField
               label="Enter Finality"
               type="text"
               name="finality"
@@ -112,15 +114,15 @@ const SecondLevelForm = ({ data, id, onClose }) => {
               handleChange={handleChange}
               placeholder="Enter Finality"
               required
-            />
+            /> */}
 
             <InputField
-              label="Date of Finality"
+              label="Date"
               type="date"
-              name="dateOfFinality"
-              value={formData.dateOfFinality}
+              name="date"
+              value={formData.date}
               handleChange={handleChange}
-              placeholder="Enter Date of Finality"
+              placeholder="Enter Date"
               required
             />
 

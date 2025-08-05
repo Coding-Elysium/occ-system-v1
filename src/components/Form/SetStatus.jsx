@@ -77,6 +77,7 @@ const SetStatus = ({ onClose, selectedIds }) => {
               onChange={handleChange}
               options={[
                 { value: "", label: "--- Select Status ---" },
+                { value: "Pending", label: "Pending" },
                 { value: "Withdrawn", label: "Withdrawn" },
                 { value: "Dismissed", label: "Dismissed" },
                 { value: "Archived", label: "Archived" },

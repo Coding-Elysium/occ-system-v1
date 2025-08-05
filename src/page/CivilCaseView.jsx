@@ -103,7 +103,7 @@ const CivilCaseView = () => {
 
   return (
     <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
-      <div className="mb-4">
+      <div className="mb-4 mt-8">
         <Link
           to="/civilcase"
           className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline hover:text-blue-800 transition-colors"
@@ -243,9 +243,8 @@ const CivilCaseView = () => {
               {secondLevelDetails.map((item) => (
                 <DataCard
                   title={item.decision}
-                  subtitle={formatDate(item.dateOfDecision)}
-                  decision={item.finality}
-                  date={formatDate(item.dateOfFinality)}
+                  subtitle="Decision"
+                  date={formatDate(item.date)}
                   borderColor="border-blue-400"
                   onEdit={() => {
                     setEditData(item);

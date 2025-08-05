@@ -21,7 +21,7 @@ const AddCivilCase = ({
     nature: selectedCase?.nature || "",
     description: selectedCase?.description || "",
     branch: selectedCase?.branch || "",
-    status: selectedCase?.status || "-----",
+    status: selectedCase?.status || "Pending",
   });
 
   const handleChange = (e) => {

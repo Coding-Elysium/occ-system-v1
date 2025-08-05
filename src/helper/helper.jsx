@@ -13,7 +13,7 @@ export const BASEURL = "http://localhost:3000";
 
 export const formatDate = (inputDate) => {
   const parsedDate = new Date(inputDate);
-  if (isNaN(parsedDate)) return "Invalid Date";
+  if (isNaN(parsedDate)) return "N/A";
 
   return parsedDate.toLocaleDateString("en-US", {
     year: "numeric",

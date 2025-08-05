@@ -50,7 +50,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
       }
       onClose();
     } catch (error) {
-      console.error("Failed to submit form:", error);
+      console.error("Failed to submit form:", error.message);
     }
   };
 
@@ -90,7 +90,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
             
             <DropdownField
               label="Select Division"
-              name="status"
+              name="division"
               value={formData.division}
               onChange={handleChange}
               options={[
