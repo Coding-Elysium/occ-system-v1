@@ -87,7 +87,17 @@ const CourtAppealForm = ({ id, data, onClose }) => {
 
         <div className="overflow-y-auto px-4 sm:px-6 py-4 flex-1 gap-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            
+
+            <InputField
+              label="Date of Appeal"
+              type="date"
+              name="dateOfAppeal"
+              value={formData.dateOfAppeal}
+              handleChange={handleChange}
+              placeholder="Enter Date of Appeal"
+              required
+            />
+
             <DropdownField
               label="Select Division"
               name="division"
@@ -115,17 +125,6 @@ const CourtAppealForm = ({ id, data, onClose }) => {
                 { value: "Eighteenth Level", label: "Eighteenth Level" },
                 { value: "Nineteenth Level", label: "Nineteenth Level" },
               ]}
-            />
-
-
-            <InputField
-              label="Date of Appeal"
-              type="date"
-              name="dateOfAppeal"
-              value={formData.dateOfAppeal}
-              handleChange={handleChange}
-              placeholder="Enter Date of Appeal"
-              required
             />
 
             <InputField

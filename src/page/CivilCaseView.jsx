@@ -364,10 +364,10 @@ const CivilCaseView = () => {
                     <table className="min-w-full table-auto">
                       <thead className="bg-primary-color text-white">
                         <tr>
-                          <th className="px-4 py-2 text-left">Division</th>
                           <th className="px-4 py-2 text-left">
                             Date of Appeal
                           </th>
+                          <th className="px-4 py-2 text-left">Division</th>
                           <th className="px-4 py-2 text-left">Decision</th>
                           <th className="px-4 py-2 text-left">Finality</th>
                           <th className="px-4 py-2 text-left">
@@ -379,10 +379,10 @@ const CivilCaseView = () => {
                       <tbody>
                         {courtAppealsDetails.map((item, index) => (
                           <tr key={index} className="border-b border-gray-200">
-                            <td className="px-4 py-2">{item.division}</td>
                             <td className="px-4 py-2">
                               {formatDate(item.dateOfAppeal)}
                             </td>
+                            <td className="px-4 py-2">{item.division}</td>
                             <td className="px-4 py-2">{item.decision}</td>
                             <td className="px-4 py-2">{item.finality}</td>
                             <td className="px-4 py-2">
