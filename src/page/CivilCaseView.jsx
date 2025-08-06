@@ -1,47 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useCivilCaseStore from "../store/CivilCaseStore";
-import {
-  FaBook,
-  FaEdit,
-  FaEye,
-  FaFileAlt,
-  FaTrash,
-  FaUserTie,
-  FaUsers,
-} from "react-icons/fa";
+import { FaBook, FaUserTie, FaFileAlt, FaEdit, FaTrash } from "react-icons/fa";
 import FirstLevelForm from "../components/Form/FirstLevelForm";
 import SecondLevelForm from "../components/Form/SecondLevelForm";
 import CourtAppealForm from "../components/Form/CourtAppealForm";
-import AddCard from "../components/Card/AddCard";
-import DataCard from "../components/Card/DataCard";
-import Button from "../components/Button/Button";
-import Modal from "../components/Modal/Modal";
-import DeleteModal from "../components/Modal/DeleteModal";
 import SupremeCourtForm from "../components/Form/SupremeCourtForm";
+import DeleteModal from "../components/Modal/DeleteModal";
+import Modal from "../components/Modal/Modal";
+import Button from "../components/Button/Button";
 import { formatDate } from "../helper/helper";
 
 const CivilCaseView = () => {
+  const [activeTab, setActiveTab] = useState("appeal");
+  const [editData, setEditData] = useState(null);
+  const [deleteData, setDeleteData] = useState(null);
   const [formFirstLevel, setFormFirstLevel] = useState(false);
   const [secondLevelForm, setSecondLevelForm] = useState(false);
   const [courtAppealForm, setCourtAppealForm] = useState(false);
   const [supremeCourtForm, setSupremeCourtForm] = useState(false);
-  const [editData, setEditData] = useState(null);
-  const [deleteData, setDeleteData] = useState(null);
-  const [selectedCardFirstLevel, setSelectedCardFirstLevel] = useState(null);
-  const [selectedCardSecondLevel, setSelectedCardSecondLevel] = useState(null);
   const [deleteFirstLevelModal, setDeleteFirstLevelModal] = useState(false);
   const [deleteSecondLevelModal, setDeleteSecondLevelModal] = useState(false);
   const [deleteCourtAppealModal, setDeleteCourtAppealModal] = useState(false);
   const [deleteSupremeCourtModal, setdeleteSupremeCourtModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("appeal");
-
-  const {
-    deleteDecision,
-    deleteSecondLevel,
-    deleteSupremeCourt,
-    deleteCourtAppeal,
-  } = useCivilCaseStore();
 
   const { id } = useParams();
   const {
@@ -56,6 +37,7 @@ const CivilCaseView = () => {
     fetchSupremeCourt,
     supremeCourtDetails,
     clearCaseData,
+    deleteDecision,
   } = useCivilCaseStore();
 
   useEffect(() => {
@@ -66,19 +48,8 @@ const CivilCaseView = () => {
       fetchCourtAppeals(id);
       fetchSupremeCourt(id);
     }
-
-    return () => {
-      clearCaseData();
-    };
-  }, [
-    id,
-    fetchCasesById,
-    fetchFirstLevel,
-    fetchSecondLevel,
-    fetchCourtAppeals,
-    fetchSupremeCourt,
-    clearCaseData,
-  ]);
+    return () => clearCaseData();
+  }, [id]);
 
   if (!caseDetails) {
     return (
@@ -88,400 +59,209 @@ const CivilCaseView = () => {
     );
   }
 
-  const handleCardClickFirstLevel = (item) => {
-    setSelectedCardFirstLevel(item);
+  const tabs = [
+    { key: "firstLevel", label: "First Level Decision" },
+    { key: "secondLevel", label: "Second Level Decision" },
+    { key: "appeal", label: "Court of Appeals" },
+    { key: "supreme", label: "Supreme Court" },
+  ];
+
+  const addButtonText = {
+    firstLevel: "Add First Level",
+    secondLevel: "Add Second Level",
+    appeal: "Add Court of Appeals",
+    supreme: "Add Supreme Court",
   };
 
-  const handleCardClickSecondLevel = (item) => {
-    setSelectedCardSecondLevel(item);
-  };
-
-  const closeModal = () => {
-    setSelectedCardFirstLevel(null);
-    setSelectedCardSecondLevel(null);
+  const openForm = {
+    firstLevel: () => setFormFirstLevel(true),
+    secondLevel: () => setSecondLevelForm(true),
+    appeal: () => setCourtAppealForm(true),
+    supreme: () => setSupremeCourtForm(true),
   };
 
   return (
-    <section className="overflow-y-auto pb-10 h-[calc(100vh-4rem)] ">
-      <div className="mb-4 mt-8">
-        <Link
+    <section className="bg-gray-100 min-h-screen p-4">
+      <div className="flex justify-between items-center mb-6">
+        <div className="bg-white p-4 w-full">
+          <h1 className="text-2xl font-bold text-gray-800">{caseDetails?.nature || "Civil Case"}</h1>
+          <p className="text-sm text-gray-500">Nature of the Case</p>
+        </div>
+        {/* <Link
           to="/civilcase"
-          className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline hover:text-blue-800 transition-colors"
+          className="text-blue-600 hover:underline text-sm"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
           Back to Civil Cases
-        </Link>
+        </Link> */}
       </div>
 
-      <main className="flex flex-col gap-6">
-        <section className="relative bg-gradient-to-r from-blue-600 to-indigo-500 rounded-lg shadow-lg text-white p-6">
-          <h1 className="text-3xl font-bold">{caseDetails?.nature || "N/A"}</h1>
-          <p className="text-sm mt-1 opacity-90">Nature of the Case</p>
-        </section>
-
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <CaseInfoCard
-            icon={<FaBook className="text-blue-500" />}
-            label="Book Number"
-            value={caseDetails?.docketNumber || "N/A"}
-          />
-          <CaseInfoCard
-            icon={<FaUserTie className="text-purple-500" />}
-            label="Petitioner(s)"
-            value={
-              caseDetails?.petitioner?.length > 0
-                ? caseDetails.petitioner.join(", ")
-                : "N/A"
-            }
-          />
-          <CaseInfoCard
-            icon={<FaUserTie className="text-purple-500" />}
-            label="Respondent(s)"
-            value={
-              caseDetails?.respondents?.length > 0
-                ? caseDetails.respondents.join(", ")
-                : "N/A"
-            }
-          />
-          <CaseInfoCard
-            icon={<FaFileAlt className="text-green-500" />}
-            label="Status"
-            value={caseDetails?.status || "N/A"}
-          />
-          <CaseInfoCard
-            icon={<FaFileAlt className="text-green-500" />}
-            label="Branch"
-            value={caseDetails?.branch || "N/A"}
-          />
-        </section>
-
-        {/* Description placed below in full width */}
-        {caseDetails?.description && (
-          <section>
-            <CaseInfoCard
-              icon={<FaFileAlt className="text-green-500" />}
-              label="Description"
-              value={caseDetails.description}
-            />
-          </section>
-        )}
-
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div>
-            <h1 className="font-semibold mb-2">First Level Decision</h1>
-            <AddCard
-              title="Add First Level"
-              onclick={() => {
-                setFormFirstLevel(true);
-              }}
-            />
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-6">
-              {firstLevelDetails.map((item) => (
-                <DataCard
-                  title={item.courtOfOrigin}
-                  subtitle={item.remarks}
-                  decision={item.decision}
-                  date={formatDate(item.date)}
-                  borderColor="border-red-400"
-                  onEdit={() => {
-                    setEditData(item);
-                    setFormFirstLevel(true);
-                  }}
-                  onDelete={() => {
-                    setDeleteData(item);
-                    setDeleteFirstLevelModal(true);
-                  }}
-                  onClickView={() => handleCardClickFirstLevel(item)}
-                />
-              ))}
-
-              {selectedCardFirstLevel && (
-                <Modal onClose={closeModal}>
-                  <h2 className="text-xl font-bold">
-                    {selectedCardFirstLevel.courtOfOrigin || "N/A"}
-                  </h2>
-                  <p className="mt-2">{selectedCardFirstLevel.remarks}</p>
-                  <p className="text-sm text-gray-500">
-                    {selectedCardFirstLevel.decision}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {formatDate(selectedCardFirstLevel.date)}
-                  </p>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3 bg-white rounded-md shadow p-4">
+          <div className="border-b border-gray-200 mb-4 ">
+            <nav className="flex items-center justify-between mb-4">
+              <section className="flex gap-6">
+                {tabs.map((tab) => (
                   <button
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-                    onClick={closeModal}
+                    key={tab.key}
+                    className={`pb-2 text-sm font-medium ${
+                      activeTab === tab.key
+                        ? "border-b-2 border-blue-600 text-blue-600"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                    onClick={() => setActiveTab(tab.key)}
                   >
-                    Close
+                    {tab.label}
                   </button>
-                </Modal>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <h1 className="font-semibold mb-2">Second Level Decision</h1>
-            <AddCard
-              title="Add Second Level"
-              onclick={() => {
-                setSecondLevelForm(true);
-              }}
-            />
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-6">
-              {secondLevelDetails.map((item) => (
-                <DataCard
-                  title={item.decision}
-                  subtitle="Decision"
-                  date={formatDate(item.date)}
-                  borderColor="border-blue-400"
-                  onEdit={() => {
-                    setEditData(item);
-                    setSecondLevelForm(true);
-                  }}
-                  onDelete={() => {
-                    setDeleteData(item);
-                    setDeleteSecondLevelModal(true);
-                  }}
-                  onClickView={() => handleCardClickSecondLevel(item)}
+                ))}
+              </section>
+              <section>
+                <Button 
+                  buttonText={addButtonText[activeTab]} 
+                  onClick={openForm[activeTab]} 
                 />
-              ))}
-
-              {selectedCardSecondLevel && (
-                <Modal
-                  onClose={closeModal}
-                  size="md"
-                  header="Second Level Decision"
-                >
-                  <div className="space-y-4">
-                    {/* Decision */}
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-600">
-                        Decision
-                      </h3>
-                      <p className="text-gray-700">
-                        {selectedCardSecondLevel?.decision}
-                      </p>
-                    </div>
-
-                    {/* Date of Judgement */}
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-600">
-                        Date of Decision
-                      </h3>
-                      <p className="text-gray-500">
-                        {formatDate(selectedCardSecondLevel?.dateOfDecision)}
-                      </p>
-                    </div>
-                    {/* Judgement */}
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-600">
-                        Finality
-                      </h3>
-                      <p className="text-gray-700">
-                        {selectedCardSecondLevel?.finality}
-                      </p>
-                    </div>
-
-                    {/* Date of Judgement */}
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-600">
-                        Date of Finality
-                      </h3>
-                      <p className="text-gray-500">
-                        {formatDate(selectedCardSecondLevel?.dateOfFinality)}
-                      </p>
-                    </div>
-
-                    {/* Close Button */}
-                    <div className="pt-4 flex justify-end">
-                      <button
-                        onClick={closeModal}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                </Modal>
-              )}
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div className="flex gap-4 mb-4">
-            <button
-              className={`px-4 py-2 rounded-md ${
-                activeTab === "appeal"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => setActiveTab("appeal")}
-            >
-              Court of Appeals
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md ${
-                activeTab === "supreme"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => setActiveTab("supreme")}
-            >
-              Supreme Court
-            </button>
+              </section>
+            </nav>
           </div>
 
-          <div>
+          <div className="overflow-x-auto">
+            {activeTab === "firstLevel" && (
+              <CaseTable
+                title="First Level Decision"
+                columns={[
+                  { key: "courtOfOrigin", label: "Court of Origin" },
+                  { key: "remarks", label: "Remarks" },
+                  { key: "decision", label: "Decision" },
+                  { key: "date", label: "Date" },
+                ]}
+                data={firstLevelDetails}
+                onEdit={(item) => {
+                  setEditData(item);
+                  setFormFirstLevel(true);
+                }}
+                onDelete={(item) => {
+                  setDeleteData(item);
+                  setDeleteFirstLevelModal(true);
+                }}
+              />
+            )}
+
+            {activeTab === "secondLevel" && (
+              <CaseTable
+                title="Second Level Decision"
+                columns={[
+                  { key: "decision", label: "Decision" },
+                  { key: "date", label: "Date" },
+                ]}
+                data={secondLevelDetails}
+                onEdit={(item) => {
+                  setEditData(item);
+                  setSecondLevelForm(true);
+                }}
+                onDelete={(item) => {
+                  setDeleteData(item);
+                  setDeleteSecondLevelModal(true);
+                }}
+              />
+            )}
+                    
             {activeTab === "appeal" && (
-              <section className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h1 className="text-xl font-semibold">
-                    Decision Court of Appeals
-                  </h1>
-                  <section>
-                    <Button
-                      buttonText="Add"
-                      onClick={() => setCourtAppealForm(true)}
-                    />
-                  </section>
-                </div>
-                {/* Your Court of Appeal Table Here */}
-                <div className="rounded-md border border-gray-300 overflow-hidden">
-                  <div className="max-h-64 overflow-y-auto">
-                    <table className="min-w-full table-auto">
-                      <thead className="bg-primary-color text-white">
-                        <tr>
-                          <th className="px-4 py-2 text-left">
-                            Date of Appeal
-                          </th>
-                          <th className="px-4 py-2 text-left">Division</th>
-                          <th className="px-4 py-2 text-left">Decision</th>
-                          <th className="px-4 py-2 text-left">Finality</th>
-                          <th className="px-4 py-2 text-left">
-                            Date of Finality
-                          </th>
-                          <th className="px-4 py-2 text-left">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {courtAppealsDetails.map((item, index) => (
-                          <tr key={index} className="border-b border-gray-200">
-                            <td className="px-4 py-2">
-                              {formatDate(item.dateOfAppeal)}
-                            </td>
-                            <td className="px-4 py-2">{item.division}</td>
-                            <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">{item.finality}</td>
-                            <td className="px-4 py-2">
-                              {formatDate(item.dateOfFinality)}
-                            </td>
-                            <td className="px-4 py-3 flex items-center gap-2">
-                              <button
-                                onClick={() => {
-                                  setEditData(item);
-                                  setCourtAppealForm(true);
-                                }}
-                                className="text-blue-600 hover:text-blue-800"
-                                title="Edit"
-                              >
-                                <FaEdit />
-                              </button>
-
-                              <button
-                                onClick={() => {
-                                  setDeleteData(item);
-                                  setDeleteCourtAppealModal(true);
-                                }}
-                                className="text-red-600 hover:text-red-800"
-                                title="Delete"
-                              >
-                                <FaTrash />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </section>
+              <CaseTable
+                title="Decision Court of Appeals"
+                columns={[
+                  { key: "date", label: "Date" },
+                  { key: "division", label: "Division" },
+                  { key: "decision", label: "Decision" },
+                  { key: "finality", label: "Finality" },
+                  { key: "dateOfFinality", label: "Date of Finality" },
+                ]}
+                data={courtAppealsDetails}
+                onEdit={(item) => {
+                  setEditData(item);
+                  setCourtAppealForm(true);
+                }}
+                onDelete={(item) => {
+                  setDeleteData(item);
+                  setDeleteCourtAppealModal(true);
+                }}
+              />
             )}
-
+           
             {activeTab === "supreme" && (
-              <section className="flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h1 className="text-xl font-semibold">Supreme Court</h1>
-                  <section>
-                    <Button
-                      buttonText="Add"
-                      onClick={() => setSupremeCourtForm(true)}
-                    />
-                  </section>
-                </div>
-                <div className="rounded-md border border-gray-300 overflow-hidden">
-                  <div className="max-h-64 overflow-y-auto">
-                    <table className="min-w-full table-auto">
-                      <thead className="bg-primary-color text-white">
-                        <tr>
-                          <th className="px-4 py-2 text-left">Decision / Resolution / Promulgation</th>
-                          <th className="px-4 py-2 text-left">Date</th>
-                          <th className="px-4 py-2 text-left">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {supremeCourtDetails.map((item, index) => (
-                          <tr key={index} className="border-b border-gray-200">
-                            <td className="px-4 py-2">{item.decision}</td>
-                            <td className="px-4 py-2">
-                              {formatDate(item.date)}
-                            </td>
-                            <td className="px-4 py-3 flex items-center gap-2">
-                              <button
-                                onClick={() => {
-                                  setEditData(item);
-                                  setSupremeCourtForm(true);
-                                }}
-                                className="text-blue-600 hover:text-blue-800"
-                                title="Edit"
-                              >
-                                <FaEdit />
-                              </button>
-
-                              <button
-                                onClick={() => {
-                                  setdeleteSupremeCourtModal(true);
-                                  setDeleteData(item);
-                                }}
-                                className="text-red-600 hover:text-red-800"
-                                title="Delete"
-                              >
-                                <FaTrash />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </section>
+              <CaseTable
+                title="Supreme Court"
+                columns={[
+                  { key: "date", label: "Date" },
+                  { key: "decision", label: "Decision" },
+                ]}
+                data={supremeCourtDetails}
+                onEdit={(item) => {
+                  setEditData(item);
+                  setSupremeCourtForm(true);
+                }}
+                onDelete={(item) => {
+                  setDeleteData(item);
+                  setdeleteSupremeCourtModal(true);
+                }}
+              />
             )}
           </div>
-        </section>
-      </main>
+        </div>
+
+        <aside className="space-y-4">
+          <CaseInfoCard icon={<FaBook />} label="Book Number" value={caseDetails?.docketNumber} />
+          <CaseInfoCard icon={<FaUserTie />} label="Petitioner(s)" value={caseDetails?.petitioner?.join(", ") || "N/A"} />
+          <CaseInfoCard icon={<FaUserTie />} label="Respondent(s)" value={caseDetails?.respondents?.join(", ") || "N/A"} />
+          <CaseInfoCard icon={<FaFileAlt />} label="Status" value={caseDetails?.status} />
+          <CaseInfoCard icon={<FaFileAlt />} label="Branch" value={caseDetails?.branch} />
+        </aside>
+      </div>
+      {
+        formFirstLevel && (
+          <FirstLevelForm
+            data={editData}
+            onClose={() => {
+              setFormFirstLevel(false), setEditData(null);
+            }}
+            id={id}
+          />
+        )
+      }
+
+      {
+        secondLevelForm && (
+          <SecondLevelForm
+            data={editData}
+            onClose={() => {
+              setSecondLevelForm(false), setEditData(null);
+            }}
+            id={id}
+          />
+        )
+      }
+
+      {
+        courtAppealForm && (
+          <CourtAppealForm
+            data={editData}
+            onClose={() => {
+              setCourtAppealForm(false), setEditData(null);
+            }}
+            id={id}
+          />
+        )
+      }
+
+      {
+        supremeCourtForm && (
+          <SupremeCourtForm
+            data={editData}
+            onClose={() => {
+              setSupremeCourtForm(false), setEditData(null);
+            }}
+            id={id}
+          />
+        )
+      }
 
       {deleteFirstLevelModal && (
         <DeleteModal
@@ -546,55 +326,61 @@ const CivilCaseView = () => {
           onCancel={() => setdeleteSupremeCourtModal(false)}
         />
       )}
-
-      {formFirstLevel && (
-        <FirstLevelForm
-          data={editData}
-          onClose={() => {
-            setFormFirstLevel(false), setEditData(null);
-          }}
-          id={id}
-        />
-      )}
-
-      {secondLevelForm && (
-        <SecondLevelForm
-          data={editData}
-          onClose={() => {
-            setSecondLevelForm(false), setEditData(null);
-          }}
-          id={id}
-        />
-      )}
-
-      {courtAppealForm && (
-        <CourtAppealForm
-          data={editData}
-          onClose={() => {
-            setCourtAppealForm(false), setEditData(null);
-          }}
-          id={id}
-        />
-      )}
-
-      {supremeCourtForm && (
-        <SupremeCourtForm
-          data={editData}
-          onClose={() => {
-            setSupremeCourtForm(false), setEditData(null);
-          }}
-          id={id}
-        />
-      )}
     </section>
   );
 };
 
+const CaseTable = ({ title, columns, data, onEdit, onDelete }) => (
+  <div className="mb-6">
+    <h2 className="text-lg font-semibold mb-2">{title}</h2>
+    <div className="rounded-md border border-gray-200 overflow-hidden">
+      <table className="w-full text-sm">
+        <thead className="bg-primary-color text-white">
+          <tr>
+            {columns.map((col) => (
+              <th key={col.key} className="px-4 py-2 text-left">{col.label}</th>
+            ))}
+            <th className="px-4 py-2 text-left">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index} className="border-b border-gray-200">
+                {columns.map((col) => (
+                  <td key={col.key} className="px-4 py-2">
+                    {col.key === "date" ? formatDate(item[col.key]) : item[col.key] || "N/A"}
+                  </td>
+                ))}
+                <td className="px-4 py-2 flex gap-2">
+                  <button onClick={() => onEdit(item)} className="text-blue-600 hover:text-blue-800">
+                    <FaEdit />
+                  </button>
+                  <button onClick={() => onDelete(item)} className="text-red-600 hover:text-red-800">
+                    <FaTrash />
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={columns.length + 1} className="px-4 py-2 text-center text-gray-500">
+                No records found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+
 const CaseInfoCard = ({ icon, label, value }) => (
-  <div className="bg-white rounded-md border border-gray-300 px-6 py-5 flex flex-col items-start gap-2">
-    <div className="flex items-center gap-2 text-gray-800 text-xl font-semibold">
+  <div className="bg-white rounded-md shadow p-4">
+    <div className="flex items-center gap-3 mb-2 text-gray-700">
       {icon}
-      <span>{value || "N/A"}</span>
+      <span className="text-lg font-semibold">{value || "N/A"}</span>
     </div>
     <p className="text-sm text-gray-500">{label}</p>
   </div>
