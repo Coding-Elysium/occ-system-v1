@@ -12,7 +12,7 @@ import Button from "../components/Button/Button";
 import { formatDate } from "../helper/helper";
 
 const CivilCaseView = () => {
-  const [activeTab, setActiveTab] = useState("appeal");
+  const [activeTab, setActiveTab] = useState("firstLevel");
   const [editData, setEditData] = useState(null);
   const [deleteData, setDeleteData] = useState(null);
   const [formFirstLevel, setFormFirstLevel] = useState(false);
@@ -81,9 +81,9 @@ const CivilCaseView = () => {
   };
 
   return (
-    <section className="bg-gray-100 min-h-screen p-4">
+    <section className="min-h-screen">
       <div className="flex justify-between items-center mb-6">
-        <div className="bg-white p-4 w-full">
+        <div className="bg-white p-4 w-full border border-gray-200 rounded-sm">
           <h1 className="text-2xl font-bold text-gray-800">{caseDetails?.nature || "Civil Case"}</h1>
           <p className="text-sm text-gray-500">Nature of the Case</p>
         </div>
@@ -103,7 +103,7 @@ const CivilCaseView = () => {
                 {tabs.map((tab) => (
                   <button
                     key={tab.key}
-                    className={`pb-2 text-sm font-medium ${
+                    className={`pb-2 text-sm font-medium cursor-pointer ${
                       activeTab === tab.key
                         ? "border-b-2 border-blue-600 text-blue-600"
                         : "text-gray-500 hover:text-gray-700"
