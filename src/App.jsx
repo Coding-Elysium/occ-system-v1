@@ -17,7 +17,7 @@ function App() {
         )}
 
         {!isMobile && (
-          <main className=" w-full bg-gray-50 mt-6 p-4 sm:p-6">
+          <main className="w-full bg-gray-100 mt-6 p-4 sm:p-6">
             <Outlet />
           </main>
         )}

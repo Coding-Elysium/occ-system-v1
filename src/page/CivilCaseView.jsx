@@ -7,9 +7,11 @@ import SecondLevelForm from "../components/Form/SecondLevelForm";
 import CourtAppealForm from "../components/Form/CourtAppealForm";
 import SupremeCourtForm from "../components/Form/SupremeCourtForm";
 import DeleteModal from "../components/Modal/DeleteModal";
-import Modal from "../components/Modal/Modal";
 import Button from "../components/Button/Button";
 import { formatDate } from "../helper/helper";
+import ModalTruncate from "../components/Modal/ModalTruncate";
+import { TableComponent } from "../components/Table/TableComponent";
+import CaseInfoCard from "../components/Card/CaseInfoCard";
 
 const CivilCaseView = () => {
   const [activeTab, setActiveTab] = useState("firstLevel");
@@ -95,8 +97,8 @@ const CivilCaseView = () => {
         </Link> */}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-3 bg-white rounded-md shadow p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[900px] ">
+        <div className="lg:col-span-3 bg-white rounded-md border border-gray-300 p-4">
           <div className="border-b border-gray-200 mb-4 ">
             <nav className="flex items-center justify-between mb-4">
               <section className="flex gap-6">
@@ -125,7 +127,7 @@ const CivilCaseView = () => {
 
           <div className="overflow-x-auto">
             {activeTab === "firstLevel" && (
-              <CaseTable
+              <TableComponent
                 title="First Level Decision"
                 columns={[
                   { key: "courtOfOrigin", label: "Court of Origin" },
@@ -146,7 +148,7 @@ const CivilCaseView = () => {
             )}
 
             {activeTab === "secondLevel" && (
-              <CaseTable
+              <TableComponent
                 title="Second Level Decision"
                 columns={[
                   { key: "decision", label: "Decision" },
@@ -165,7 +167,7 @@ const CivilCaseView = () => {
             )}
                     
             {activeTab === "appeal" && (
-              <CaseTable
+              <TableComponent
                 title="Decision Court of Appeals"
                 columns={[
                   { key: "date", label: "Date" },
@@ -187,7 +189,7 @@ const CivilCaseView = () => {
             )}
            
             {activeTab === "supreme" && (
-              <CaseTable
+              <TableComponent
                 title="Supreme Court"
                 columns={[
                   { key: "date", label: "Date" },
@@ -207,7 +209,7 @@ const CivilCaseView = () => {
           </div>
         </div>
 
-        <aside className="space-y-4">
+        <aside className="flex flex-col justify-between h-full gap-4">
           <CaseInfoCard icon={<FaBook />} label="Book Number" value={caseDetails?.docketNumber} />
           <CaseInfoCard icon={<FaUserTie />} label="Petitioner(s)" value={caseDetails?.petitioner?.join(", ") || "N/A"} />
           <CaseInfoCard icon={<FaUserTie />} label="Respondent(s)" value={caseDetails?.respondents?.join(", ") || "N/A"} />
@@ -326,64 +328,10 @@ const CivilCaseView = () => {
           onCancel={() => setdeleteSupremeCourtModal(false)}
         />
       )}
+
+
     </section>
   );
 };
-
-const CaseTable = ({ title, columns, data, onEdit, onDelete }) => (
-  <div className="mb-6">
-    <h2 className="text-lg font-semibold mb-2">{title}</h2>
-    <div className="rounded-md border border-gray-200 overflow-hidden">
-      <table className="w-full text-sm">
-        <thead className="bg-primary-color text-white">
-          <tr>
-            {columns.map((col) => (
-              <th key={col.key} className="px-4 py-2 text-left">{col.label}</th>
-            ))}
-            <th className="px-4 py-2 text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.length > 0 ? (
-            data.map((item, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-2">
-                    {col.key === "date" ? formatDate(item[col.key]) : item[col.key] || "N/A"}
-                  </td>
-                ))}
-                <td className="px-4 py-2 flex gap-2">
-                  <button onClick={() => onEdit(item)} className="text-blue-600 hover:text-blue-800">
-                    <FaEdit />
-                  </button>
-                  <button onClick={() => onDelete(item)} className="text-red-600 hover:text-red-800">
-                    <FaTrash />
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={columns.length + 1} className="px-4 py-2 text-center text-gray-500">
-                No records found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  </div>
-);
-
-
-const CaseInfoCard = ({ icon, label, value }) => (
-  <div className="bg-white rounded-md shadow p-4">
-    <div className="flex items-center gap-3 mb-2 text-gray-700">
-      {icon}
-      <span className="text-lg font-semibold">{value || "N/A"}</span>
-    </div>
-    <p className="text-sm text-gray-500">{label}</p>
-  </div>
-);
 
 export default CivilCaseView;
