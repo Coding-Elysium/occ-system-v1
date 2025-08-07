@@ -83,10 +83,12 @@ const CivilCaseView = () => {
   };
 
   return (
-    <section className="min-h-screen">
-      <div className="flex justify-between items-center mb-6">
+    <section className="flex flex-col gap-6">
+      <div className="flex justify-between items-center">
         <div className="bg-white p-4 w-full border border-gray-200 rounded-sm">
-          <h1 className="text-2xl font-bold text-gray-800">{caseDetails?.nature || "Civil Case"}</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            {caseDetails?.nature || "Civil Case"}
+          </h1>
           <p className="text-sm text-gray-500">Nature of the Case</p>
         </div>
         {/* <Link
@@ -97,7 +99,7 @@ const CivilCaseView = () => {
         </Link> */}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 min-h-[900px] ">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1">
         <div className="lg:col-span-3 bg-white rounded-md border border-gray-300 p-4">
           <div className="border-b border-gray-200 mb-4 ">
             <nav className="flex items-center justify-between mb-4">
@@ -117,9 +119,9 @@ const CivilCaseView = () => {
                 ))}
               </section>
               <section>
-                <Button 
-                  buttonText={addButtonText[activeTab]} 
-                  onClick={openForm[activeTab]} 
+                <Button
+                  buttonText={addButtonText[activeTab]}
+                  onClick={openForm[activeTab]}
                 />
               </section>
             </nav>
@@ -165,7 +167,7 @@ const CivilCaseView = () => {
                 }}
               />
             )}
-                    
+
             {activeTab === "appeal" && (
               <TableComponent
                 title="Decision Court of Appeals"
@@ -187,7 +189,7 @@ const CivilCaseView = () => {
                 }}
               />
             )}
-           
+
             {activeTab === "supreme" && (
               <TableComponent
                 title="Supreme Court"
@@ -209,61 +211,73 @@ const CivilCaseView = () => {
           </div>
         </div>
 
-        <aside className="flex flex-col justify-between h-full gap-4">
-          <CaseInfoCard icon={<FaBook />} label="Book Number" value={caseDetails?.docketNumber} />
-          <CaseInfoCard icon={<FaUserTie />} label="Petitioner(s)" value={caseDetails?.petitioner?.join(", ") || "N/A"} />
-          <CaseInfoCard icon={<FaUserTie />} label="Respondent(s)" value={caseDetails?.respondents?.join(", ") || "N/A"} />
-          <CaseInfoCard icon={<FaFileAlt />} label="Status" value={caseDetails?.status} />
-          <CaseInfoCard icon={<FaFileAlt />} label="Branch" value={caseDetails?.branch} />
+        <aside className="flex flex-col justify-between gap-4">
+          <CaseInfoCard
+            icon={<FaBook />}
+            label="Book Number"
+            value={caseDetails?.docketNumber}
+          />
+          <CaseInfoCard
+            icon={<FaUserTie />}
+            label="Petitioner(s)"
+            value={caseDetails?.petitioner?.join(", ") || "N/A"}
+          />
+          <CaseInfoCard
+            icon={<FaUserTie />}
+            label="Respondent(s)"
+            value={caseDetails?.respondents?.join(", ") || "N/A"}
+          />
+          <CaseInfoCard
+            icon={<FaFileAlt />}
+            label="Status"
+            value={caseDetails?.status}
+          />
+          <CaseInfoCard
+            icon={<FaFileAlt />}
+            label="Branch"
+            value={caseDetails?.branch}
+          />
         </aside>
       </div>
-      {
-        formFirstLevel && (
-          <FirstLevelForm
-            data={editData}
-            onClose={() => {
-              setFormFirstLevel(false), setEditData(null);
-            }}
-            id={id}
-          />
-        )
-      }
+      {formFirstLevel && (
+        <FirstLevelForm
+          data={editData}
+          onClose={() => {
+            setFormFirstLevel(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-      {
-        secondLevelForm && (
-          <SecondLevelForm
-            data={editData}
-            onClose={() => {
-              setSecondLevelForm(false), setEditData(null);
-            }}
-            id={id}
-          />
-        )
-      }
+      {secondLevelForm && (
+        <SecondLevelForm
+          data={editData}
+          onClose={() => {
+            setSecondLevelForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-      {
-        courtAppealForm && (
-          <CourtAppealForm
-            data={editData}
-            onClose={() => {
-              setCourtAppealForm(false), setEditData(null);
-            }}
-            id={id}
-          />
-        )
-      }
+      {courtAppealForm && (
+        <CourtAppealForm
+          data={editData}
+          onClose={() => {
+            setCourtAppealForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
-      {
-        supremeCourtForm && (
-          <SupremeCourtForm
-            data={editData}
-            onClose={() => {
-              setSupremeCourtForm(false), setEditData(null);
-            }}
-            id={id}
-          />
-        )
-      }
+      {supremeCourtForm && (
+        <SupremeCourtForm
+          data={editData}
+          onClose={() => {
+            setSupremeCourtForm(false), setEditData(null);
+          }}
+          id={id}
+        />
+      )}
 
       {deleteFirstLevelModal && (
         <DeleteModal
@@ -328,8 +342,6 @@ const CivilCaseView = () => {
           onCancel={() => setdeleteSupremeCourtModal(false)}
         />
       )}
-
-
     </section>
   );
 };
