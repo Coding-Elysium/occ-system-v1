@@ -10,8 +10,8 @@ const CourtAppealForm = ({ id, data, onClose }) => {
   const { add, updateDecision } = useCivilCaseStore();
 
   const [formData, setFormData] = useState({
-    division: data?.division || "",
     dateOfAppeal: data?.dateOfAppeal ? data.dateOfAppeal.split("T")[0] : "",
+    division: data?.division || "",
     decision: data?.decision || "",
     finality: data?.finality || "",
     dateOfFinality: data?.dateOfFinality
@@ -56,7 +56,7 @@ const CourtAppealForm = ({ id, data, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 z-50 font-inter">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[400px] max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-[800px] max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex justify-between items-center px-4 sm:px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
             Decision Court of Appeals

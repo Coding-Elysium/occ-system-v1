@@ -151,7 +151,7 @@ const CivilCaseView = () => {
               <TableComponent
                 title="Second Level Decision"
                 columns={[
-                  { key: "decision", label: "Decision" },
+                  { key: "decision", label: "Decision / Judgment / Order" },
                   { key: "date", label: "Date" },
                 ]}
                 data={secondLevelDetails}
@@ -170,11 +170,11 @@ const CivilCaseView = () => {
               <TableComponent
                 title="Decision Court of Appeals"
                 columns={[
-                  { key: "date", label: "Date" },
+                  { key: "dateOfAppeal", label: "Date" },
                   { key: "division", label: "Division" },
                   { key: "decision", label: "Decision" },
                   { key: "finality", label: "Finality" },
-                  { key: "dateOfFinality", label: "Date of Finality" },
+                  { key: "dateOfFinality", label  : "Date of Finality" },
                 ]}
                 data={courtAppealsDetails}
                 onEdit={(item) => {
@@ -328,8 +328,6 @@ const CivilCaseView = () => {
           onCancel={() => setdeleteSupremeCourtModal(false)}
         />
       )}
-
-
     </section>
   );
 };

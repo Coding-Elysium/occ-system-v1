@@ -32,7 +32,7 @@ export const TableComponent = ({ title, columns, data, onEdit, onDelete }) => {
                 <tr key={index} className="border-b border-gray-200">
                   {columns.map((col) => (
                     <td key={col.key} className="px-4 py-2 max-w-xs truncate">
-                      {col.key === "date" ? (
+                      {col.key === "date" || col.key === "dateOfFinality" || col.key === "dateOfAppeal" ? (
                         formatDate(item[col.key])
                       ) : typeof item[col.key] === "string" && item[col.key].length > 30 ? (
                         <span
